@@ -1,0 +1,396 @@
+
+
+
+
+ 
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample Post</title>
+
+    
+    <link rel="stylesheet" href="/static/styles/main.css" />
+
+    
+    <link rel="icon" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/anna.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/anna.png" />
+    <link rel="apple-touch-icon" href="/static/images/anna.png" />
+    <meta name="theme-color" content="#ffffff" />
+
+    
+    <link id="hljs-light" rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" />
+
+    
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+
+    <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
+
+    
+    
+    <script>
+        const eventSource = new EventSource("http://localhost:8000/events");
+        eventSource.onmessage = function (event) {
+            location.reload();
+        };
+    </script>
+      
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sample Post" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="" />
+
+    <meta name="description" content="" />
+
+    <script defer>
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll();
+            if (typeof CopyButtonPlugin !== 'undefined') {
+                hljs.addPlugin(new CopyButtonPlugin());
+            }
+        }
+    </script>
+</head>
+
+
+<body class="site-body">
+
+    
+
+ 
+
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="brand">
+            <a href="/" aria-label="anna-docs"><img src="/static/images/acm.png"
+                    alt="anna-docs" class="brand-logo" /></a>
+        </div>
+        <nav id="mobile-nav" class="site-nav" aria-label="Main navigation">
+            
+            
+            <a class="navitem" href="/index.html">About</a>
+            
+            
+            
+            <a class="navitem" href="/members.html">Members</a>
+            
+            
+            
+            <a class="navitem" href="/blogs.html">Blogs</a>
+            
+            
+            
+            <a class="navitem" href="/events.html">Events</a>
+            
+            
+            
+            <a class="navitem" href="/contact.html">Contact</a>
+            
+            
+        </nav>
+        <div class="actions">
+            <button class="hamburger" id="hamburger" aria-controls="mobile-nav" aria-expanded="false"
+                aria-label="Open menu">☰</button>
+            <button class="search-btn" id="openSearch" aria-label="Search (Cmd/Ctrl+K)">🔎</button>
+        </div>
+    </div>
+</header>
+
+
+
+<div class="search-overlay" id="searchOverlay" aria-hidden="true">
+  <div class="search-box" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="search-input-row">
+      <input id="searchSiteInput" type="text" placeholder="Search posts or pages — fuzzy search" autocomplete="off"
+        aria-label="Search site" />
+      <button id="closeSearch" class="close-search" aria-label="Close search">✕</button>
+    </div>
+    <div class="search-hint">Show fuzzy search — try partial words or titles</div>
+    <div id="site_search_result" class="search-results"></div>
+  </div>
+</div>
+<script>
+  (function () {
+    const overlay = document.getElementById('searchOverlay');
+    const input = document.getElementById('searchSiteInput');
+    const results = document.getElementById('site_search_result');
+    const openBtn = document.getElementById('openSearch');
+    const closeBtn = document.getElementById('closeSearch');
+
+    function show() { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); input.focus(); }
+    function hide() { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); input.value = ''; results.innerHTML = ''; }
+
+    document.addEventListener('keydown', function (e) {
+      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); show(); }
+      if (e.key === 'Escape') { hide(); }
+    });
+
+    if (openBtn) openBtn.addEventListener('click', function () { show(); });
+    if (closeBtn) closeBtn.addEventListener('click', function () { hide(); });
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
+
+    
+    let timeout; input.addEventListener('input', function () {
+      clearTimeout(timeout); timeout = setTimeout(() => {
+        const q = input.value.trim().toLowerCase(); if (!q) { results.innerHTML = ''; return }
+        fetch('/static/index.json').then(r => r.json()).then(data => {
+          results.innerHTML = ''; let found = false; for (key in data) { const title = data[key]['Frontmatter']['Title'] || ''; if (title.toLowerCase().includes(q)) { found = true; const a = document.createElement('a'); a.textContent = title; a.href = '/' + data[key]['CompleteURL']; a.className = 'search-link'; results.appendChild(a); results.appendChild(document.createElement('br')); } }
+          if (!found) results.textContent = 'No results';
+        }).catch(err => { console.error(err); results.textContent = 'Search unavailable' })
+      }, 180)
+    });
+  })();
+</script>
+ 
+    <main class="container site-main" role="main">
+        <article class="content">
+            <section class="body">
+
+                
+                <div class="post-description">
+                    <h1>Sample Post</h1>
+                    <div class="page-date">
+                        
+                        Published on 2024-02-23
+                        
+                    </div>
+                    <div class="authors-placeholder">
+                        
+                    </div>
+                    <div class="tags-placeholder">
+                        
+                        
+                        <a class="tag" href="/tags/testing.html">testing</a>
+                        
+                        
+                    </div>
+                </div>
+                
+
+                <h1 id="h1-heading-8-">h1 Heading 8-)</h1>
+<h2 id="h2-heading">h2 Heading</h2>
+<h3 id="h3-heading">h3 Heading</h3>
+<h4 id="h4-heading">h4 Heading</h4>
+<h5 id="h5-heading">h5 Heading</h5>
+<h6 id="h6-heading">h6 Heading</h6>
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+<hr>
+<hr>
+<hr>
+<h2 id="typographic-replacements">Typographic replacements</h2>
+<p>Enable typographer option to see result.</p>
+<p>(c) (C) (r) (R) (tm) (TM) (p) (P) +-</p>
+<p>test.. test... test..... test?..... test!....</p>
+<p>!!!!!! ???? ,, -- ---</p>
+<p>&quot;Smartypants, double quotes&quot; and 'single quotes'</p>
+<h2 id="emphasis">Emphasis</h2>
+<p><strong>This is bold text</strong></p>
+<p><strong>This is bold text</strong></p>
+<p><em>This is italic text</em></p>
+<p><em>This is italic text</em></p>
+<p>~~Strikethrough~~</p>
+<h2 id="blockquotes">Blockquotes</h2>
+<blockquote>
+<p>Blockquotes can also be nested...</p>
+<blockquote>
+<p>...by using additional greater-than signs right next to each other...</p>
+<blockquote>
+<p>...or with spaces between arrows.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="lists">Lists</h2>
+<p>Unordered</p>
+<ul>
+<li>Create a list by starting a line with <code>+</code>, <code>-</code>, or <code>*</code></li>
+<li>Sub-lists are made by indenting 2 spaces:
+<ul>
+<li>Marker character change forces new list start:
+<ul>
+<li>Ac tristique libero volutpat at</li>
+</ul>
+<ul>
+<li>Facilisis in pretium nisl aliquet</li>
+</ul>
+<ul>
+<li>Nulla volutpat aliquam velit</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Very easy!</li>
+</ul>
+<p>Ordered</p>
+<ol>
+<li>
+<p>Lorem ipsum dolor sit amet</p>
+</li>
+<li>
+<p>Consectetur adipiscing elit</p>
+</li>
+<li>
+<p>Integer molestie lorem at massa</p>
+</li>
+<li>
+<p>You can use sequential numbers...</p>
+</li>
+<li>
+<p>...or keep all the numbers as <code>1.</code></p>
+</li>
+</ol>
+<p>Start numbering with offset:</p>
+<ol start="57">
+<li>foo</li>
+<li>bar</li>
+</ol>
+<h2 id="code">Code</h2>
+<p>Inline <code>code</code></p>
+<p>Indented code</p>
+<pre><code>// Some comments
+line 1 of code
+line 2 of code
+line 3 of code
+</code></pre>
+<p>Block code &quot;fences&quot;</p>
+<pre><code>Sample text here...
+</code></pre>
+<p>Syntax highlighting</p>
+<pre><code class="language-js">var foo = function (bar) {
+  return bar++;
+};
+
+console.log(foo(5));
+</code></pre>
+<h2 id="tables">Tables</h2>
+<p>| Option | Description                                                               |
+| ------ | ------------------------------------------------------------------------- |
+| data   | path to data files to supply the data that will be passed into templates. |
+| engine | engine to be used for processing templates. Handlebars is the default.    |
+| ext    | extension to be used for dest files.                                      |</p>
+<p>Right aligned columns</p>
+<p>| Option |                                                               Description |
+| -----: | ------------------------------------------------------------------------: |
+|   data | path to data files to supply the data that will be passed into templates. |
+| engine |    engine to be used for processing templates. Handlebars is the default. |
+|    ext |                                      extension to be used for dest files. |</p>
+<h2 id="links">Links</h2>
+<p><a href="http://dev.nodeca.com">link text</a></p>
+<p><a href="http://nodeca.github.io/pica/demo/" title="title text!">link with title</a></p>
+<p>Autoconverted link https://github.com/nodeca/pica (enable linkify to see)</p>
+<h2 id="images">Images</h2>
+<figure>
+<img src="https://octodex.github.com/images/minion.png" alt="Minion">
+<img src="https://octodex.github.com/images/stormtroopocat.jpg" alt="Stormtroopocat" title="The Stormtroopocat">
+</figure>
+<p>Like links, Images also have a footnote style syntax</p>
+<figure>
+<img src="https://octodex.github.com/images/dojocat.jpg" alt="Alt text" title="The Dojocat">
+</figure>
+<p>With a reference later in the document defining the URL location:</p>
+<h2 id="plugins">Plugins</h2>
+<p>The killer feature of <code>markdown-it</code> is very effective support of
+<a href="https://www.npmjs.org/browse/keyword/markdown-it-plugin">syntax plugins</a>.</p>
+<h3 id="emojieshttpsgithubcommarkdown-itmarkdown-it-emoji"><a href="https://github.com/markdown-it/markdown-it-emoji">Emojies</a></h3>
+<blockquote>
+<p>Classic markup: :wink: :cry: :laughing: :yum:</p>
+<p>Shortcuts (emoticons): :-) :-( 8-) ;)</p>
+</blockquote>
+<p>see <a href="https://github.com/markdown-it/markdown-it-emoji#change-output">how to change output</a> with twemoji.</p>
+<h3 id="subscripthttpsgithubcommarkdown-itmarkdown-it-sub--superscripthttpsgithubcommarkdown-itmarkdown-it-sup"><a href="https://github.com/markdown-it/markdown-it-sub">Subscript</a> / <a href="https://github.com/markdown-it/markdown-it-sup">Superscript</a></h3>
+<ul>
+<li>19^th^</li>
+<li>H~2~O</li>
+</ul>
+<h3 id="inshttpsgithubcommarkdown-itmarkdown-it-ins"><a href="https://github.com/markdown-it/markdown-it-ins">&lt;ins&gt;</a></h3>
+<p>++Inserted text++</p>
+<h3 id="markhttpsgithubcommarkdown-itmarkdown-it-mark"><a href="https://github.com/markdown-it/markdown-it-mark">&lt;mark&gt;</a></h3>
+<p>==Marked text==</p>
+<h3 id="footnoteshttpsgithubcommarkdown-itmarkdown-it-footnote"><a href="https://github.com/markdown-it/markdown-it-footnote">Footnotes</a></h3>
+<p>Footnote 1 link[^first].</p>
+<p>Footnote 2 link[^second].</p>
+<p>Inline footnote^[Text of inline footnote] definition.</p>
+<p>Duplicated footnote reference[^second].</p>
+<p>[^first]: Footnote <strong>can have markup</strong></p>
+<pre><code>and multiple paragraphs.
+</code></pre>
+<p>[^second]: Footnote text.</p>
+<h3 id="definition-listshttpsgithubcommarkdown-itmarkdown-it-deflist"><a href="https://github.com/markdown-it/markdown-it-deflist">Definition lists</a></h3>
+<p>Term 1</p>
+<p>: Definition 1
+with lazy continuation.</p>
+<p>Term 2 with <em>inline markup</em></p>
+<p>: Definition 2</p>
+<pre><code>    { some code, part of Definition 2 }
+
+Third paragraph of definition 2.
+</code></pre>
+<p><em>Compact style:</em></p>
+<p>Term 1
+~ Definition 1</p>
+<p>Term 2
+~ Definition 2a
+~ Definition 2b</p>
+<h3 id="abbreviationshttpsgithubcommarkdown-itmarkdown-it-abbr"><a href="https://github.com/markdown-it/markdown-it-abbr">Abbreviations</a></h3>
+<p>This is HTML abbreviation example.</p>
+<p>It converts &quot;HTML&quot;, but keep intact partial entries like &quot;xxxHTMLyyy&quot; and so on.</p>
+<p>*[HTML]: Hyper Text Markup Language</p>
+<h3 id="custom-containershttpsgithubcommarkdown-itmarkdown-it-container"><a href="https://github.com/markdown-it/markdown-it-container">Custom containers</a></h3>
+<p>::: warning
+<em>here be dragons</em>
+:::</p>
+
+            </section>
+        </article>
+    </main>
+
+    
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="copyright">Rendered using <a href="https://github.com/anna-ssg/anna">anna</a> ❤️</div>
+        <div class="credits">&copy; <span id="site-year"></span> anna-docs</div>
+    </div>
+    <script> (function () { var el = document.getElementById('site-year'); if (el) el.textContent = new Date().getFullYear(); })();
+
+         
+        (function () {
+            var ham = document.getElementById('hamburger'); if (!ham) return;
+
+            function setNavStateOnLoadOrResize() {
+                
+                if (window.innerWidth > 700) {
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                } else {
+                    
+                    document.body.classList.remove('nav-open');
+                    ham.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            function toggleNav() {
+                var isOpen = document.body.classList.toggle('nav-open');
+                ham.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+
+            
+            setNavStateOnLoadOrResize();
+
+            ham.addEventListener('click', toggleNav);
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+            window.addEventListener('resize', setNavStateOnLoadOrResize);
+            
+            document.addEventListener('click', function (e) { if (!document.body.classList.contains('nav-open')) return; if (!e.target.closest || !e.target.closest('.site-header')) { document.body.classList.remove('nav-open'); ham.setAttribute('aria-expanded', 'false'); } });
+        })();</script>
+</footer>
+
+</body>
+
+</html>
+

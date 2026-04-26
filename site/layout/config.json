@@ -2,8 +2,8 @@
   "navbar": [
     { "About": "index.html" },
     { "Members": "members.html" },
-    { "Blogs": "blogs.html" },
-    { "Events": "events.html" },
+    { "Blogs": "collections/blogs.html" },
+    { "Events": "collections/events.html" },
     { "Contact": "contact.html" }
   ],
   "baseURL": "https://anna-docs.netlify.app",
@@ -16,6 +16,7 @@
     "Github": "https://github.com/anna-ssg/anna"
   },
   "collectionLayouts": {
-    "collections/posts.html": "all-posts"
+    "collections/blogs.html": "all-posts",
+    "collections/events.html": "all-posts"
   }
 }

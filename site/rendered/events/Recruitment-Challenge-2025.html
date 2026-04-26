@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About ACM PESU-ECC</title>
+    <title>ACM Recruitment Challenge 2025</title>
 
     
     <link rel="stylesheet" href="/static/styles/main.css" />
@@ -36,11 +36,11 @@
       
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="About ACM PESU-ECC" />
-    <meta property="og:description" content="" />
+    <meta property="og:title" content="ACM Recruitment Challenge 2025" />
+    <meta property="og:description" content="Crack the code!" />
     <meta property="og:image" content="" />
 
-    <meta name="description" content="" />
+    <meta name="description" content="Crack the code!" />
 
     <script defer>
         if (typeof hljs !== 'undefined') {
@@ -148,23 +148,72 @@
 
                 
                 <div class="post-description">
-                    <h1>About ACM PESU-ECC</h1>
+                    <h1>ACM Recruitment Challenge 2025</h1>
                     <div class="page-date">
                         
-                        Published on 2026-04-20
+                        Published on 2025-09-07
                         
                     </div>
                     <div class="authors-placeholder">
                         
+                        <p>Authors: ACMPESUECC
+                        </p>
+                        
                     </div>
                     <div class="tags-placeholder">
+                        
+                        
+                        <a class="tag" href="/tags/ACM.html">ACM</a>
+                        
+                        <a class="tag" href="/tags/challenge.html">challenge</a>
+                        
                         
                     </div>
                 </div>
                 
 
-                <h1 id="welcome-to-acm-pesu-ecc">Welcome to ACM PESU-ECC</h1>
-<p>We are a community-driven group at PES University focused on technology and peer learning.</p>
+                <h1 id="storyline">Storyline</h1>
+<p>A distributed system of three servers quietly handled the day’s traffic, with a range-based load balancer ensuring each request reached its proper destination. For the most part, things ran smoothly.</p>
+<p>But hidden deep inside the source code was a subtle flaw, an overlooked detail from using an unsafe language. The developers had known this could cause trouble eventually; they just didn’t expect it to surface today.</p>
+<p>An attacker discovered the weakness and slipped through. With a carefully crafted request, they triggered a silent privilege escalation. In an instant, they went from an ordinary user to an administrator.</p>
+<p>The compromised server struggles for a while before succumbing to the attack and going offline. In response, the load balancer reroutes all traffic to one of the remaining two servers.</p>
+<p>Undeterred, the attacker makes their move. For the first time, they access a restricted endpoint that was never meant for them!</p>
+<p>Your task is to trace their path through the logs and identify two cruicial moments:</p>
+<h4 id="the-attack">The Attack</h4>
+<p><em>Find the exact request where the attack occurred on the compromised server.
+Extract and return:</em></p>
+<p>•⁠ ⁠Server Number</p>
+<p>•⁠ ⁠Timestamp (as recorded by the attacked server)</p>
+<p>•⁠ ⁠IP address</p>
+<p>•⁠ ⁠Endpoint</p>
+<p>•⁠ ⁠Method</p>
+<p>•⁠ ⁠CPU utilization</p>
+<p>•⁠ ⁠Memory utilization</p>
+<p>•⁠ ⁠CPU temperature</p>
+<h4 id="post-attack">Post-Attack</h4>
+<p><em>After attack, the attacker accesses a privileged endpoint for the first time. Identify this request.
+Extract and return:</em></p>
+<p>•⁠ Fallback ⁠Server Number</p>
+<p>•⁠ ⁠Timestamp (as recorded by the fallback server)</p>
+<p>•⁠ ⁠Endpoint</p>
+<p>•⁠ ⁠Method</p>
+<p>•⁠ ⁠CPU utilization</p>
+<p>•⁠ ⁠Memory utilization</p>
+<p>•⁠ ⁠CPU temperature</p>
+<h5 id="additional-info">Additional Info:</h5>
+<p>•⁠ ⁠Admin users originate from a few known subnets. Servers are configured to recognize requests from these ranges.</p>
+<p>•⁠ ⁠List of endpoints:</p>
+<pre><code>⁠     public_endpoints = ['/', '/login', '/register', '/logout', '/profile', '/search', '/images', '/videos', '/help', '/terms', '/faq', '/support']
+
+    privileged_endpoints = ['/admin', '/settings', '/users', '/logs', '/reports', '/metrics', '/backup', '/restore', '/deleteUser', '/updateUser', '/banUser', '/unbanUser', '/escalateUser', '/news', '/about', '/contact']
+</code></pre>
+<p>Now, it is up to you to navigate the logs, and uncover the trail of the attacker across the servers. Have fun!</p>
+<h1 id="answer-submission">Answer Submission</h1>
+<p>To get your log files go to <a href="https://drive.google.com/drive/folders/1LYRRiNzX-hRrBSQNgua2svC0calvhATb?usp=sharing">this google drive</a> and download the log file which has your email as the filename.</p>
+<p>Submit your answers on the <a href="https://acm.d31ta.duckdns.org">ACM Challenge Portal</a>.</p>
+<p>You will need to use the email ID you used to fill out the club application Google Form.</p>
+<p>If you don't have an SRN, you can use your PRN to log in.
+SRN/PRN should be in all caps.</p>
 
             </section>
         </article>

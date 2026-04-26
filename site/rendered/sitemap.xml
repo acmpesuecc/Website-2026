@@ -1,55 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://anna-docs.netlify.app/index.html</loc>
-		<lastmod>2026-04-20</lastmod>
+		<loc>https://anna-docs.netlify.app/events/hacknight5.html</loc>
+		<lastmod>2023-10-13</lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/posts/bench.html</loc>
-		<lastmod>2024-01-01</lastmod>
+		<loc>https://anna-docs.netlify.app/events/hourofcode.html</loc>
+		<lastmod>2019-12-13</lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/posts/building-anna/index.html</loc>
-		<lastmod>2024-04-04</lastmod>
+		<loc>https://anna-docs.netlify.app/blogs/cremebrulee.html</loc>
+		<lastmod>2024-09-16</lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/posts/test-content/markdown_test.html</loc>
-		<lastmod>2024-02-23</lastmod>
+		<loc>https://anna-docs.netlify.app/blogs/git-set-go.html</loc>
+		<lastmod>2023-10-12</lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/posts/test.html</loc>
-		<lastmod></lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/posts/weekly-progress/week-1.html</loc>
-		<lastmod>2024-03-18</lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/posts/weekly-progress/week-3.html</loc>
-		<lastmod>2024-04-01</lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/blogs.html</loc>
-		<lastmod></lastmod>
+		<loc>https://anna-docs.netlify.app/blogs/wasm.html</loc>
+		<lastmod>2024-02-21</lastmod>
 	</url>
 	<url>
 		<loc>https://anna-docs.netlify.app/contact.html</loc>
 		<lastmod></lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/events.html</loc>
-		<lastmod></lastmod>
+		<loc>https://anna-docs.netlify.app/events/cuda-workshop.html</loc>
+		<lastmod>2024-02-03</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/hacknight1.html</loc>
+		<lastmod>2019-10-19</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/Recruitment-Challenge-2025.html</loc>
+		<lastmod>2025-09-07</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/hacknight2.html</loc>
+		<lastmod>2020-10-10</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/os_workshop.html</loc>
+		<lastmod>2019-10-18</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/tensor-v1.html</loc>
+		<lastmod>2021-03-07</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/index.html</loc>
+		<lastmod>2026-04-20</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/inauguration.html</loc>
+		<lastmod>2019-09-11</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/blogs/git-in-action.html</loc>
+		<lastmod>2025-10-17</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/aiep.html</loc>
+		<lastmod>2024-02-18</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/research_talk.html</loc>
+		<lastmod>2020-03-12</lastmod>
+	</url>
+	<url>
+		<loc>https://anna-docs.netlify.app/events/tensor-v2.html</loc>
+		<lastmod>2022-11-04</lastmod>
 	</url>
 	<url>
 		<loc>https://anna-docs.netlify.app/members.html</loc>
 		<lastmod></lastmod>
 	</url>
 	<url>
-		<loc>https://anna-docs.netlify.app/posts/test-content/lang_test.html</loc>
-		<lastmod>2024-02-23</lastmod>
-	</url>
-	<url>
-		<loc>https://anna-docs.netlify.app/posts/weekly-progress/week-2.html</loc>
-		<lastmod>2024-03-25</lastmod>
+		<loc>https://anna-docs.netlify.app/events/cssbattles-2023.html</loc>
+		<lastmod>2023-03-06</lastmod>
 	</url>
 </urlset>

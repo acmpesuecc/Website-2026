@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About ACM PESU-ECC</title>
+    <title>Wasm and Emscripten</title>
 
     
     <link rel="stylesheet" href="/static/styles/main.css" />
@@ -36,11 +36,11 @@
       
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="About ACM PESU-ECC" />
-    <meta property="og:description" content="" />
+    <meta property="og:title" content="Wasm and Emscripten" />
+    <meta property="og:description" content="Material from the wasm workshop" />
     <meta property="og:image" content="" />
 
-    <meta name="description" content="" />
+    <meta name="description" content="Material from the wasm workshop" />
 
     <script defer>
         if (typeof hljs !== 'undefined') {
@@ -148,23 +148,126 @@
 
                 
                 <div class="post-description">
-                    <h1>About ACM PESU-ECC</h1>
+                    <h1>Wasm and Emscripten</h1>
                     <div class="page-date">
                         
-                        Published on 2026-04-20
+                        Published on 2024-02-21
                         
                     </div>
                     <div class="authors-placeholder">
                         
+                        <p>Authors: Siddharth Tewari, Abhinav Chennubhotla &amp; Sriprad Potukuchi
+                        </p>
+                        
                     </div>
                     <div class="tags-placeholder">
+                        
+                        
+                        <a class="tag" href="/tags/workshop.html">workshop</a>
+                        
+                        <a class="tag" href="/tags/wasm.html">wasm</a>
+                        
                         
                     </div>
                 </div>
                 
 
-                <h1 id="welcome-to-acm-pesu-ecc">Welcome to ACM PESU-ECC</h1>
-<p>We are a community-driven group at PES University focused on technology and peer learning.</p>
+                <h1 id="a-brief-history-of-cloud-computing-and-virtualisation">A brief history of cloud computing and virtualisation</h1>
+<p>The cloud has often been simply described as “someone else’s computer”.
+Back in the old days of yore, people would have to setup and manage their own hardware infrastructure and servers.</p>
+<p>This was quite a hassle and also quite expensive.
+Cloud computing evolved as a solution to this issue.
+People no longer had to buy, maintain, manage or setup their own hardware.
+It worked out to be cheaper too, since people could pay only for the resources they used.</p>
+<figure>
+<img src="https://raw.githubusercontent.com/sid-008/v2blog/main/static/wasm1.png" alt="">
+</figure>
+<p>This gave rise to various virtualisation technologies like docker and in the 2010s
+the adoption of cloud native tech was on the rise.</p>
+<h1 id="what-is-webassembly">What is WebAssembly?</h1>
+<ul>
+<li>WASM or WebAssembly is is a binary instruction format for a stack-based virtual machine.</li>
+<li>Wasm is designed as a portable compilation target for programming languages, enabling deployment on the web for client and server applications.</li>
+<li>WASM has multiple embedding interfaces including: JavaScript APIs, Web APIS, and the WASI API.</li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/sid-008/v2blog/main/static/wasm2.png" alt="">
+</figure>
+<h1 id="why-wasm">Why WASM?</h1>
+<ul>
+<li>The binary format for WebAssembly can be natively decoded much faster than JavaScript can be parsed (experiments show more than 20× faster). On mobile, large compiled codes can easily take 20–40 seconds just to parse, so native decoding provides a better user experience.</li>
+<li>But asm.js already exists?(asm.js is a subset of js designed to allow languages such as C to be run as web apps)</li>
+<li>By avoiding the simultaneous asm.js constraints of AOT-compilability and good performance even on engines without specific asm.js optimizations, a new standard makes it much easier to add the features required to reach native levels of performance.</li>
+<li>asm.js is essentially just regular js but with AOT compilation and a few other bells and whistles.</li>
+<li>WASM app sizes are also much smaller compared to regular app images.</li>
+</ul>
+<figure>
+<img src="https://raw.githubusercontent.com/sid-008/v2blog/main/static/wasm3.png" alt="">
+</figure>
+<h1 id="where-is-wasm">Where is WASM?</h1>
+<ul>
+<li><a href="https://madewithwebassembly.com/">Made with WebAssembly</a></li>
+<li><a href="https://www.figma.com/blog/webassembly-cut-figmas-load-time-by-3x/">WebAssembly cut Figma's load time by 3x</a></li>
+<li><a href="https://blog.chromium.org/2019/06/webassembly-brings-google-earth-to-more.html">WebAssembly brings Google Earth to more browsers</a></li>
+<li>Fture work on non web embeddings with the advent of things like <a href="https://wasi.dev/">WASI</a></li>
+<li><a href="https://www.fermyon.com/">Fermyon</a></li>
+<li><a href="https://www.fermyon.com/serverless-ai">Fermyon Spin Serverless AI Inferencing with the spin framework</a></li>
+</ul>
+<h1 id="lets-get-coding">Lets get coding!</h1>
+<p>So what will we be using? Well, we'll be using:</p>
+<ul>
+<li><a href="https://emscripten.org/">Emscripten</a>: a compiler toolchain for WASM, used to compile C/C++ code(or any other lanugage that uses LLVM) to WASM.</li>
+<li><a href="https://www.raylib.com/">Raylib</a>: a cross-platform open-source software development library to create graphical applications and games.</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>For Windows:</p>
+<ol>
+<li><code>git clone https://github.com/emscripten-core/emsdk</code>, or download the zip folder.</li>
+<li>cd into it and run .\emsdk install latest, and then .\emsdk activate latest</li>
+<li>every time you open a new cmd, you have to cd into the repo and run .\emsdk activate latest</li>
+<li>Verify that emcc is installed by running the emcc command.</li>
+</ol>
+<p>Make a new project folder for the workshop.</p>
+<p>Then, get raylib:</p>
+<ol>
+<li><a href="https://github.com/raysan5/raylib/releases/tag/5.0">Raylib-5-Release</a>: scroll all the way down and get the
+raylib-5.0_webassembly.zip or just download the one we sent(its the same thing)</li>
+<li>Extract the zip file into your project folder. Rename the extracted folder to raylib.</li>
+</ol>
+<p>For Linux:</p>
+<ol>
+<li><code>git clone https://github.com/emscripten-core/emsdk</code></li>
+<li>cd into it and run <code>./emsdk install latest</code>, and then <code>./emsdk activate latest</code></li>
+<li>Every time you open a new terminal window, you will have to cd into the repo and run <code>./emsdk activate latest</code></li>
+<li>Execute <code>source ./emsdk_env.sh</code></li>
+<li>Verify that emcc is installed by running the emcc command.</li>
+</ol>
+<p>Make a new project folder for the workshop.</p>
+<p>Then, get raylib:</p>
+<ol>
+<li><a href="https://github.com/raysan5/raylib/releases/tag/5.0">Raylib-5-Release</a>: scroll all the way down and get the
+raylib-5.0_webassembly.zip or just download the one we sent(its the same thing)</li>
+<li>Extract the zip file into your project folder. Rename the extracted folder to raylib.</li>
+<li>Create a <code>main.c</code> file.</li>
+<li>Your project folder should look like this now:</li>
+</ol>
+<pre><code>├── main.c
+└── raylib
+    ├── include
+    │   ├── raylib.h
+    │   ├── raymath.h
+    │   └── rlgl.h
+    ├── lib
+    │   └── libraylib.a
+    ├── LICENSE
+    └── README.md
+</code></pre>
+<p>After populating your <code>main.c</code> file, run this command to build:
+<code>emcc main.c -Lraylib/lib -lraylib -o index.html -s USE_GLFW=3</code></p>
+<p>You will notice a few files created by <code>emcc</code>. You now have to open the <code>index.html</code> file in your browser.
+A neat way of doing this is to host a simple web server using python, and making a request to it from your browser.
+Run <code>python3 -m http.server 8080</code>, and navigate to your browser and type <code>localhost:8080</code></p>
+<p>You should now see your program being run in the browser!</p>
 
             </section>
         </article>

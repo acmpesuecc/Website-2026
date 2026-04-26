@@ -33,8 +33,101 @@
     <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
 
     
-      
+    <style>
+        body {
+            background: #f8f9fb;
+            overflow-x: hidden;
+        }
 
+        main {
+            max-width: 1100px;
+            margin: auto;
+            line-height: 1.7;
+        }
+
+         
+        h1, h2, h3 {
+            line-height: 1.3;
+            margin-bottom: 0.6rem;
+        }
+
+         
+        p {
+            color: #333;
+            line-height: 1.6;
+        }
+
+         
+        a {
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+         
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 1rem;
+        }
+
+         
+        pre {
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        code {
+            border-radius: 6px;
+        }
+
+         
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+
+         
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+         
+        @media (max-width: 768px) {
+            main {
+                width: 100%;
+            }
+        }
+    </style>
+
+    
+    
+    <script>
+        const eventSource = new EventSource("http://localhost:8000/events");
+        eventSource.onmessage = function (event) {
+            location.reload();
+        };
+    </script>
+    
+
+    
+
+    
+
+    
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Inauguration" />
     <meta property="og:description" content="Inauguration ceremony on campus" />
@@ -42,6 +135,7 @@
 
     <meta name="description" content="Inauguration ceremony on campus" />
 
+    
     <script defer>
         if (typeof hljs !== 'undefined') {
             hljs.highlightAll();
@@ -60,88 +154,57 @@
  
 
 <header class="site-header">
-    <div class="container header-inner">
-        <div class="brand">
-            <a href="/" aria-label="anna-docs"><img src="/static/images/acm.png"
-                    alt="anna-docs" class="brand-logo" /></a>
+    <div class="header-inner" style="display:flex; align-items:center; padding:1rem 2rem; overflow-x:hidden;">
+
+        <div class="brand" style="flex-shrink:0; margin-right:2rem;">
+            <a href="/" aria-label="anna-docs">
+                <img src="/static/images/acm.png"
+                     alt="anna-docs"
+                     class="brand-logo" />
+            </a>
         </div>
-        <nav id="mobile-nav" class="site-nav" aria-label="Main navigation">
+
+        <nav id="mobile-nav"
+             class="site-nav"
+             aria-label="Main navigation"
+             style="display:flex; flex-direction:row; gap:1.2rem; align-items:center; flex:1; justify-content:center; overflow-x:hidden;">
+
             
             
-            <a class="navitem" href="/index.html">About</a>
-            
-            
-            
-            <a class="navitem" href="/members.html">Members</a>
-            
-            
-            
-            <a class="navitem" href="/collections/blogs.html">Blogs</a>
+            <a class="navitem" href="/announcement.html" style="white-space:nowrap;">Announcements</a>
             
             
             
-            <a class="navitem" href="/collections/events.html">Events</a>
+            <a class="navitem" href="/index.html" style="white-space:nowrap;">About</a>
             
             
             
-            <a class="navitem" href="/contact.html">Contact</a>
+            <a class="navitem" href="/manifesto.html" style="white-space:nowrap;">Manifesto</a>
             
             
+            
+            <a class="navitem" href="/members.html" style="white-space:nowrap;">Members</a>
+            
+            
+            
+            <a class="navitem" href="/collections/events.html" style="white-space:nowrap;">Events</a>
+            
+            
+            
+            <a class="navitem" href="/collections/blogs.html" style="white-space:nowrap;">Blogs</a>
+            
+            
+            
+            <a class="navitem" href="/contact.html" style="white-space:nowrap;">Contact</a>
+            
+            
+
         </nav>
-        <div class="actions">
-            <button class="hamburger" id="hamburger" aria-controls="mobile-nav" aria-expanded="false"
-                aria-label="Open menu">☰</button>
-            <button class="search-btn" id="openSearch" aria-label="Search (Cmd/Ctrl+K)">🔎</button>
-        </div>
+
     </div>
 </header>
 
 
-
-<div class="search-overlay" id="searchOverlay" aria-hidden="true">
-  <div class="search-box" role="dialog" aria-modal="true" aria-label="Search">
-    <div class="search-input-row">
-      <input id="searchSiteInput" type="text" placeholder="Search posts or pages — fuzzy search" autocomplete="off"
-        aria-label="Search site" />
-      <button id="closeSearch" class="close-search" aria-label="Close search">✕</button>
-    </div>
-    <div class="search-hint">Show fuzzy search — try partial words or titles</div>
-    <div id="site_search_result" class="search-results"></div>
-  </div>
-</div>
-<script>
-  (function () {
-    const overlay = document.getElementById('searchOverlay');
-    const input = document.getElementById('searchSiteInput');
-    const results = document.getElementById('site_search_result');
-    const openBtn = document.getElementById('openSearch');
-    const closeBtn = document.getElementById('closeSearch');
-
-    function show() { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); input.focus(); }
-    function hide() { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); input.value = ''; results.innerHTML = ''; }
-
-    document.addEventListener('keydown', function (e) {
-      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); show(); }
-      if (e.key === 'Escape') { hide(); }
-    });
-
-    if (openBtn) openBtn.addEventListener('click', function () { show(); });
-    if (closeBtn) closeBtn.addEventListener('click', function () { hide(); });
-    overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
-
-    
-    let timeout; input.addEventListener('input', function () {
-      clearTimeout(timeout); timeout = setTimeout(() => {
-        const q = input.value.trim().toLowerCase(); if (!q) { results.innerHTML = ''; return }
-        fetch('/static/index.json').then(r => r.json()).then(data => {
-          results.innerHTML = ''; let found = false; for (key in data) { const title = data[key]['Frontmatter']['Title'] || ''; if (title.toLowerCase().includes(q)) { found = true; const a = document.createElement('a'); a.textContent = title; a.href = '/' + data[key]['CompleteURL']; a.className = 'search-link'; results.appendChild(a); results.appendChild(document.createElement('br')); } }
-          if (!found) results.textContent = 'No results';
-        }).catch(err => { console.error(err); results.textContent = 'Search unavailable' })
-      }, 180)
-    });
-  })();
-</script>
- 
     <main class="container site-main" role="main">
         <article class="content">
             <section class="body">

@@ -1,9 +1,11 @@
 {
   "navbar": [
+    { "Announcements": "announcement.html" },
     { "About": "index.html" },
+    { "Manifesto": "manifesto.html" },
     { "Members": "members.html" },
-    { "Blogs": "collections/blogs.html" },
     { "Events": "collections/events.html" },
+    { "Blogs": "collections/blogs.html" },
     { "Contact": "contact.html" }
   ],
   "baseURL": "https://anna-docs.netlify.app",

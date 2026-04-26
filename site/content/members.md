@@ -6,7 +6,7 @@ layout: page
 # Core Committee
 * **Chair:** Vinaayak
 * **Vice Chair:** Ashmita
-* **Secretary:** Selvaganesh
-* **Treasurer:** Lakshit
+* **Secretary:** Lakshit
+* **Treasurer:** Shivangi
 * **Webmasters:** Saankhya and Andey
-* **Membership Chair:** Shivangi
+* **Membership Chair:** Bhuvigna

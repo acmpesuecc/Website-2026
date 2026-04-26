@@ -4,24 +4,30 @@
 }} {{ $PageData = .TemplateData }} {{end}}
 
 <header class="site-header">
-    <div class="container header-inner">
-        <div class="brand">
-            <a href="/" aria-label="{{ .DeepDataMerge.LayoutConfig.SiteTitle }}"><img src="/static/images/acm.png"
-                    alt="{{ .DeepDataMerge.LayoutConfig.SiteTitle }}" class="brand-logo" /></a>
+    <div class="header-inner" style="display:flex; align-items:center; padding:1rem 2rem; overflow-x:hidden;">
+
+        <div class="brand" style="flex-shrink:0; margin-right:2rem;">
+            <a href="/" aria-label="{{ .DeepDataMerge.LayoutConfig.SiteTitle }}">
+                <img src="/static/images/acm.png"
+                     alt="{{ .DeepDataMerge.LayoutConfig.SiteTitle }}"
+                     class="brand-logo" />
+            </a>
         </div>
-        <nav id="mobile-nav" class="site-nav" aria-label="Main navigation">
+
+        <nav id="mobile-nav"
+             class="site-nav"
+             aria-label="Main navigation"
+             style="display:flex; flex-direction:row; gap:1.2rem; align-items:center; flex:1; justify-content:center; overflow-x:hidden;">
+
             {{range $index_no, $map := .DeepDataMerge.LayoutConfig.Navbar}}
             {{range $key, $value := $map}}
-            <a class="navitem" href="/{{ $value }}">{{ $key }}</a>
+            <a class="navitem" href="/{{ $value }}" style="white-space:nowrap;">{{ $key }}</a>
             {{end}}
             {{end}}
+
         </nav>
-        <div class="actions">
-            <button class="hamburger" id="hamburger" aria-controls="mobile-nav" aria-expanded="false"
-                aria-label="Open menu">☰</button>
-            <button class="search-btn" id="openSearch" aria-label="Search (Cmd/Ctrl+K)">🔎</button>
-        </div>
+
     </div>
 </header>
 
-{{template "search" .}} {{end}}
+{{end}}

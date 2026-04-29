@@ -1,6 +1,4 @@
-
 ---
-title: Manifesto
-description: What ACM PESU-ECC stands for
+title: "Manifesto"
+layout: page
 ---
-

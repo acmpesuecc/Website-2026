@@ -2,3 +2,29 @@
 anna
 anna*
 site/rendered
+# Go binaries
+*.exe
+*.out
+*.test
+
+# Build folders
+bin/
+build/
+dist/
+
+# Node stuff
+node_modules/
+
+# Env
+.env
+
+# Editor
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

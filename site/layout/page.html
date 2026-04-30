@@ -33,7 +33,37 @@
                 </div>
                 {{ end }}
 
-                {{$PageData.Body}}
+                <!-- shows the markdown only if frontmatter doesnt have members, may need to change this to incorporate more pages later -->
+{{ if eq (len $PageData.Frontmatter.CustomFields) 0 }}
+    {{$PageData.Body}}
+{{ end }}
+
+<!-- Member grid -->
+{{ if gt (len $PageData.Frontmatter.CustomFields) 0 }}
+<div class="members-page">
+    <div class="member-cards">
+        {{range $PageData.Frontmatter.CustomFields}}
+        <div class="member-card">
+            <div class="member-photo-wrapper">
+                <img src="/static/images/{{.photo}}" alt="{{.name}}">
+            </div>
+            <div class="member-card-info">
+                <h3>{{.name}}</h3>
+                <p class="member-designation">{{.designation}}</p>
+                <div class="member-links">
+                    {{if .github}}
+                        <a href="{{.github}}" target="_blank">GitHub</a>
+                    {{end}}
+                    {{if .linkedin}}
+                        <a href="{{.linkedin}}" target="_blank">LinkedIn</a>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</div>
+{{ end }}
             </section>
         </article>
 

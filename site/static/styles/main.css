@@ -2044,6 +2044,42 @@ a>code {
     }
 }
 
+/* ===== FIX TOP-LEFT BRAND LOGO ===== */
+
+/* Force correct ACM logo image */
+.brand-logo {
+  content: url("/static/images/acm.png") !important;
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fix layout */
+.brand a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+}
+
+/* Hide broken fallback */
+.brand a img {
+  font-size: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .brand-logo {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
 .embed-item {
     /* make the card float with a bouncy, cartoony rhythm (slower) */
     --float-duration: 7s;

@@ -1,12 +1,40 @@
 ---
-
 title: "Our Team"
 layout: page
+customFields:
+  - name: "Vinaayak"
+    designation: "Chair"
+    photo: "vinaayak.jpg"
+    github: ""
+    linkedin: ""
+  - name: "Ashmita"
+    designation: "Vice Chair"
+    photo: "ashmita.jpg"
+    github: ""
+    linkedin: ""
+  - name: "Lakshit"
+    designation: "Secretary"
+    photo: "lakshit.jpg"
+    github: ""
+    linkedin: ""
+  - name: "Shivangi"
+    designation: "Treasurer"
+    photo: "shivangi.jpg"
+    github: ""
+    linkedin: ""
+  - name: "Saankhya"
+    designation: "Webmaster"
+    photo: "saankhya.jpg"
+    github: ""
+    linkedin: ""
+  - name: "Andey"
+    designation: "Webmaster"
+    photo: "andey.jpg"
+    github: ""
+    linkedin: ""
+  - name: "Bhuvigna"
+    designation: "Membership Chair"
+    photo: "bhuvigna.jpg"
+    github: ""
+    linkedin: ""
 ---
-# Core Committee
-* **Chair:** Vinaayak
-* **Vice Chair:** Ashmita
-* **Secretary:** Lakshit
-* **Treasurer:** Shivangi
-* **Webmasters:** Saankhya and Andey
-* **Membership Chair:** Bhuvigna

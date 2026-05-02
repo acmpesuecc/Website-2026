@@ -1,6 +1,7 @@
 ---
 title: 'Inauguration'
 description: 'Inauguration ceremony on campus'
+previewimage: /static/images/inaugaration.jpg
 authors: ["ACMPESUECC"]
 tags: [ACM, open-source]
 date: '2019-09-11'

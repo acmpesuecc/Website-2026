@@ -2048,7 +2048,7 @@ a>code {
 
 /* Force correct ACM logo image */
 .brand-logo {
-  content: url("/static/images/acm.png") !important;
+  content: url("/Website-2026/static/images/anna.png"); !important;
   width: 48px !important;
   height: 48px !important;
   object-fit: contain !important;

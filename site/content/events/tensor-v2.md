@@ -1,6 +1,7 @@
 ---
 title: 'Tensor v2.0'
 description: 'Our annual Datathon'
+previewimage: /static/images/tensor2.png
 authors: ["ACMPESUECC"]
 tags: [ACM, hackathon, tensor]
 date: '2022-11-04'

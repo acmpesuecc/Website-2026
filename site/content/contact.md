@@ -48,7 +48,7 @@ layout: page
   font-weight: 800;
   letter-spacing: -0.05em;
   margin-bottom: 40px !important;
-  color: var(--text-color, #111);
+  color: var(--text-color, #ffffff);
   border: none !important;
 }
 
@@ -60,7 +60,7 @@ layout: page
 .manifesto-body p {
   font-size: 1.25rem;
   line-height: 1.6;
-  color: var(--text-color, #444);
+  color: #00aafe
   max-width: 600px;
   margin-bottom: 60px;
   opacity: 0.9;
@@ -82,7 +82,7 @@ layout: page
 
 .label {
   font-weight: 700;
-  color: var(--text-color, #111);
+  color: var(--text-color, #ffffff);
   min-width: 140px;
 }
 

@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 
 :root {
     --font-family-sans:
-        "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+        "Roboto Mono","Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
         Arial, "Noto Sans", sans-serif;
     --font-family-serif: "Lora", Georgia, "Times New Roman", Times, serif;
     font-family: var(--font-family-serif);
@@ -33,7 +36,8 @@ body {
     font-size: 1.05rem;
     font-weight: 400;
     font-family: var(--font-family-sans);
-    color: var(--color-text);
+    color: #ffffff;
+    background-color: #000c23;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     /* Improve vertical rhythm for prose */
@@ -43,11 +47,22 @@ body {
 /* Ensure paragraphs have comfortable spacing */
 p {
     margin: 0 0 1.15rem 0;
+    font-family: var(--font-family-sans);
+    font-size: 1.20rem;
+    color : #00aafe;
 }
 
 /* Slightly reduce heading line-height so headings remain compact */
-h1,
-h2,
+h1{
+    font-size: 4.00rem;
+    color : #ffffff;
+    font-family: "PT Mono";
+}
+h2{
+    font-size: 2.0rem;
+    color : #ffffff;
+    font-family: "PT Mono";
+}
 h3,
 h4,
 h5,
@@ -732,15 +747,16 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: var(--font-family-serif);
+    font-family: "PT Mono", sans-serif;
     font-weight: 600;
     color: var(--color-primary);
     line-height: 1.2;
+    
 }
 
 /* Improved heading scale for docs (reduced for tighter layout) */
 h1 {
-    font-size: 1.75rem;
+    font-size: 5rem;
     margin: 1.25rem 0 0.6rem;
 }
 
@@ -1125,7 +1141,13 @@ nav a:visited,
 
     /* Mobile: keep nav collapsed by default; reveal in-flow on `nav-open` */
     .site-nav {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
         max-height: 0;
         overflow: hidden;
         padding: 0 0;
@@ -1133,21 +1155,27 @@ nav a:visited,
             max-height 0.28s ease,
             padding 0.18s ease;
         border-top: none;
+        background: var(--color-surface);
         /* remove top bar */
     }
 
     .site-nav a,
     .site-nav .navitem {
         display: block;
-        padding: 0.35rem 0.6rem;
+        padding: 0.35rem 1rem;
         margin: 0;
         text-decoration: underline;
         text-underline-offset: 4px;
         text-decoration-thickness: 1.2px;
-        text-decoration-color: transparent;
-        border-bottom: none;
+        text-decoration-color: #fff;
+        border-bottom: 1px solid rgba(189, 216, 230, 0.1);
         font-weight: 600;
         font-size: 0.95rem;
+    }
+
+    .site-nav a:last-child,
+    .site-nav .navitem:last-child {
+        border-bottom: none;
     }
 
     .site-nav a:hover,
@@ -1155,16 +1183,17 @@ nav a:visited,
         text-decoration-color: var(--color-primary);
         transform: none;
         color: var(--color-primary-dim);
+        background: rgba(0, 170, 254, 0.05);
     }
 
     /* Reveal the nav in-flow when hamburger is toggled */
     body.nav-open .site-nav {
-        max-height: 480px;
+        max-height: 500px;
         /* large enough for typical menus */
-        padding: 0.6rem 0;
+        padding: 0;
         background: var(--color-surface);
-        border-top: none;
-        box-shadow: none;
+        border-top: 1px solid rgba(0, 170, 254, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -1613,15 +1642,15 @@ a>code {
     white-space: nowrap;
     text-align: right;
     flex-shrink: 0;
-    font-family: Inter, sans-serif;
+    font-family: Inter, Roboto;
 }
 
 :root {
-    --color-text: #24292f;
-    --color-text-dim: #656d76;
+    --color-text: #a3c4ec;
+    --color-text-dim: #3881d6;
     --color-text-low: #656d7690;
 
-    --color-background: #ffffff;
+    --color-background: #141b41;
     --color-background-dim: #ffffff7a;
     --color-background-low: #ffffff50;
     --color-background-contrast: #0969da;
@@ -1629,14 +1658,14 @@ a>code {
     --inline-code-bg: #f6f8fa;
     --selection-bg: #0969da1a;
 
-    --color-primary: #0969da;
-    --color-primary-dim: #0969daef;
+    --color-primary: #C7DBE6;
+    --color-primary-dim: #306bac;
     --color-primary-low: #0969da1a;
 
     --color-border: #d1d9e0;
     /* subtle horizontal rule color (lighter than border) */
     --color-hr: rgba(2, 6, 23, 0.06);
-    --color-surface: #f6f8fa;
+    --color-surface: #141b41;
 
     --style-border-radius: 6px;
     --style-border-radius-hover: 6px;
@@ -1682,10 +1711,13 @@ a>code {
     position: relative;
     /* allow absolute mobile nav to position relative to header */
     z-index: 20;
+    width: 100%;
 }
 
 .site-header .container {
     align-items: center;
+    max-width: 100%;
+    padding: 0 1rem;
 }
 
 /* Header and footer layout */
@@ -1701,6 +1733,21 @@ a>code {
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 1rem;
+}
+
+@media (max-width: 900px) {
+    .header-inner {
+        grid-template-columns: auto auto;
+    }
+
+    .header-inner .site-nav {
+        display: none;
+    }
+
+    /* The nav is positioned absolutely when toggled, not in the grid */
+    body.nav-open .header-inner .site-nav {
+        display: flex;
+    }
 }
 
 .brand a {

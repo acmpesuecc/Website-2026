@@ -2,17 +2,23 @@
 title: Announcement
 description: Official announcement from ACM PESUECC
 ---
+<style>
+h1 {
+  font-size: clamp(2.4rem, 5vw, 4.2rem) !important;
+  line-height: 1.1;
+}
+</style>
 
-## Big things are cooking 🍳
+<div style="max-width: 950px; margin: 0 auto; padding: 1.5rem 0;">
 
-We’re building. Experimenting. Planning. Breaking things. Rebuilding better.
+<img src="/static/images/carbon.png" alt="Announcement Banner" style="width:100%; border-radius:24px;" />
 
-ACM PESU-ECC is gearing up for an exciting wave of events, projects, workshops and opportunities designed to push boundaries and create real impact.
+<div style="margin-top: 2rem; text-align: center; line-height: 1.8;">
 
+### Big things are cooking 🍳
 
-## Get ready 
-This is just the beginning.
+New ideas, experiences and opportunities are on the way.
 
-Whether you're here to build, learn, compete or collaborate — there’s something in the works for you.
+</div>
 
-More announcements dropping soon.
+</div>

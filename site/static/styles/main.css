@@ -2044,41 +2044,33 @@ a>code {
     }
 }
 
-/* ===== FIX TOP-LEFT BRAND LOGO ===== */
-
-/* Force correct ACM logo image */
+/* ===== CLEAN LOGO FIX ===== */
 .brand-logo {
-  content: url("/Website-2026/static/images/anna.png") !important;
-  width: 48px !important;
-  height: 48px !important;
-  object-fit: contain !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    content: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-/* Fix layout */
 .brand a {
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.75rem !important;
-  white-space: nowrap !important;
-  text-decoration: none !important;
-  line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
 }
 
-/* Hide broken fallback */
-.brand a img {
-  font-size: 0 !important;
-  overflow: hidden !important;
-}
-
-/* Mobile */
 @media (max-width: 768px) {
-  .brand-logo {
-    width: 40px !important;
-    height: 40px !important;
-  }
+    .brand-logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
 }
 .embed-item {
     /* make the card float with a bouncy, cartoony rhythm (slower) */

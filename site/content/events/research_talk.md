@@ -1,6 +1,7 @@
 ---
 title: 'Research Talk'
 description: Insights on how to approach research
+previewimage: /static/images/restalk.jpg
 authors: ["ACMPESUECC"]
 tags: [ACM, open-source, talk, research]
 date: '2020-03-12'

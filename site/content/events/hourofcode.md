@@ -1,6 +1,7 @@
 ---
 title: 'Hour of Code'
 description: Introducing the world of tech to students
+previewimage: /static/images/hourofcode.jpeg
 authors: ["ACMPESUECC"]
 tags: [ACM, open-source, school]
 date: '2019-12-13'

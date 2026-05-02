@@ -1,6 +1,7 @@
 ---
 title: 'GIT,SET,GO!'
 description: 'Get started with Git'
+previewimage: /static/images/gitsetgo.png
 authors: ["Anurag Rao, Sriprad Potukuchi & Kiran J Rajpurohit"]
 tags: ['git', github, 'open-source']
 date: '2023-10-12'

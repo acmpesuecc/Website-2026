@@ -19,6 +19,7 @@
   },
   "collectionLayouts": {
     "collections/blogs.html": "all-posts",
-    "collections/events.html": "all-events"
+    "collections/events.html": "all-events",
+    "collections/members.html": "all-members"
   }
 }

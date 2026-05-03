@@ -33,10 +33,10 @@ body {
     flex-direction: column;
     min-height: 100vh;
 
-    font-size: 1.05rem;
+    font-size: 1.5rem;
     font-weight: 400;
     font-family: var(--font-family-sans);
-    color: #ffffff;
+    color: #00aafe;
     background-color: #000c23;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

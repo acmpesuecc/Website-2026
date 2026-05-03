@@ -8,14 +8,14 @@
     { "Blogs": "collections/blogs.html" },
     { "Contact": "contact.html" }
   ],
-  "baseURL": "https://anna-docs.netlify.app",
-  "siteTitle": "anna-docs",
+  "baseURL": "https://acmpesuecc.github.io/Website-2026/",
+  "siteTitle": "acmpesuecc",
   "siteScripts": null,
-  "author": "anna",
+  "author": "acmpesuecc",
   "themeURL": null,
   "copyright": "This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.",
   "customFields": {
-    "Github": "https://github.com/anna-ssg/anna"
+    "Github": "https://github.com/acmpesuecc/Website-2026"
   },
   "collectionLayouts": {
     "collections/blogs.html": "all-posts",

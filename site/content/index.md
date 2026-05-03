@@ -18,7 +18,8 @@ layout: page
 <br>
 
 ## WHAT WE DO
-Our community is vibrant and here with the help of our members divided into different domains, we come together to organise amazing events surrounding tech. We believe in exploring things with passion and we come together to encourage each other and everyone else to dive deep into the fascinating world of tech with the help of mentors.  
+<br>
+Our community is vibrant and with the help of our members working in different domains, we come together to organise amazing events surrounding tech. We believe in exploring things with passion and we come together to encourage each other to dive deep into this fascinating part of the world. 
 <br>
 
 
@@ -39,7 +40,7 @@ Our community is vibrant and here with the help of our members divided into diff
 
 <div class="manifesto-footer">
   <div class="cta-row">
-    <a href="events.html" class="m-link">EXPLORE EVENTS</a>
+    <a href="/collections/events.html" class="m-link">EXPLORE EVENTS</a>
   </div>
 
 <style>

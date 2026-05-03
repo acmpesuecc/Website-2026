@@ -74,6 +74,7 @@ h6 {
 html,
 body {
     min-width: 0;
+    overflow-x: hidden;
 }
 
 /* Global text wrapping for headings, paragraphs, lists, anchors and common containers */
@@ -777,13 +778,13 @@ h1 {
 }
 
 h2 {
-    font-size: 1.25rem;
-    margin: 0.9rem 0 0.35rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin: 2.5rem 0 1rem;
 }
 
 h3 {
-    font-size: 1.05rem;
-    margin: 0.75rem 0 0.3rem;
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    margin: 2rem 0 0.75rem;
 }
 
 /* Anchor link styling (the little '#') */
@@ -1105,7 +1106,7 @@ nav a,
     text-underline-offset: 6px;
     text-decoration-thickness: 2px;
     text-decoration-color: transparent;
-    margin: 0 1rem;
+    margin: 8px 1rem 0 1rem;
     font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: 0.015em;
@@ -1737,7 +1738,10 @@ a>code {
 
 @media (max-width: 900px) {
     .header-inner {
-        grid-template-columns: auto auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
 
     .header-inner .site-nav {
@@ -1860,17 +1864,24 @@ a>code {
 }
 
 .actions button {
-    background: transparent;
-    border: 1px solid var(--color-border);
+    background: rgba(0, 170, 254, 0.05);
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    color: #00aafe;
     padding: 0.2rem;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     border-radius: 8px;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.actions button:hover {
+    background: rgba(0, 170, 254, 0.15);
+    transform: translateY(-2px);
 }
 
 .actions button>* {
@@ -1947,15 +1958,15 @@ a>code {
 
 /* Slightly smaller search box to match screenshot, centered with fixed positioning */
 .search-box {
-    background: var(--color-background);
-    color: var(--color-text);
-    padding: 0.75rem;
-    border-radius: 10px;
+    background: #000c23;
+    color: #00aafe;
+    padding: 1.5rem;
+    border-radius: 12px;
     width: calc(100% - 2rem);
     max-width: 46rem;
     /* match container */
-    box-shadow: 0 6px 20px rgba(2, 6, 23, 0.08);
-    border: 1px solid var(--color-border);
+    box-shadow: 0 0 20px rgba(0, 170, 254, 0.2), 0 0 40px rgba(0, 170, 254, 0.1);
+    border: 1px solid rgba(0, 170, 254, 0.4);
 
     /* center the dialog relative to the viewport */
     position: fixed;
@@ -1985,26 +1996,44 @@ a>code {
 
 .search-input-row input[type="text"] {
     flex: 1 1 auto;
-    padding: 0.5rem 0.6rem;
-    border: 1px solid var(--color-border);
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(0, 170, 254, 0.3);
     border-radius: 8px;
-    font-size: 1rem;
-    background: transparent;
-    color: var(--color-text);
+    font-size: 1.1rem;
+    background: rgba(0, 170, 254, 0.05);
+    color: #ffffff;
+}
+
+.search-input-row input[type="text"]:focus {
+    outline: none;
+    border-color: #00aafe;
+    box-shadow: 0 0 10px rgba(0, 170, 254, 0.2);
+}
+
+.search-input-row input[type="text"]::placeholder {
+    color: rgba(0, 170, 254, 0.5);
 }
 
 .search-box .close-search {
-    background: transparent;
-    border: 1px solid var(--color-border);
+    background: rgba(0, 170, 254, 0.1);
+    border: 1px solid rgba(0, 170, 254, 0.3);
     border-radius: 8px;
-    padding: 0.25rem 0.5rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 1.1rem;
+    color: #00aafe;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.search-box .close-search:hover {
+    background: rgba(0, 170, 254, 0.2);
+    transform: scale(1.05);
 }
 
 .search-hint {
-    margin-top: 0.45rem;
-    font-size: 0.85rem;
-    color: var(--color-text-dim);
+    font-size: 0.9rem;
+    color: #8bb8d6;
+    margin: 1rem 0;
 }
 
 .search-results {

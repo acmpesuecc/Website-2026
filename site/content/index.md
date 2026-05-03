@@ -26,11 +26,15 @@ Our community is vibrant and here with the help of our members divided into diff
 ## FLAGSHIP EVENTS  
 <br>
 
-**HACKNIGHT** : An event celebrating Hacktober fest, the perfect place for beginners to take their first step into the world of FOSS  
-<br>
+<div class="events-container">
+  <div class="event-item">
+    <span class="event-title">HACKNIGHT</span> : An event celebrating Hacktober fest, the perfect place for beginners to take their first step into the world of FOSS
+  </div>
 
-**AIEP** : ACM Industrial Experience Program (both internal and external).Mentees work under the guidance of some goat mentors to build amazing projects 
-<br>
+  <div class="event-item">
+    <span class="event-title">AIEP</span> : ACM Industrial Experience Program (both internal and external). Mentees work under the guidance of some goat mentors to build amazing projects
+  </div>
+</div>
 <br>
 
 <div class="manifesto-footer">
@@ -43,11 +47,11 @@ Our community is vibrant and here with the help of our members divided into diff
   margin: 10vh auto;
   max-width: 800px;
   text-align: left;
-  padding: 0 10px;
+  padding: 0;
 }
 
 .manifesto-title {
-  font-size: clamp(3.5rem, 7vw, 6rem) !important;
+  font-size: clamp(1.8rem, 10vw, 6rem) !important;
   line-height: 1 !important;
   font-weight: 1500;
   font-style: italic;
@@ -57,7 +61,7 @@ Our community is vibrant and here with the help of our members divided into diff
   border: none !important;
   text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 30px #16537e, 0 0 40px #16537e;
   animation: glow 1.0s ease-in-out infinite alternate;
-  
+  white-space: nowrap;
 }
 
 @keyframes glow {
@@ -95,20 +99,43 @@ Our community is vibrant and here with the help of our members divided into diff
   border-radius: 999px;
   text-decoration: none;
   font-weight: 600;
-  color: #2563eb !important;
-  background: rgba(37, 99, 235, 0.08);
-  border: 1px solid rgba(37, 99, 235, 0.18);
+  color: #00aafe !important;
+  background: rgba(0, 170, 254, 0.08);
+  border: 1px solid rgba(0, 170, 254, 0.18);
   transition: all 0.2s ease;
-  align : center;
+  text-align: center;
 }
 
 .m-link:hover {
-  background: #2563eb;
-  color: white !important;
-  border-color: #2563eb;
+  background: #00aafe;
+  color: #000c23 !important;
+  border-color: #00aafe;
   opacity: 1;
   transform: translateY(-2px);
-  align : center;
+}
+
+.events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.event-item {
+  padding: 1.2rem 1.5rem;
+  background: rgba(0, 170, 254, 0.05);
+  border-left: 4px solid #00aafe;
+  border-radius: 6px;
+  color: #8bb8d6;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.event-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: "PT Mono";
+  font-size: 1.2rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -121,15 +148,15 @@ Our community is vibrant and here with the help of our members divided into diff
   }
 
   .m-link {
-    color: #60a5fa !important;
-    background: rgba(96, 165, 250, 0.12);
-    border-color: rgba(96, 165, 250, 0.22);
+    color: #00aafe !important;
+    background: rgba(0, 170, 254, 0.12);
+    border-color: rgba(0, 170, 254, 0.22);
   }
 
   .m-link:hover {
-    background: #60a5fa;
-    color: #111 !important;
-    border-color: #60a5fa;
+    background: #00aafe;
+    color: #000c23 !important;
+    border-color: #00aafe;
   }
 }
 

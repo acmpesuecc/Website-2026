@@ -12,16 +12,18 @@
     align-items: center;
     min-height: 300px;
     padding: 2rem 2.5rem 1.5rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid rgba(0, 170, 254, 0.2);
     border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: box-shadow 0.2s ease;
-    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: #000c23;
+    color: #ffffff;
     text-align: center;
 }
 
 .member-card:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+    box-shadow: 0 6px 20px rgba(0, 170, 254, 0.15);
+    transform: translateY(-2px);
 }
 
 .member-photo-wrapper {
@@ -31,7 +33,7 @@
     overflow: hidden;
     flex-shrink: 0;
     margin-bottom: 1rem;
-    border: 3px solid #e0e0e0;
+    border: 3px solid rgba(0, 170, 254, 0.2);
 }
 
 .member-photo-wrapper img {
@@ -62,7 +64,7 @@
 .member-designation {
     margin: 0;
     font-size: clamp(0.85rem, 1.5vw, 1rem);
-    color: #555;
+    color: #8bb8d6;
     line-height: 1.4;
     flex: 1;
 }
@@ -77,19 +79,24 @@
 }
 
 .member-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: clamp(0.8rem, 1.2vw, 0.95rem);
     font-weight: 600;
     text-decoration: none;
-    color: #0066cc;
-    border: 1px solid #0066cc;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
+    color: #00aafe;
+    border: 1px solid #00aafe;
+    padding: 0.4rem;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
     transition: background 0.15s, color 0.15s;
 }
 
 .member-links a:hover {
-    background: #0066cc;
-    color: #fff;
+    background: #00aafe;
+    color: #000c23;
 }
 
 /*changes no. of cards wrt windnow size*/

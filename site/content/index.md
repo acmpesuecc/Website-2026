@@ -5,10 +5,9 @@ layout: page
 <br>
 <br>
 
-
 <div class="manifesto-wrapper">
   <h1 class="manifesto-title">
-    ACM PESU-ECC
+    <span class="accent">ACM PESU-ECC</span>
   </h1>
 </div>
 
@@ -19,8 +18,10 @@ layout: page
 <br>
 
 ## WHAT WE DO
-Our community is vibrant and with the help of our members working in different domains, we come together to organise amazing events surrounding tech. We believe in exploring things with passion and we come together to encourage each other to dive deep into this fascinating part of the world.  
+Our community is vibrant and here with the help of our members divided into different domains, we come together to organise amazing events surrounding tech. We believe in exploring things with passion and we come together to encourage each other and everyone else to dive deep into the fascinating world of tech with the help of mentors.  
 <br>
+
+
   
 ## FLAGSHIP EVENTS  
 <br>

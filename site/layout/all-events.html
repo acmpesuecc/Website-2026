@@ -10,7 +10,11 @@
                 <a class="event-card" href="/{{$Post.CompleteURL}}">
                     <div class="event-card-inner">
                         <div class="event-thumb">
-                            <img src="/static/images/placeholder.png" alt="pls tell me what to put here"/>
+                            {{ if $Post.Frontmatter.PreviewImage }}
+                                <img src="{{$Post.Frontmatter.PreviewImage}}" alt="pixel art"/>
+                            {{ else }}
+                                <img src="/static/images/placeholder.png" alt="pls tell me what to put here"/>
+                            {{ end }}
                         </div>
                         <div class="event-info">
                             <h3>{{$Post.Frontmatter.Title}}</h3>

@@ -1,6 +1,7 @@
 ---
 title: 'Git in Action!'
 description: 'Unlock the Power of Version Control'
+previewimage: /static/images/gitinaction.jpg
 authors: ["Saijyoti Panda, Pranav V Bhat"]
 tags: ['git', github, 'open-source', 'hacknight7.0']
 date: '2025-10-17'

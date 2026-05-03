@@ -1,6 +1,7 @@
 ---
 title: Hacktoberfest '20
 description: 'stub'
+previewimage: /static/images/hacktober20.jpeg
 authors: ["ACMPESUECC"]
 tags: [ACM, open-source, hacknight]
 date: '2020-10-10'

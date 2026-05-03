@@ -2,6 +2,7 @@
 anna
 anna*
 site/rendered
+site/rendered/*
 # Go binaries
 *.exe
 *.out

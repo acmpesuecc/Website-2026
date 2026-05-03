@@ -1,12 +1,40 @@
 ---
-
-title: "Our Team"
-layout: page
+title: "Members"
+layout: all-members
+customFields:
+  - name: "Vinaayak"
+    designation: "Chair"
+    photo: "vinaayak.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
+  - name: "Ashmita"
+    designation: "Vice Chair"
+    photo: "ashmita.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
+  - name: "Lakshit"
+    designation: "Secretary"
+    photo: "lakshit.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
+  - name: "Shivangi"
+    designation: "Treasurer"
+    photo: "shivangi.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
+  - name: "Saankhya"
+    designation: "Webmaster"
+    photo: "saankhya.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
+  - name: "Andey"
+    designation: "Webmaster"
+    photo: "andey.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
+  - name: "Bhuvigna"
+    designation: "Membership Chair"
+    photo: "bhuvigna.jpg"
+    github: "https://github.com/username"
+    linkedin: "https://www.linkedin.com/in/example"
 ---
-# Core Committee
-* **Chair:** Vinaayak
-* **Vice Chair:** Ashmita
-* **Secretary:** Lakshit
-* **Treasurer:** Shivangi
-* **Webmasters:** Saankhya and Andey
-* **Membership Chair:** Bhuvigna

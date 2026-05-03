@@ -1,0 +1,53 @@
+name: Deploy Anna Site to dev
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Anna
+        run: |
+          wget -qO- https://github.com/anna-ssg/anna/releases/download/v4.0.0-rc-3/anna_Linux_x86_64.tar.gz | tar -xzf - anna
+          sudo mv anna /usr/local/bin/anna
+
+      - name: Build Site
+        run: anna
+
+      - name: Prepare dev directory for Pages
+        run: |
+          mkdir -p public
+          cp -r site/rendered/* public/
+          REPO_NAME="${{ github.event.repository.name }}"
+          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.xml" -o -name "*.js" \) -exec sed -i "s|href=\"/|href=\"/$REPO_NAME/|g" {} +
+          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.xml" -o -name "*.js" \) -exec sed -i "s|src=\"/|src=\"/$REPO_NAME/|g" {} +
+          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.xml" -o -name "*.js" \) -exec sed -i "s|url(/|url(/$REPO_NAME/|g" {} +
+          find public -type f -name "*.html" -exec sed -i "s|fetch('/|fetch('/$REPO_NAME/|g" {} +
+          find public -type f -name "*.html" -exec sed -i "s|a.href = '/|a.href = '/$REPO_NAME/|g" {} +
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

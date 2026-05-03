@@ -1,6 +1,7 @@
 ---
 title: 'Wasm and Emscripten'
 authors: ["Siddharth Tewari, Abhinav Chennubhotla & Sriprad Potukuchi"]
+previewimage: /static/images/wasm.png
 date: '2024-02-21'
 tags: ['workshop', 'wasm']
 description: 'Material from the wasm workshop'

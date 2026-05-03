@@ -1,6 +1,7 @@
 ---
 title: 'ACM Recruitment Challenge 2025'
 description: 'Crack the code!'
+previewimage: /static/images/2025recruite.png
 authors: ["ACMPESUECC"]
 tags: [ACM, challenge]
 date: '2025-09-07'

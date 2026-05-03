@@ -1,6 +1,7 @@
 ---
 title: 'Open Source Workshop'
 description: Exploring the world of Git and Open source
+previewimage: /static/images/opensourcework.jpg
 authors: ["ACMPESUECC"]
 tags: [ACM, open-source, git]
 date: '2019-10-18'

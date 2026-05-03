@@ -1,6 +1,7 @@
 ---
 title: 'Tensor v1.0'
 description: 'Our annual Datathon'
+previewimage: /static/images/tensor.jpeg
 authors: ["ACMPESUECC & TECHWARTS"]
 tags: [ACM, hackathon, tensor]
 date: '2021-03-07'

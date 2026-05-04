@@ -21,13 +21,60 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout site repo
         uses: actions/checkout@v4
 
-      - name: Install Anna
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: Clone anna source
+        run: git clone --depth=1 https://github.com/anna-ssg/anna.git /tmp/anna
+
+      - name: Add gm-alert-callouts and patch parser.go
+        working-directory: /tmp/anna
         run: |
-          wget -qO- https://github.com/anna-ssg/anna/releases/download/v4.0.0-rc-3/anna_Linux_x86_64.tar.gz | tar -xzf - anna
-          sudo mv anna /usr/local/bin/anna
+          go get github.com/zmtcreative/gm-alert-callouts@latest
+
+          python3 << 'PYEOF'
+          with open("pkg/parser/parser.go", "r") as f:
+              src = f.read()
+
+          # 1. Add import alongside goldmark-figure
+          src = src.replace(
+              'figure "github.com/mangoumbrella/goldmark-figure"',
+              'figure "github.com/mangoumbrella/goldmark-figure"\n\talertcallouts "github.com/zmtcreative/gm-alert-callouts"'
+          )
+
+          # 2. Inject into TOC branch (contains &toc.Extender)
+          src = src.replace(
+              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t\t&toc.Extender{",
+              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t\talertcallouts.AlertCallouts,\n\t\t\t\t&toc.Extender{"
+          )
+
+          # 3. Inject into non-TOC branch
+          src = src.replace(
+              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t)",
+              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t\talertcallouts.AlertCallouts,\n\t\t\t)"
+          )
+
+          with open("pkg/parser/parser.go", "w") as f:
+              f.write(src)
+
+          print("Patch applied. Verifying...")
+          with open("pkg/parser/parser.go", "r") as f:
+              patched = f.read()
+          count = patched.count("alertcallouts")
+          print(f"Found {count} occurrences of 'alertcallouts' (expected 3: import + 2 usages)")
+          assert count == 3, f"Patch failed: found {count} occurrences"
+          PYEOF
+
+      - name: Build patched anna binary
+        working-directory: /tmp/anna
+        run: |
+          go mod tidy
+          go build -o /usr/local/bin/anna .
 
       - name: Build Site
         run: anna

@@ -33,42 +33,11 @@ jobs:
         run: git clone --depth=1 https://github.com/anna-ssg/anna.git /tmp/anna
 
       - name: Add gm-alert-callouts and patch parser.go
-        working-directory: /tmp/anna
         run: |
+          cd /tmp/anna
           go get github.com/zmtcreative/gm-alert-callouts@latest
-
-          python3 << 'PYEOF'
-          with open("pkg/parser/parser.go", "r") as f:
-              src = f.read()
-
-          # 1. Add import alongside goldmark-figure
-          src = src.replace(
-              'figure "github.com/mangoumbrella/goldmark-figure"',
-              'figure "github.com/mangoumbrella/goldmark-figure"\n\talertcallouts "github.com/zmtcreative/gm-alert-callouts"'
-          )
-
-          # 2. Inject into TOC branch (contains &toc.Extender)
-          src = src.replace(
-              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t\t&toc.Extender{",
-              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t\talertcallouts.AlertCallouts,\n\t\t\t\t&toc.Extender{"
-          )
-
-          # 3. Inject into non-TOC branch
-          src = src.replace(
-              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t)",
-              "\t\t\tgoldmark.WithExtensions(\n\t\t\t\textension.TaskList,\n\t\t\t\tfigure.Figure,\n\t\t\t\talertcallouts.AlertCallouts,\n\t\t\t)"
-          )
-
-          with open("pkg/parser/parser.go", "w") as f:
-              f.write(src)
-
-          print("Patch applied. Verifying...")
-          with open("pkg/parser/parser.go", "r") as f:
-              patched = f.read()
-          count = patched.count("alertcallouts")
-          print(f"Found {count} occurrences of 'alertcallouts' (expected 3: import + 2 usages)")
-          assert count == 3, f"Patch failed: found {count} occurrences"
-          PYEOF
+          cd ${{ github.workspace }}
+          python3 ci/patch_anna.py /tmp/anna
 
       - name: Build patched anna binary
         working-directory: /tmp/anna

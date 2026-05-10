@@ -5,9 +5,17 @@ layout: page
 
 <div class="niri-root-window">
   <div class="hero-content">
-    <img src="/static/images/anna.png" alt="ACM PESU ECC Logo" class="hero-logo">
-    <h1 class="hero-title">ACM PESU-ECC</h1>
-    <p class="hero-tagline">Niri-inspired horizontal tiling interface.</p>
+    <div class="hero-brand">
+
+  <img src="/static/images/acmpesuecc2.png"
+       alt="ACM PESU ECC Logo"
+       class="hero-logo"
+       draggable="false">
+
+  <h1 class="hero-title">PESU-ECC</h1>
+
+</div>
+    <p class="hero-tagline">A student led tech community at PES University centered around technology, creativity and collaboration..</p>
     <div class="hero-nav">
       <a href="/about.html" class="nav-btn secondary" fx-action="/about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
       <a href="/members/index.html" class="nav-btn secondary" fx-action="/members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
@@ -29,28 +37,8 @@ layout: page
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-<div class="niri-horizontal-track">
 
-  <section class="niri-window w-full" id="root-window">
-    <div class="hero-content">
-      <img src="/static/images/anna.png" alt="Logo" class="hero-logo">
-      <h1 class="hero-title">ACM PESU-ECC</h1>
-      <p class="hero-tagline">Niri-inspired horizontal tiling interface.</p>
-      
-      <div class="hero-nav">
-        <a href="#about" class="nav-btn secondary">About</a>
-        <a href="#members" class="nav-btn secondary">Members</a>
-        <a href="/contact.html" class="nav-btn primary">Contact</a>
-      </div>
-    </div>
-  </section>
 
-  <section class="niri-window">
-    <h2>About the Chapter</h2>
-    <p>We build systems, culture, and better pathways for engineers.</p>
-  </section>
-
-</div>
 .hero-content {
   display: flex;
   flex-direction: column;
@@ -64,19 +52,33 @@ layout: page
 @keyframes fadeUp {
   to { opacity: 1; transform: translateY(0); }
 }
+
 .hero-logo {
-  width: 56px;
-  height: 56px;
-  margin-bottom: 2rem;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  width: 140px;
+  height: auto;
+
+  margin-bottom: 0.75rem;
+
+  opacity: 0.9;
+
+  filter:
+    drop-shadow(0 0 20px rgba(255,255,255,0.05));
+
+  transition: all 0.25s ease;
 }
+
+.hero-logo:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
 .hero-title {
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.05em;
   color: #ffffff;
-  margin: 0 0 1.25rem 0;
+  margin: 0 0 1rem 0;
   background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

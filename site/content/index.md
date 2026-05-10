@@ -12,16 +12,16 @@ layout: page
        class="hero-logo"
        draggable="false">
 
-  <h1 class="hero-title">PESU-ECC</h1>
+  
 
-</div>
-    <p class="hero-tagline">A student led tech community at PES University centered around technology, creativity and collaboration..</p>
+</div><p class="hero-eyebrow">PES University EC Campus ACM Student Chapter </p>
+    <p class="hero-tagline">A student led tech community at PES University centered around technology, creativity and collaboration</p>
     <div class="hero-nav">
       <a href="/about.html" class="nav-btn secondary" fx-action="/about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
       <a href="/members/index.html" class="nav-btn secondary" fx-action="/members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
       <a href="/blogs/index.html" class="nav-btn secondary" fx-action="/blogs/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
       <a href="/events/index.html" class="nav-btn secondary" fx-action="/events/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
-      <a href="/contact.html" class="nav-btn primary" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
+      <a href="/contact.html" class="nav-btn secondary" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
     </div>
   </div>
 </div>
@@ -38,7 +38,14 @@ layout: page
 }
 
 
-
+.hero-eyebrow {
+  font-size: 1.5 rem; /* was 0.75rem */
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #6b7fa3;
+  margin: 0 0 1.25rem 0;
+  text-transform: uppercase;
+}
 .hero-content {
   display: flex;
   flex-direction: column;
@@ -54,10 +61,10 @@ layout: page
 }
 
 .hero-logo {
-  width: 140px;
+  width: 470px;
   height: auto;
 
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
 
   opacity: 0.9;
 
@@ -73,18 +80,18 @@ layout: page
 }
 
 .hero-title {
-  font-size: clamp(3rem, 10vw, 6rem);
-  font-weight: 800;
+  font-size: clamp(5rem, 10vw, 8rem);
+  font-weight: 2500;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.0000005em;
   color: #ffffff;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .hero-tagline {
-  font-size: clamp(1.1rem, 3vw, 1.35rem);
+  font-size: clamp(1rem, 3vw, 1.35rem);
   font-weight: 400;
   line-height: 1.6;
   color: #a1a1aa !important;
@@ -92,11 +99,12 @@ layout: page
 }
 .hero-nav {
   display: flex;
-  gap: 0.85rem;
+  gap: 1.7rem;
   flex-wrap: wrap;
   justify-content: center;
 }
 .nav-btn {
+  min-width: 70px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

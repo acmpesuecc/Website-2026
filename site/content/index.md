@@ -4,6 +4,7 @@ layout: page
 ---
 
 <div class="niri-root-window">
+  <canvas id="dots"></canvas>
   <div class="hero-content">
     <div class="hero-brand">
 
@@ -28,6 +29,8 @@ layout: page
 
 <style>
 .niri-root-window {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,8 +38,22 @@ layout: page
   min-height: 85vh;
   padding: 2rem;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* full-bleed: break out of any parent max-width so the dots span the whole viewport */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
+#dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+}
 
 .hero-eyebrow {
   font-size: 1.5 rem; /* was 0.75rem */
@@ -47,6 +64,8 @@ layout: page
   text-transform: uppercase;
 }
 .hero-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,3 +156,73 @@ layout: page
   color: #ffffff !important;
 }
 </style>
+
+<script>
+(function () {
+  const canvas = document.getElementById('dots');
+  const ctx = canvas.getContext('2d');
+  const wrap = document.querySelector('.niri-root-window');
+  let mouse = { x: -9999, y: -9999 };
+  let dots = [];
+
+  const SPACING = 28;
+  const BASE_R = 1.8;
+  const MAX_R = 6;
+  const INFLUENCE = 80;
+  const BASE_ALPHA = 0.12;
+  const MAX_ALPHA = 0.45;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+    canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    dots = [];
+    const cols = Math.ceil(rect.width / SPACING) + 1;
+    const rows = Math.ceil(rect.height / SPACING) + 1;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        dots.push({ x: c * SPACING, y: r * SPACING });
+      }
+    }
+  }
+
+  wrap.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  wrap.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  function draw() {
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    for (const d of dots) {
+      const dx = d.x - mouse.x;
+      const dy = d.y - mouse.y;
+      const t = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy) / INFLUENCE);
+      const r = BASE_R + (MAX_R - BASE_R) * t * t;
+      const alpha = BASE_ALPHA + (MAX_ALPHA - BASE_ALPHA) * t * t;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(80, 160, 255, ${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(resize).observe(wrap);
+  } else {
+    window.addEventListener('resize', resize);
+  }
+
+  window.addEventListener('load', resize);
+})();
+</script>

@@ -17,13 +17,7 @@ layout: page
 
 </div><p class="hero-eyebrow">PES University EC Campus ACM Student Chapter </p>
     <p class="hero-tagline">A student led tech community at PES University centered around technology, creativity and collaboration</p>
-    <div class="hero-nav">
-      <a href="/about.html" class="nav-btn secondary" fx-action="/about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
-      <a href="/members/index.html" class="nav-btn secondary" fx-action="/members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
-      <a href="/blogs/index.html" class="nav-btn secondary" fx-action="/blogs/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
-      <a href="/events/index.html" class="nav-btn secondary" fx-action="/events/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
-      <a href="/contact.html" class="nav-btn secondary" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
-    </div>
+    
   </div>
 
   <nav class="root-nav glass-pill">

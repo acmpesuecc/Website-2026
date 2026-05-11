@@ -25,6 +25,18 @@ layout: page
       <a href="/contact.html" class="nav-btn secondary" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
     </div>
   </div>
+
+  <nav class="root-nav glass-pill">
+    <a href="/about.html" class="m-link" fx-action="/about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
+    <div class="nav-separator"></div>
+    <a href="/members/index.html" class="m-link" fx-action="/members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
+    <div class="nav-separator"></div>
+    <a href="/blogs/index.html" class="m-link" fx-action="/blogs/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
+    <div class="nav-separator"></div>
+    <a href="/events/index.html" class="m-link" fx-action="/events/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
+    <div class="nav-separator"></div>
+    <a href="/contact.html" class="m-link" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
+  </nav>
 </div>
 
 <style>
@@ -121,6 +133,87 @@ layout: page
   gap: 1.7rem;
   flex-wrap: wrap;
   justify-content: center;
+  background: rgba(0, 12, 35, 0.4);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(0, 170, 254, 0.2);
+  border-radius: 100px;
+  padding: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+  box-sizing: border-box;
+  margin-top: 3rem;
+  width: min(95%, 1000px);
+}
+
+.nav-separator {
+  width: 1px;
+  background: rgba(0, 170, 254, 0.3);
+  align-self: stretch;
+  margin: 0;
+}
+
+.root-nav .m-link {
+  color: #a3c4ec;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 1.25rem 2.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  background: transparent;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  align-self: stretch;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.root-nav .m-link::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: rgba(0, 170, 254, 0.25);
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.root-nav .m-link:hover::before, .root-nav .m-link:focus::before {
+  opacity: 1;
+}
+
+.root-nav .m-link:hover, .root-nav .m-link:focus {
+  color: #ffffff;
+  outline: none;
+}
+
+/* Scaling for overview mode via CSS transformations to ensure layout integrity */
+body.overview-mode .niri-landing {
+  transform: scale(0.6);
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .root-nav.glass-pill {
+    flex-direction: column;
+    border-radius: 24px;
+    width: min(90%, 300px);
+  }
+  .nav-separator {
+    width: 100%;
+    height: 1px;
+  }
+  .root-nav .m-link {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+  }
 }
 .nav-btn {
   min-width: 70px;

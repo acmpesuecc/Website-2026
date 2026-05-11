@@ -101,6 +101,55 @@
     color: #000c23;
 }
 
+/* ── Directory Menu Cards ── */
+.directory-menu {
+    max-width: 600px;
+    margin: 3rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
+    width: 100%;
+}
+
+.dir-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 170, 254, 0.05);
+    border: 1px solid rgba(0, 170, 254, 0.2);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dir-card:hover {
+    background: rgba(0, 170, 254, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 170, 254, 0.15);
+    border-color: rgba(0, 170, 254, 0.4);
+}
+
+.dir-text {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.dir-desc {
+    font-size: 0.95rem;
+    color: #8bb8d6;
+    line-height: 1.5;
+    margin: 0;
+}
+
 /*changes no. of cards wrt windnow size*/
 
 

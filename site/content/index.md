@@ -5,21 +5,21 @@ layout: page
 
 <div class="niri-landing">
   <div class="niri-root-content">
-    <img src="/static/images/acmpesuecc2.png" alt="ACM PESU ECC Logo" class="root-logo" draggable="false">
+    <img src="static/images/acmpesuecc2.png" alt="ACM PESU ECC Logo" class="root-logo" draggable="false">
     <p class="root-eyebrow">PES University EC Campus ACM Student Chapter</p>
     <p class="root-tagline">A student led tech community at PES University centered around technology, creativity and collaboration</p>
   </div>
 
   <nav class="root-nav glass-pill">
-    <a href="/about.html" class="m-link" fx-action="/about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
+    <a href="about.html" class="m-link" fx-action="about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
     <div class="nav-separator"></div>
-    <a href="/members/index.html" class="m-link" fx-action="/members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
+    <a href="members/index.html" class="m-link" fx-action="members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
     <div class="nav-separator"></div>
-    <a href="/blogs/index.html" class="m-link" fx-action="/blogs/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
+    <a href="blogs/index.html" class="m-link" fx-action="blogs/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
     <div class="nav-separator"></div>
-    <a href="/events/index.html" class="m-link" fx-action="/events/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
+    <a href="events/index.html" class="m-link" fx-action="events/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
     <div class="nav-separator"></div>
-    <a href="/contact.html" class="m-link" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
+    <a href="contact.html" class="m-link" fx-action="contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
   </nav>
 </div>
 

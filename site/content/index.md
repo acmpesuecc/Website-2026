@@ -176,16 +176,58 @@ layout: page
   outline: none;
 }
 
-/* Scaling for overview mode via CSS transformations to ensure layout integrity */
-body.overview-mode .niri-landing {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  max-width: none;
-  height: 100vh;
-  margin: 0 !important;
-  transform: translate(-50%, -50%) scale(0.35);
+/* Base body background dots (moved from root-window so it spans the whole screen) */
+body {
+  background-color: #000c23;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 170, 254, 0.15), transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(139, 184, 214, 0.1), transparent 40%),
+    radial-gradient(rgba(0, 170, 254, 0.1) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 24px 24px;
+  background-attachment: fixed;
+}
+
+/* Glowing Dot trail effect */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(0, 170, 254, 0.8) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(circle 150px at var(--cursor-x, -150px) var(--cursor-y, -150px), rgba(0, 0, 0, 1), transparent);
+  mask-image: radial-gradient(circle 150px at var(--cursor-x, -150px) var(--cursor-y, -150px), rgba(0, 0, 0, 1), transparent);
+  z-index: -1;
+  transition: opacity 0.3s;
+}
+
+/* Ensure root window is transparent so body background shows through */
+#root-window {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Clean overview mode styling */
+body.overview-mode .root-logo {
+  width: 60px;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+body.overview-mode .root-eyebrow {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+}
+
+body.overview-mode .root-tagline {
+  font-size: 0.75rem;
+  padding: 0 1rem;
+}
+
+body.overview-mode .root-nav.glass-pill {
+  display: none !important; /* Hide pill in overview mode */
 }
 
 @media (max-width: 768px) {
@@ -193,9 +235,7 @@ body.overview-mode .niri-landing {
     margin-top: 5vh;
   }
   body.overview-mode .niri-landing {
-    width: 100vw;
-    height: 100vh;
-    transform: translate(-50%, -50%) scale(0.65);
+    margin-top: 0;
   }
   .root-logo {
     width: min(80vw, 300px);
@@ -229,28 +269,25 @@ body.overview-mode .niri-landing {
 
 <script>
   (function() {
-    const rootWindow = document.getElementById('root-window');
-    if (rootWindow && !rootWindow.dataset.cursorBound) {
+    const tracker = document.body;
+    if (tracker && !tracker.dataset.cursorBound) {
       let currentX = -200, currentY = -200;
       let targetX = -200, targetY = -200;
       
       function animate() {
         currentX += (targetX - currentX) * 0.15;
         currentY += (targetY - currentY) * 0.15;
-        rootWindow.style.setProperty('--cursor-x', `${currentX}px`);
-        rootWindow.style.setProperty('--cursor-y', `${currentY}px`);
-        if (rootWindow.isConnected) {
-          requestAnimationFrame(animate);
-        }
+        tracker.style.setProperty('--cursor-x', `${currentX}px`);
+        tracker.style.setProperty('--cursor-y', `${currentY}px`);
+        requestAnimationFrame(animate);
       }
       requestAnimationFrame(animate);
 
-      rootWindow.addEventListener('mousemove', (e) => {
-        const rect = rootWindow.getBoundingClientRect();
-        targetX = e.clientX - rect.left;
-        targetY = e.clientY - rect.top;
+      window.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
       });
-      rootWindow.dataset.cursorBound = 'true';
+      tracker.dataset.cursorBound = 'true';
     }
   })();
 </script>

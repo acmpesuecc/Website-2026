@@ -179,18 +179,18 @@ layout: page
 /* Scaling for overview mode via CSS transformations to ensure layout integrity */
 body.overview-mode .niri-landing {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   width: 100vw;
   max-width: none;
-  height: 100vh;
+  height: 65vh;
   margin: 0 !important;
-  transform: translate(-50%, -50%) scale(0.35);
+  transform: translate(-50%, -50%) scale(0.85);
 }
 
 body.overview-mode .root-logo {
-  width: 120px;
-  min-width: 120px;
+  width: 320px;
+  min-width: 320px;
   height: auto;
   margin-bottom: 0.5rem;
   display: block;

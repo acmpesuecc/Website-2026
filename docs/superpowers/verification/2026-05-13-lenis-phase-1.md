@@ -16,6 +16,10 @@
 - [ ] Fallback warning once + native behavior
 
 ## Result
-- Implementation complete and contract tests passing.
-- Live verification via Chrome DevTools: **PASS** (Lenis initialized, manager active, no warnings).
+- Phase 1 implementation initial rollout: **FAIL** (Severe jank due to CSS snap conflict and 1.6s duration lag).
+- Scroll quality fix (lerp: 0.05 + remove native snap): **PASS**.
+- Live verification via Chrome DevTools: **PASS**.
+  - `lerp: 0.05` confirmed active.
+  - Native `scroll-snap-type` confirmed removed (`none`).
+  - Smooth interpolation verified via `window.niriScrollTo`.
 - Ready for manual UX verification.

@@ -16,6 +16,6 @@ test('returns softened profile when reduced motion is true', () => {
 test('returns frozen clone so callers cannot mutate defaults', () => {
   const result = getLenisOptions({ reducedMotion: false });
   assert.throws(() => {
-    result.duration = 99;
+    result.lerp = 99;
   });
 });

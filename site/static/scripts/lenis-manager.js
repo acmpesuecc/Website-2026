@@ -19,8 +19,7 @@
     const reduced = prefersReducedMotion();
     if (reduced) {
       return {
-        duration: 0.95,
-        easing: (t) => t,
+        lerp: 0.1,
         smoothWheel: true,
         smoothTouch: true,
         wheelMultiplier: 0.72,
@@ -28,8 +27,7 @@
       };
     }
     return {
-      duration: 1.6,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.05,
       smoothWheel: true,
       smoothTouch: true,
       wheelMultiplier: 1,

@@ -97,7 +97,6 @@ body.overview-mode .site-footer {
     width: var(--app-width);
     overflow-y: auto;
     overflow-x: hidden;
-    scroll-snap-type: y proximity;
     scroll-behavior: auto;
     transition: transform 0.5s;
     scrollbar-width: none;

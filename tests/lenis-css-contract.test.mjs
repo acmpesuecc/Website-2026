@@ -5,8 +5,8 @@ import fs from 'node:fs';
 
 const css = fs.readFileSync('site/static/styles/main.css', 'utf8');
 
-test('vertical track uses proximity snap in phase 1', () => {
-  assert.match(css, /\.niri-vertical-track[\s\S]*scroll-snap-type:\s*y\s+proximity;/);
+test('vertical track does not use native scroll-snap in phase 1', () => {
+  assert.equal(css.includes('scroll-snap-type: y'), false);
 });
 
 test('lenis-managed tracks do not declare scroll-behavior smooth', () => {

@@ -1,7 +1,6 @@
 // site/static/scripts/lenis-config.js
 export const BASE_CINEMATIC = Object.freeze({
-  duration: 1.6,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  lerp: 0.05,
   smoothWheel: true,
   smoothTouch: true,
   wheelMultiplier: 1.0,
@@ -9,8 +8,7 @@ export const BASE_CINEMATIC = Object.freeze({
 });
 
 export const REDUCED_MOTION_CINEMATIC = Object.freeze({
-  duration: 0.95,
-  easing: (t) => t,
+  lerp: 0.1,
   smoothWheel: true,
   smoothTouch: true,
   wheelMultiplier: 0.72,

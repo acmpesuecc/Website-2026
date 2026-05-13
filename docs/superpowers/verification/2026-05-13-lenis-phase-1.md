@@ -16,4 +16,6 @@
 - [ ] Fallback warning once + native behavior
 
 ## Result
-- Implementation complete and contract tests passing. Ready for manual UX verification.
+- Implementation complete and contract tests passing.
+- Live verification via Chrome DevTools: **PASS** (Lenis initialized, manager active, no warnings).
+- Ready for manual UX verification.

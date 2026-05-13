@@ -97,8 +97,8 @@ body.overview-mode .site-footer {
     width: var(--app-width);
     overflow-y: auto;
     overflow-x: hidden;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+    scroll-behavior: auto;
     transition: transform 0.5s;
     scrollbar-width: none;
 }
@@ -117,7 +117,7 @@ body.overview-mode .site-footer {
     scroll-snap-type: x mandatory;
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
     padding: 1.5rem;

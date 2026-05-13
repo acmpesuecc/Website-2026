@@ -53,8 +53,8 @@
         let snap = null;
         if (window.Snap) {
           snap = new window.Snap(instance, {
-            type: 'mandatory',
-            distanceThreshold: '100%',
+            type: 'lock', // Forces slideshow-like navigation
+            distanceThreshold: '100%', // Even small scrolls move to next point
             duration: 0.8,
             lerp: 0.1,
             debounce: 0,

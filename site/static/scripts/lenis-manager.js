@@ -1,9 +1,11 @@
 // site/static/scripts/lenis-manager.js
 (function () {
-  if (window.niriLenis) return;
+  if (window.niriLenis && window.niriLenis.tracks) return;
 
   const WARN_KEY = '__lenisWarned';
   const ROOT_SELECTOR = '#niri-track-v';
+  const RIBBON_SELECTOR = '.niri-horizontal-track';
+  const WINDOW_SELECTOR = '.niri-window';
 
   function warnOnce() {
     if (window[WARN_KEY]) return;
@@ -15,84 +17,248 @@
     return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
-  function pickConfig() {
+  function pickConfig(orientation = 'vertical') {
     const reduced = prefersReducedMotion();
-    if (reduced) {
-      return {
-        lerp: 0.1,
-        smoothWheel: true,
-        smoothTouch: true,
-        wheelMultiplier: 0.72,
-        touchMultiplier: 0.72,
-      };
-    }
-    return {
-      lerp: 0.05,
+    const base = {
+      lerp: reduced ? 0.1 : 0.05,
       smoothWheel: true,
       smoothTouch: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1,
+      wheelMultiplier: reduced ? 0.4 : 0.6, // Slowed down from 0.72/1.0
+      touchMultiplier: reduced ? 0.4 : 0.6, // Slowed down from 0.72/1.0
+      orientation: orientation,
+      gestureOrientation: orientation === 'vertical' ? 'vertical' : 'horizontal',
+      allowNestedScroll: orientation === 'vertical',
     };
+    return base;
   }
 
   const api = {
-    root: null,
-    instance: null,
-    rafId: null,
-    init() {
-      if (this.instance) return true;
-      this.root = document.querySelector(ROOT_SELECTOR);
-      if (!this.root || !window.Lenis) {
-        window.__lenisDisabled = true;
-        warnOnce();
-        return false;
-      }
+    tracks: new Map(), // element -> { instance, snap, rafId }
+    
+    registerTrack(el) {
+      if (!el || this.tracks.has(el) || !window.Lenis) return null;
+      
+      const isVertical = el.id === 'niri-track-v' || el.classList.contains('niri-vertical-track');
+      const orientation = isVertical ? 'vertical' : 'horizontal';
+      
       try {
-        this.instance = new window.Lenis({
-          ...pickConfig(),
-          wrapper: this.root,
-          content: this.root,
+        const instance = new window.Lenis({
+          ...pickConfig(orientation),
+          wrapper: el,
+          content: el,
           autoRaf: false,
         });
 
+        // Initialize Snap if available
+        let snap = null;
+        if (window.Snap) {
+          snap = new window.Snap(instance, {
+            type: isVertical ? 'proximity' : 'mandatory',
+            distanceThreshold: isVertical ? '30%' : '100%', // More aggressive horizontal attraction
+            duration: 0.8,
+            lerp: 0.1,
+            debounce: 100, // Faster snap response after scroll stop
+          });
+          
+          this.updateSnapPoints(el, snap, isVertical);
+
+          // Restore snapping for user input (wheel/touch)
+          // Lenis Snap typically triggers on its own, but we force it for reliability
+          instance.on('scroll', ({ isScrolling, velocity, pointerType }) => {
+            if (!isScrolling && velocity === 0 && pointerType !== 'api') {
+                snap.snap(); 
+            }
+          });
+        }
+
         const tick = (time) => {
-          if (!this.instance) return;
-          this.instance.raf(time);
-          this.rafId = requestAnimationFrame(tick);
+          if (!this.tracks.has(el)) return;
+          instance.raf(time);
+          const trackData = this.tracks.get(el);
+          if (trackData) trackData.rafId = requestAnimationFrame(tick);
         };
-        this.rafId = requestAnimationFrame(tick);
+        const rafId = requestAnimationFrame(tick);
+
+        this.tracks.set(el, { instance, snap, rafId });
         window.__lenisDisabled = false;
-        return true;
+        return instance;
       } catch (err) {
+        console.error('Lenis track init failed:', err);
         window.__lenisDisabled = true;
         warnOnce();
-        return false;
+        return null;
       }
     },
-    destroy() {
-      if (this.rafId) cancelAnimationFrame(this.rafId);
-      this.rafId = null;
-      if (this.instance?.destroy) this.instance.destroy();
-      this.instance = null;
+
+    updateSnapPoints(el, snap, isVertical) {
+      if (!snap) return;
+      
+      // Clear existing points
+      // Note: snap.addElements is additive in some versions, but usually we want to refresh
+      if (snap.destroy) { /* snap doesn't have a clear, so we just rebuild if needed or trust addElements */ }
+      
+      if (isVertical) {
+        // Vertical track snaps to horizontal ribbons
+        const ribbons = el.querySelectorAll(RIBBON_SELECTOR);
+        if (ribbons.length > 0) {
+          snap.addElements([...ribbons], { align: 'start' });
+        }
+      } else {
+        // Horizontal track snaps to windows
+        const wins = el.querySelectorAll(WINDOW_SELECTOR);
+        if (wins.length > 0) {
+          snap.addElements([...wins], { align: 'center' });
+        }
+      }
     },
+
+    resizeAll() {
+      this.tracks.forEach((data, el) => {
+        data.instance.resize();
+        if (data.snap) {
+          const isVertical = el.id === 'niri-track-v' || el.classList.contains('niri-vertical-track');
+          this.updateSnapPoints(el, data.snap, isVertical);
+        }
+      });
+    },
+
+    destroyTrack(el) {
+      const data = this.tracks.get(el);
+      if (data) {
+        if (data.rafId) cancelAnimationFrame(data.rafId);
+        if (data.snap?.destroy) data.snap.destroy();
+        if (data.instance?.destroy) data.instance.destroy();
+        this.tracks.delete(el);
+      }
+    },
+
+    destroyAll() {
+      this.tracks.forEach((_, el) => this.destroyTrack(el));
+    },
+
+    pauseAll() {
+      this.tracks.forEach(data => data.instance.stop());
+    },
+
+    resumeAll() {
+      this.tracks.forEach(data => data.instance.start());
+    },
+
+    init() {
+      // Register root vertical track
+      const root = document.querySelector(ROOT_SELECTOR);
+      if (root) {
+        this.registerTrack(root);
+        // Ensure root allows nested scroll for ribbons
+        const data = this.tracks.get(root);
+        if (data) {
+          // Re-init with allowNestedScroll if needed, or just set it
+          // data.instance.options.allowNestedScroll = true;
+        }
+      }
+
+      // Register existing horizontal ribbons
+      const ribbons = document.querySelectorAll(RIBBON_SELECTOR);
+      ribbons.forEach(r => this.registerTrack(r));
+
+      // Proactive discovery for dynamically added ribbons
+      const observer = new MutationObserver((mutations) => {
+        let needsResize = false;
+        mutations.forEach(m => {
+          m.addedNodes.forEach(node => {
+            if (node.nodeType !== 1) return;
+            if (node.matches(RIBBON_SELECTOR)) {
+              this.registerTrack(node);
+              needsResize = true;
+            } else {
+              const nested = node.querySelectorAll(RIBBON_SELECTOR);
+              if (nested.length > 0) {
+                nested.forEach(r => this.registerTrack(r));
+                needsResize = true;
+              }
+            }
+          });
+        });
+        if (needsResize) {
+          setTimeout(() => this.resizeAll(), 50);
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    },
+
     scrollTo(target, options = {}) {
-      if (!this.instance) return false;
-      this.instance.scrollTo(target, options);
-      return true;
+      const targetEl = target instanceof Element ? target : null;
+      if (!targetEl) {
+        // Assume vertical scroll if target is a number
+        const root = document.querySelector(ROOT_SELECTOR);
+        const data = this.tracks.get(root);
+        if (data && typeof target === 'number') {
+          data.instance.scrollTo(target, options);
+          return true;
+        }
+        return false;
+      }
+
+      const ribbon = targetEl.closest(RIBBON_SELECTOR);
+      const root = document.querySelector(ROOT_SELECTOR);
+      
+      // 1. Scroll vertical track to ribbon if ribbon exists
+      if (root && ribbon) {
+        const rootData = this.tracks.get(root);
+        if (rootData) {
+          rootData.instance.scrollTo(ribbon, { ...options, lock: true });
+        }
+      }
+
+      // 2. Scroll ribbon to window if target is inside ribbon
+      if (ribbon && targetEl !== ribbon) {
+        const ribbonData = this.tracks.get(ribbon);
+        if (ribbonData) {
+          ribbonData.instance.scrollTo(targetEl, options);
+          return true;
+        }
+      } else if (root && targetEl === ribbon) {
+          // Already handled by step 1
+          return true;
+      } else if (root && targetEl.closest(ROOT_SELECTOR)) {
+          const rootData = this.tracks.get(root);
+          if (rootData) {
+              rootData.instance.scrollTo(targetEl, options);
+              return true;
+          }
+      }
+
+      return false;
     },
-    onFxConfig() {},
-    onFxEnd() {},
+
+    debug() {
+      const info = [];
+      this.tracks.forEach((data, el) => {
+        info.push({
+          id: el.id || 'no-id',
+          class: el.className,
+          scroll: data.instance.scroll,
+          limit: data.instance.limit,
+          hasSnap: !!data.snap,
+          snapPoints: data.snap?.elements?.length || 0
+        });
+      });
+      console.table(info);
+      return info;
+    }
   };
 
   window.niriLenis = api;
   window.niriScrollTo = function (target, options = {}) {
-    if (window.niriLenis?.init() && window.niriLenis.scrollTo(target, options)) return;
+    if (window.niriLenis.scrollTo(target, options)) return;
+    
+    // Native Fallback
     if (target instanceof Element) {
       target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-      return;
+    } else if (typeof target === 'number') {
+      const root = document.querySelector(ROOT_SELECTOR);
+      if (root) root.scrollTo({ top: target, behavior: 'smooth' });
     }
-    const root = document.querySelector(ROOT_SELECTOR);
-    if (root && typeof target === 'number') root.scrollTo({ top: target, behavior: 'smooth' });
   };
 
   if (document.readyState === 'loading') {

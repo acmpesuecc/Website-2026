@@ -20,7 +20,7 @@
   function pickConfig(tier = 'track', orientation = 'vertical') {
     const reduced = prefersReducedMotion();
     return {
-      lerp: tier === 'content' ? (reduced ? 0.1 : 0.05) : (reduced ? 0.1 : 0.05),
+      lerp: tier === 'content' ? (reduced ? 0.15 : 0.1) : (reduced ? 0.15 : 0.1),
       smoothWheel: true,
       smoothTouch: true,
       wheelMultiplier: reduced ? 0.72 : 1,
@@ -35,9 +35,7 @@
   const api = {
     tracks: new Map(), // element -> { instance, snap, rafId }
     windows: new Map(), // element -> { instance, rafId }
-    activeWindow: null,
-    breakoutVelocity: 1.5,
-
+    
     registerTrack(el) {
       if (!el || this.tracks.has(el) || !window.Lenis) return null;
       const isVertical = el.id === 'niri-track-v' || el.classList.contains('niri-vertical-track');
@@ -54,34 +52,14 @@
         let snap = null;
         if (window.Snap) {
           const snapOptions = {
-            type: 'lock',
+            type: 'mandatory',
             distanceThreshold: '100%',
             duration: 0.8,
             lerp: 0.1,
             debounce: 0,
           };
 
-          if (!isVertical) {
-            snapOptions.onSnapComplete = (snapItem) => {
-              const element = snapItem.element || snapItem.userData?.element;
-              if (element) {
-                this.activeWindow = element;
-                this.registerWindow(element);
-                this.resizeAll();
-              }
-            };
-          }
-
           snap = new window.Snap(instance, snapOptions);
-          
-          if (!isVertical) {
-            instance.on('scroll', ({ velocity }) => {
-              if (Math.abs(velocity) > this.breakoutVelocity) {
-                this.activeWindow = null;
-              }
-            });
-          }
-          
           this.updateSnapPoints(el, snap, isVertical);
         }
 
@@ -259,7 +237,6 @@
       if (ribbon && targetEl !== ribbon) {
         const ribbonData = this.tracks.get(ribbon);
         if (ribbonData) {
-          this.activeWindow = targetEl;
           this.registerWindow(targetEl);
           ribbonData.instance.scrollTo(targetEl);
           return true;
@@ -277,23 +254,6 @@
       return false;
     }
   };
-
-  // Wheel interceptor for velocity breakout
-  window.addEventListener('wheel', (e) => {
-    const manager = window.niriLenis;
-    if (!manager?.activeWindow) return;
-    
-    const winData = manager.windows.get(manager.activeWindow);
-    if (!winData) return;
-
-    const ribbon = manager.activeWindow.closest(RIBBON_SELECTOR);
-    const ribbonData = manager.tracks.get(ribbon);
-    
-    if (ribbonData && Math.abs(ribbonData.instance.velocity) < manager.breakoutVelocity) {
-       e.preventDefault();
-       winData.instance.emit('wheel', e);
-    }
-  }, { passive: false });
 
   window.niriLenis = api;
   window.niriScrollTo = function (target, options = {}) {

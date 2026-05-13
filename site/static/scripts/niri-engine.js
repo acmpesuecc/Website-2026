@@ -1,5 +1,14 @@
 // 2D Niri Hypermedia Logic with paxi.js State Preservation
 
+function scrollWindowIntoView(target, opts = {}) {
+  if (!target) return;
+  if (typeof window.niriScrollTo === 'function') {
+    window.niriScrollTo(target, { offset: 0, ...opts });
+    return;
+  }
+  target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+}
+
 window.closeNiriWindow = function(win) {
     if (!win || win.id === 'root-window') return;
     
@@ -28,7 +37,7 @@ window.closeNiriWindow = function(win) {
     if (targetToFocus && targetToFocus.classList.contains('niri-window')) {
         targetToFocus.focus({ preventScroll: true });
         setTimeout(() => {
-            targetToFocus.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            scrollWindowIntoView(targetToFocus);
         }, 50);
     }
 };
@@ -74,6 +83,7 @@ document.addEventListener('scrollend', (e) => {
 
 // Target switching: Main pages spawn new ribbons, sub-pages append to current ribbon
 document.addEventListener('fx:config', (e) => {
+  if (window.niriLenis?.onFxConfig) window.niriLenis.onFxConfig(e);
   const trigger = e.detail.cfg.trigger;
   if (!trigger) return;
   const elt = trigger.target.closest('[fx-action]');
@@ -86,7 +96,7 @@ document.addEventListener('fx:config', (e) => {
     document.body.classList.remove('overview-mode');
     existing.focus({ preventScroll: true });
     setTimeout(() => {
-      existing.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      scrollWindowIntoView(existing);
     }, 50);
     return;
   }
@@ -162,13 +172,14 @@ document.addEventListener('fx:after', (e) => {
 
 // Native scroll snapping focus
 document.addEventListener('fx:end', (e) => {
+  if (window.niriLenis?.onFxEnd) window.niriLenis.onFxEnd(e);
   const newWinId = e.detail.cfg.newWinId;
   if (newWinId) {
     const win = document.getElementById(newWinId);
     if (win) {
       win.focus({ preventScroll: true });
       setTimeout(() => {
-        win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        scrollWindowIntoView(win);
       }, 50);
     }
   } else {

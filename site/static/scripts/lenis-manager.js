@@ -53,17 +53,16 @@
 
         let snap = null;
         if (window.Snap) {
-          snap = new window.Snap(instance, {
+          const snapOptions = {
             type: 'lock',
             distanceThreshold: '100%',
             duration: 0.8,
             lerp: 0.1,
             debounce: 0,
-          });
-          
+          };
+
           if (!isVertical) {
-            snap.onSnapComplete = (snapItem) => {
-              // snapItem might be { value, element } depending on version
+            snapOptions.onSnapComplete = (snapItem) => {
               const element = snapItem.element || snapItem.userData?.element;
               if (element) {
                 this.activeWindow = element;
@@ -71,7 +70,11 @@
                 this.resizeAll();
               }
             };
+          }
 
+          snap = new window.Snap(instance, snapOptions);
+          
+          if (!isVertical) {
             instance.on('scroll', ({ velocity }) => {
               if (Math.abs(velocity) > this.breakoutVelocity) {
                 this.activeWindow = null;
@@ -256,7 +259,9 @@
       if (ribbon && targetEl !== ribbon) {
         const ribbonData = this.tracks.get(ribbon);
         if (ribbonData) {
-          ribbonData.instance.scrollTo(targetEl, options);
+          this.activeWindow = targetEl;
+          this.registerWindow(targetEl);
+          ribbonData.instance.scrollTo(targetEl);
           return true;
         }
       } else if (root && targetEl === ribbon) {

@@ -23,8 +23,8 @@
       lerp: reduced ? 0.1 : 0.05,
       smoothWheel: true,
       smoothTouch: true,
-      wheelMultiplier: reduced ? 0.4 : 0.6, // Slowed down from 0.72/1.0
-      touchMultiplier: reduced ? 0.4 : 0.6, // Slowed down from 0.72/1.0
+      wheelMultiplier: reduced ? 0.72 : 1,
+      touchMultiplier: reduced ? 0.72 : 1,
       orientation: orientation,
       gestureOrientation: orientation === 'vertical' ? 'vertical' : 'horizontal',
       allowNestedScroll: orientation === 'vertical',
@@ -53,22 +53,14 @@
         let snap = null;
         if (window.Snap) {
           snap = new window.Snap(instance, {
-            type: isVertical ? 'proximity' : 'mandatory',
-            distanceThreshold: isVertical ? '30%' : '100%', // More aggressive horizontal attraction
+            type: 'mandatory',
+            distanceThreshold: '100%',
             duration: 0.8,
             lerp: 0.1,
-            debounce: 100, // Faster snap response after scroll stop
+            debounce: 0,
           });
           
           this.updateSnapPoints(el, snap, isVertical);
-
-          // Restore snapping for user input (wheel/touch)
-          // Lenis Snap typically triggers on its own, but we force it for reliability
-          instance.on('scroll', ({ isScrolling, velocity, pointerType }) => {
-            if (!isScrolling && velocity === 0 && pointerType !== 'api') {
-                snap.snap(); 
-            }
-          });
         }
 
         const tick = (time) => {

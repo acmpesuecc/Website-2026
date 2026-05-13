@@ -2,7 +2,7 @@
 
 - **Date:** 2026-05-13
 - **Branch:** `feat/ux/lenis`
-- **Status:** Approved design
+- **Status:** Implemented (Phase 1)
 - **Goal:** Adopt Lenis as scrolling foundation, starting with phased rollout that preserves fixi hypermedia behavior.
 
 ## 1) Scope and Decisions

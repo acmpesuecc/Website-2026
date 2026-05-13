@@ -13,15 +13,21 @@
             if(win) {
                 win.classList.toggle('w-full');
                 setTimeout(() => {
-                    win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                    scrollWindowIntoView(win);
                 }, 310);
             }
         }
         if(evt.key === 'd' || evt.key === 'D') {
             document.body.classList.toggle('overview-mode');
-            if(!document.body.classList.contains('overview-mode')) {
+            if (document.body.classList.contains('overview-mode')) {
+                if (window.niriLenis) window.niriLenis.pauseAll();
+            } else {
+                if (window.niriLenis) {
+                    window.niriLenis.resumeAll();
+                    window.niriLenis.resizeAll();
+                }
                 let win = document.activeElement.closest('.niri-window');
-                if(win) win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                if(win) scrollWindowIntoView(win);
             }
         }
         if(evt.key === '/') {
@@ -50,8 +56,12 @@
             win.focus({ preventScroll: true });
             if(document.body.classList.contains('overview-mode')) {
                 document.body.classList.remove('overview-mode');
+                if (window.niriLenis) {
+                    window.niriLenis.resumeAll();
+                    window.niriLenis.resizeAll();
+                }
                 setTimeout(() => {
-                    win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                    scrollWindowIntoView(win);
                 }, 50);
                 evt.preventDefault();
                 evt.stopPropagation();

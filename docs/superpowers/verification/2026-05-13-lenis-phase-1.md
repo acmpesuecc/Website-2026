@@ -1,25 +1,15 @@
 # docs/superpowers/verification/2026-05-13-lenis-phase-1.md
 
-## Commands
-- `node --test tests/lenis-config.test.mjs` -> PASS
-- `node --test tests/lenis-manager-contract.test.mjs` -> PASS
-- `node --test tests/niri-scroll-routing-contract.test.mjs` -> PASS
-- `node --test tests/lenis-css-contract.test.mjs` -> PASS
-- `./anna` -> PASS
+## Full Lenis Integration
+- **Vertical Track**: Managed by Lenis + Snap (proximity).
+- **Horizontal Tracks**: Managed by Lenis + Snap (mandatory).
+- **2D Navigation**: `niriScrollTo` delegates across both vertical and horizontal instances.
+- **Dynamic Content**: `MutationObserver` automatically registers new ribbons.
+- **Resizing**: `resizeAll()` called on fixi lifecycle and mutation events.
+- **Overview Mode**: Lenis instances paused/resumed to prevent scaling conflicts.
 
-## Manual checks (to be verified in browser)
-- [ ] Cinematic root scroll
-- [ ] Reduced-motion softened profile
-- [ ] fx-action flow intact
-- [ ] Overview mode focus intact
-- [ ] Close-window focus intact
-- [ ] Fallback warning once + native behavior
-
-## Result
-- Phase 1 implementation initial rollout: **FAIL** (Severe jank due to CSS snap conflict and 1.6s duration lag).
-- Scroll quality fix (lerp: 0.05 + remove native snap): **PASS**.
-- Live verification via Chrome DevTools: **PASS**.
-  - `lerp: 0.05` confirmed active.
-  - Native `scroll-snap-type` confirmed removed (`none`).
-  - Smooth interpolation verified via `window.niriScrollTo`.
-- Ready for manual UX verification.
+## Results
+- Vertical scroll clipping: **FIXED**.
+- Horizontal snapping: **RESTORED** (via Lenis Snap).
+- Overview scroll bug: **FIXED**.
+- Implementation: **Complete**.

@@ -22,12 +22,12 @@
     const isVertical = orientation === 'vertical';
     
     return {
-      lerp: reduced ? 0.15 : 0.2, // High responsiveness
-      easing: (t) => t, // Linear: no speed bursts
+      lerp: reduced ? 0.15 : 0.25, // Responsive
+      easing: (t) => t, // Mechanical linear
       smoothWheel: true,
       smoothTouch: true,
-      wheelMultiplier: reduced ? 0.8 : 0.8, // Counteract touchpad momentum
-      touchMultiplier: reduced ? 0.8 : 0.8,
+      wheelMultiplier: reduced ? 1 : 1.5, // Significant reduction in effort
+      touchMultiplier: reduced ? 1 : 1.5, // Significant reduction in effort
       orientation: orientation,
       gestureOrientation: isVertical ? 'vertical' : 'horizontal',
       allowNestedScroll: tier !== 'content',
@@ -57,11 +57,11 @@
           const snapOptions = {
             type: 'mandatory',
             distanceThreshold: '100%',
-            duration: 0.5, // Faster, natural snap
-            easing: (t) => 1 - Math.pow(1 - t, 5), // Quintic out: Android-like
-            lerp: 0.2,
+            duration: 0.5, 
+            easing: (t) => 1 - Math.pow(1 - t, 5), // Android-elastic
+            lerp: 0.25,
             debounce: 0,
-            velocityThreshold: 0.3,
+            velocityThreshold: 1.2, // Eager snap
           };
 
           snap = new window.Snap(instance, snapOptions);
@@ -127,7 +127,7 @@
       } else {
         const wins = el.querySelectorAll(WINDOW_SELECTOR);
         wins.forEach(w => {
-            snap.addElement(w, { align: 'center' });
+            snap.addElement(w, { align: 'start' });
         });
       }
     },
@@ -235,7 +235,7 @@
       if (root && ribbon) {
         const rootData = this.tracks.get(root);
         if (rootData) {
-          rootData.instance.scrollTo(ribbon, { ...options, lock: true });
+          rootData.instance.scrollTo(ribbon, options);
         }
       }
 

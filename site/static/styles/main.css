@@ -110,13 +110,13 @@ body.overview-mode .site-footer {
     display: flex;
     flex-direction: row;
     min-height: var(--app-height);
-    width: var(--app-width);
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: auto;
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
     padding: 1.5rem;
+    padding-right: 85vw; /* Crucial: allows last window to reach the start of viewport */
     box-sizing: border-box;
     scrollbar-width: none;
 }

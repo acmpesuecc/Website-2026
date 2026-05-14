@@ -23,8 +23,8 @@
       lerp: tier === 'content' ? (reduced ? 0.15 : 0.1) : (reduced ? 0.15 : 0.1),
       smoothWheel: true,
       smoothTouch: true,
-      wheelMultiplier: reduced ? 0.72 : 1,
-      touchMultiplier: reduced ? 0.72 : 1,
+      wheelMultiplier: reduced ? 1 : 1.2, // Increased for less effort
+      touchMultiplier: reduced ? 1 : 1.2, // Increased for less effort
       orientation: orientation,
       gestureOrientation: orientation === 'vertical' ? 'vertical' : 'horizontal',
       allowNestedScroll: tier !== 'content',
@@ -54,9 +54,10 @@
           const snapOptions = {
             type: 'mandatory',
             distanceThreshold: '100%',
-            duration: 0.8,
-            lerp: 0.1,
+            duration: 0.6, // Slightly faster
+            lerp: 0.15, // Tighter snap
             debounce: 0,
+            velocityThreshold: 0.5, // Lower threshold = wait longer to snap (don't catch mid-air)
           };
 
           snap = new window.Snap(instance, snapOptions);
@@ -122,7 +123,7 @@
       } else {
         const wins = el.querySelectorAll(WINDOW_SELECTOR);
         wins.forEach(w => {
-            snap.addElement(w, { align: 'center' });
+            snap.addElement(w, { align: 'start' });
         });
       }
     },

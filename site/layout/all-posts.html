@@ -11,6 +11,7 @@
             let win = document.activeElement.closest('.niri-window');
             if(win) {
                 win.classList.toggle('w-full');
+                if (window.niriLenis) window.niriLenis.resizeAll();
                 setTimeout(() => {
                     scrollWindowIntoView(win);
                 }, 310);

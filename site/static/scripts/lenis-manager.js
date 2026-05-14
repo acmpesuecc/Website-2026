@@ -19,14 +19,16 @@
 
   function pickConfig(tier = 'track', orientation = 'vertical') {
     const reduced = prefersReducedMotion();
+    const isVertical = orientation === 'vertical';
+    
     return {
-      lerp: tier === 'content' ? (reduced ? 0.15 : 0.1) : (reduced ? 0.15 : 0.1),
+      lerp: tier === 'content' ? (reduced ? 0.15 : 0.1) : (reduced ? 0.1 : (isVertical ? 0.08 : 0.1)),
       smoothWheel: true,
       smoothTouch: true,
-      wheelMultiplier: reduced ? 1 : 1.2, // Increased for less effort
-      touchMultiplier: reduced ? 1 : 1.2, // Increased for less effort
+      wheelMultiplier: reduced ? 0.8 : (isVertical ? 0.9 : 1.2),
+      touchMultiplier: reduced ? 0.8 : (isVertical ? 0.9 : 1.2),
       orientation: orientation,
-      gestureOrientation: orientation === 'vertical' ? 'vertical' : 'horizontal',
+      gestureOrientation: isVertical ? 'vertical' : 'horizontal',
       allowNestedScroll: tier !== 'content',
       infinite: false,
     };
@@ -54,10 +56,10 @@
           const snapOptions = {
             type: 'mandatory',
             distanceThreshold: '100%',
-            duration: 0.6, // Slightly faster
-            lerp: 0.15, // Tighter snap
+            duration: isVertical ? 1.2 : 0.6,
+            lerp: isVertical ? 0.1 : 0.15,
             debounce: 0,
-            velocityThreshold: 0.5, // Lower threshold = wait longer to snap (don't catch mid-air)
+            velocityThreshold: isVertical ? 0.2 : 0.5,
           };
 
           snap = new window.Snap(instance, snapOptions);

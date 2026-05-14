@@ -127,7 +127,7 @@
       } else {
         const wins = el.querySelectorAll(WINDOW_SELECTOR);
         wins.forEach(w => {
-            snap.addElement(w, { align: 'start' });
+            snap.addElement(w, { align: 'center' });
         });
       }
     },

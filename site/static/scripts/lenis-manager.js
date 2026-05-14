@@ -22,11 +22,12 @@
     const isVertical = orientation === 'vertical';
     
     return {
-      lerp: tier === 'content' ? (reduced ? 0.15 : 0.1) : (reduced ? 0.1 : (isVertical ? 0.08 : 0.1)),
+      lerp: reduced ? 0.15 : 0.2, // High responsiveness
+      easing: (t) => t, // Linear: no speed bursts
       smoothWheel: true,
       smoothTouch: true,
-      wheelMultiplier: reduced ? 0.8 : (isVertical ? 0.9 : 1.2),
-      touchMultiplier: reduced ? 0.8 : (isVertical ? 0.9 : 1.2),
+      wheelMultiplier: reduced ? 0.8 : 0.8, // Counteract touchpad momentum
+      touchMultiplier: reduced ? 0.8 : 0.8,
       orientation: orientation,
       gestureOrientation: isVertical ? 'vertical' : 'horizontal',
       allowNestedScroll: tier !== 'content',
@@ -56,10 +57,11 @@
           const snapOptions = {
             type: 'mandatory',
             distanceThreshold: '100%',
-            duration: isVertical ? 1.2 : 0.6,
-            lerp: isVertical ? 0.1 : 0.15,
+            duration: 0.5, // Faster, natural snap
+            easing: (t) => 1 - Math.pow(1 - t, 5), // Quintic out: Android-like
+            lerp: 0.2,
             debounce: 0,
-            velocityThreshold: isVertical ? 0.2 : 0.5,
+            velocityThreshold: 0.3,
           };
 
           snap = new window.Snap(instance, snapOptions);

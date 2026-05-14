@@ -107,6 +107,22 @@
         };
         const rafId = requestAnimationFrame(tick);
 
+        // Smart Bubbling Logic
+        el.addEventListener('wheel', (e) => {
+          // If primarily horizontal scroll, let it bubble to the ribbon
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+          const isAtTop = instance.scroll <= 0;
+          const isAtBottom = instance.scroll >= instance.limit;
+          
+          if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+            // Trying to scroll past bounds. Let it bubble to the root vertical track.
+          } else {
+            // Scrolling inside window bounds. Stop propagation to prevent root track from moving.
+            e.stopPropagation();
+          }
+        }, { passive: false });
+
         this.windows.set(el, { instance, rafId });
         return instance;
       } catch (err) {

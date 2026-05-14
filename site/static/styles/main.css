@@ -68,13 +68,20 @@ body.overview-mode .niri-horizontal-track {
     overflow: visible;
     min-height: var(--app-height);
     height: var(--app-height);
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0 2rem;
 }
 
 body.overview-mode .niri-window {
     cursor: pointer;
-    height: calc(var(--app-height) - 3rem);
-    flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
+    height: 60vh;
+    flex: 0 0 calc(33.333% - 2rem);
+    min-width: 300px;
+    max-width: 400px;
 }
 
 body.overview-mode #root-window {
@@ -98,7 +105,7 @@ body.overview-mode .site-footer {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: auto;
-    transition: transform 0.5s;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     scrollbar-width: none;
 }
 
@@ -133,9 +140,10 @@ body.overview-mode .site-footer {
     border-radius: 16px;
     box-sizing: border-box;
     transition:
-        flex-basis 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
+        flex-basis 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+        border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+        transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     background: rgba(0, 12, 35, 0.6);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -203,12 +211,13 @@ body.overview-mode .site-footer {
 
     body.overview-mode .niri-vertical-track {
         zoom: 1; /* Reset desktop zoom */
-        gap: 1rem;
+        gap: 2rem;
         padding: 1rem;
         padding-bottom: 4rem;
         width: 100%;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         box-sizing: border-box;
         align-items: start;
     }
@@ -216,7 +225,7 @@ body.overview-mode .site-footer {
     /* Track with MULTIPLE windows (Tab Group) */
     body.overview-mode .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 8px;
         width: 100%;
         height: auto;
@@ -274,7 +283,7 @@ body.overview-mode .site-footer {
         background: #00122e; 
         border: 1px solid rgba(0, 170, 254, 0.4);
         position: relative;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         overflow: hidden;
     }
 
@@ -1851,6 +1860,11 @@ a > code {
     transform: translateY(-14px) scale(1.04);
     box-shadow: 0 28px 60px rgba(2, 6, 23, 0.16);
 }
+@keyframes float {
+    0%   { transform: translateY(calc(var(--hover-y, 0px) + 0px))   scale(var(--hover-scale, 1)); }
+    50%  { transform: translateY(calc(var(--hover-y, 0px) + -8px))  scale(var(--hover-scale, 1)); }
+    100% { transform: translateY(calc(var(--hover-y, 0px) + 0px))   scale(var(--hover-scale, 1)); }
+}
 
 /* ── BLOGS (horizontal strips) ── */
 .blogs-list {
@@ -1863,12 +1877,14 @@ a > code {
     text-decoration: none;
     color: inherit;
     display: block;
-    animation: float 3s ease-in-out infinite;
     border-radius: 16px;
+    animation: float 3s ease-in-out infinite;
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
 }
+
+
 
 .blog-card:hover {
     animation: none;
@@ -1886,6 +1902,8 @@ a > code {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.3s ease;
 }
+
+
 
 .blog-card:hover .blog-card-inner {
     box-shadow: 0 8px 24px rgba(0, 170, 254, 0.2);
@@ -1942,18 +1960,21 @@ a > code {
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     overflow: hidden;
+    height: 320px;
     animation: float 3s ease-in-out infinite;
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
-    height: 320px;
 }
+
+
 
 .event-card:hover .event-card-inner {
     animation: none;
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 8px 24px rgba(0, 170, 254, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
+
 .event-thumb {
     height: 180px;
     overflow: hidden;

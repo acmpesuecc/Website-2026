@@ -1,3 +1,9 @@
+@keyframes float {
+    0%   { transform: translateY(calc(var(--hover-y, 0px) + 0px))   scale(var(--hover-scale, 1)); }
+    50%  { transform: translateY(calc(var(--hover-y, 0px) + -8px))  scale(var(--hover-scale, 1)); }
+    100% { transform: translateY(calc(var(--hover-y, 0px) + 0px))   scale(var(--hover-scale, 1)); }
+}
+
 /* ── Members Grid ── */
 .member-cards {
     display: grid;
@@ -19,15 +25,12 @@
     background: #000c23;
     color: #ffffff;
     text-align: center;
-    animation: float 3s ease-in-out infinite;
 }
 
 .member-card:hover {
-    animation: none;
-    box-shadow: 0 8px 24px rgba(0, 170, 254, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 170, 254, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transform: translateY(-6px) scale(1.01);
 }
-
 .member-photo-wrapper {
     width: 120px;
     height: 120px;

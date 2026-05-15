@@ -373,12 +373,17 @@ function overviewWheelHandler(e) {
   e.stopPropagation();
 
   // accumulate and amplify small deltas for smoother touchpad response
-  const HORIZ_FACTOR = 1.5;
+  const HORIZ_FACTOR = 3.0; // increased sensitivity
+  const MAX_PER_FRAME = 300; // cap per-frame scroll to avoid huge jumps
   target.__hAccum = (target.__hAccum || 0) + deltaX * HORIZ_FACTOR;
 
   // flush integer pixels via rAF
   window.requestAnimationFrame(() => {
-    const amount = Math.trunc(target.__hAccum);
+    let amount = Math.trunc(target.__hAccum);
+    // clamp amount
+    if (amount > MAX_PER_FRAME) amount = MAX_PER_FRAME;
+    if (amount < -MAX_PER_FRAME) amount = -MAX_PER_FRAME;
+
     target.__hAccum -= amount;
     if (amount !== 0) {
       try {
@@ -388,7 +393,7 @@ function overviewWheelHandler(e) {
     }
 
     if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
-      try { console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth }); } catch (e) {}
+      try { console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth, amount }); } catch (e) {}
     }
 
     if (target.__snapRestoreTimeout) clearTimeout(target.__snapRestoreTimeout);

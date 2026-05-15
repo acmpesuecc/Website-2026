@@ -46,6 +46,11 @@ layout: page
   transition: opacity 0.3s;
 }
 
+body.overview-mode #root-window::before {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
 /* Center everything in normal view */
 #root-window .site-main {
   display: flex;
@@ -248,6 +253,10 @@ body.overview-mode .niri-landing {
       let targetX = -200, targetY = -200;
       
       function animate() {
+        if (document.body.classList.contains('overview-mode')) {
+          requestAnimationFrame(animate);
+          return;
+        }
         currentX += (targetX - currentX) * 0.15;
         currentY += (targetY - currentY) * 0.15;
         rootWindow.style.setProperty('--cursor-x', `${currentX}px`);

@@ -203,3 +203,18 @@ if (document.readyState === 'loading') {
 } else {
   injectCloseBtn(document.body);
 }
+
+// Prevent inner window scrolling while in overview mode.
+// Allow clicks to still work so user can exit overview by selecting a window.
+function overviewScrollBlocker(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+  try {
+    const win = e.target && e.target.closest && e.target.closest('.niri-window');
+    if (win) e.preventDefault();
+  } catch (err) {
+    // ignore
+  }
+}
+
+document.addEventListener('wheel', overviewScrollBlocker, { passive: false, capture: true });
+document.addEventListener('touchmove', overviewScrollBlocker, { passive: false, capture: true });

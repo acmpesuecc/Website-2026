@@ -116,7 +116,6 @@ body.overview-mode .site-footer {
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
     padding: 1.5rem;
-    padding-right: 85vw; /* Crucial: allows last window to reach the start of viewport */
     box-sizing: border-box;
     scrollbar-width: none;
 }

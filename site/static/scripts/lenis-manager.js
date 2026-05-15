@@ -133,8 +133,12 @@
     updateSnapPoints(el, snap, isVertical) {
       if (!snap || !snap.addElement) return;
       
-      // In this version of Snap, we should ideally clear points.
-      // Since it doesn't have a clear, we just add what's missing or trust it.
+      // Clear existing elements to prevent memory leaks and duplicate points
+      if (snap.elements) {
+        snap.elements.forEach(e => e.destroy && e.destroy());
+        snap.elements.clear();
+      }
+      
       if (isVertical) {
         const ribbons = el.querySelectorAll(RIBBON_SELECTOR);
         ribbons.forEach(r => {
@@ -259,7 +263,14 @@
         const ribbonData = this.tracks.get(ribbon);
         if (ribbonData) {
           this.registerWindow(targetEl);
-          ribbonData.instance.scrollTo(targetEl);
+          
+          const ribbonRect = ribbon.getBoundingClientRect();
+          const targetRect = targetEl.getBoundingClientRect();
+          
+          // Only scroll if the target is not already mostly visible in the viewport
+          if (targetRect.left < ribbonRect.left || targetRect.right > ribbonRect.right) {
+            ribbonData.instance.scrollTo(targetEl);
+          }
           return true;
         }
       } else if (root && targetEl === ribbon) {

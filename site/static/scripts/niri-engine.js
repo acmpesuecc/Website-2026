@@ -241,6 +241,34 @@ const _bodyObserver = new MutationObserver((mutations) => {
 });
 _bodyObserver.observe(document.body, { attributes: true });
 
+// Ribbon scroll enable/disable helpers. Some CSS in overview-mode sets ribbons to overflow: visible;
+// enable overflow-x:auto when user interacts so native scrolling works.
+const _ribbonOverflowMap = new WeakMap();
+function enableRibbonScroll(ribbon) {
+  if (!ribbon) return;
+  if (_ribbonOverflowMap.has(ribbon)) return;
+  try {
+    _ribbonOverflowMap.set(ribbon, { overflowX: ribbon.style.overflowX || '', touchAction: ribbon.style.touchAction || '' });
+    ribbon.style.overflowX = 'auto';
+    ribbon.style.overflowY = 'hidden';
+    ribbon.style.touchAction = 'pan-x';
+  } catch (err) {}
+}
+function disableRibbonScroll(ribbon) {
+  if (!ribbon) return;
+  const prev = _ribbonOverflowMap.get(ribbon);
+  if (prev) {
+    try {
+      ribbon.style.overflowX = prev.overflowX || '';
+      ribbon.style.touchAction = prev.touchAction || '';
+    } catch (err) {}
+    _ribbonOverflowMap.delete(ribbon);
+  }
+}
+function disableAllRibbons() {
+  document.querySelectorAll('.niri-horizontal-track').forEach(r => disableRibbonScroll(r));
+}
+
 function _nearestTracks(win) {
   const root = document.getElementById('niri-track-v');
   const ribbon = win ? win.closest('.niri-horizontal-track') : null;
@@ -325,7 +353,20 @@ function overviewWheelHandler(e) {
   }
 }
 
-document.addEventListener('wheel', overviewWheelHandler, { passive: false, capture: true });
+document.addEventListener('wheel', (e) => {
+  // ensure ribbon becomes scrollable when user tries horizontal scroll with touchpad
+  if (document.body.classList.contains('overview-mode')) {
+    let win = null;
+    try { win = e.target && e.target.closest && e.target.closest('.niri-window'); } catch(err) { win = null; }
+    if (!win && typeof e.clientX === 'number') {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el) win = el.closest && el.closest('.niri-window');
+    }
+    const ribbon = win ? win.closest('.niri-horizontal-track') : null;
+    if (ribbon) enableRibbonScroll(ribbon);
+  }
+  overviewWheelHandler(e);
+}, { passive: false, capture: true });
 
 // Touch: simple pan routing. Track touchstart -> touchmove deltas, route to nearest track.
 let _touchStart = null;
@@ -365,8 +406,38 @@ function overviewTouchMove(e) {
   }
 }
 
-document.addEventListener('touchstart', overviewTouchStart, { passive: true, capture: true });
+document.addEventListener('touchstart', (e) => {
+  if (document.body.classList.contains('overview-mode')) {
+    const t = e.touches && e.touches[0];
+    if (t) {
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const ribbon = el && el.closest ? el.closest('.niri-horizontal-track') : null;
+      if (ribbon) enableRibbonScroll(ribbon);
+    }
+  }
+  overviewTouchStart(e);
+}, { passive: true, capture: true });
 document.addEventListener('touchmove', overviewTouchMove, { passive: false, capture: true });
+
+// pointer/mouse leave to disable ribbons when not interacting
+let _pointerOverRibbon = null;
+document.addEventListener('pointermove', (e) => {
+  if (!document.body.classList.contains('overview-mode')) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  const ribbon = el && el.closest ? el.closest('.niri-horizontal-track') : null;
+  if (ribbon && ribbon !== _pointerOverRibbon) {
+    if (_pointerOverRibbon) disableRibbonScroll(_pointerOverRibbon);
+    _pointerOverRibbon = ribbon;
+    enableRibbonScroll(ribbon);
+  } else if (!ribbon && _pointerOverRibbon) {
+    disableRibbonScroll(_pointerOverRibbon);
+    _pointerOverRibbon = null;
+  }
+}, { passive: true, capture: true });
+
+document.addEventListener('pointerleave', (e) => {
+  if (_pointerOverRibbon) { disableRibbonScroll(_pointerOverRibbon); _pointerOverRibbon = null; }
+}, { passive: true, capture: true });
 
 // Keyboard: map keys to outer track scroll commands.
 function overviewKeyBlocker(e) {

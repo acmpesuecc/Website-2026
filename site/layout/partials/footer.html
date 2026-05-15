@@ -37,6 +37,18 @@
         </div>
     </dialog>
 
+    <dialog id="close-track-modal">
+        <div class="help-content">
+            <h2>Close Track?</h2>
+            <p>You are closing the main window of this track. Do you want to close the entire track or just this window?</p>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                <button id="btn-close-all">Close all</button>
+                <button id="btn-close-window">Close this window only</button>
+                <form method="dialog" style="display: inline;"><button style="border-color: rgba(255,255,255, 0.2); color: #a1a1aa;">Cancel</button></form>
+            </div>
+        </div>
+    </dialog>
+
     <button class="fab-overview" aria-label="Toggle Overview Mode">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
     </button>

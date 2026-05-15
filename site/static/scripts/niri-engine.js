@@ -4,32 +4,67 @@ window.closeNiriWindow = function(win) {
     if (!win || win.id === 'root-window') return;
     
     const track = win.closest('.niri-horizontal-track');
-    let targetToFocus = win.previousElementSibling;
-    let removeTrack = false;
     
-    if (!targetToFocus || !targetToFocus.classList.contains('niri-window')) {
-        const prevTrack = track.previousElementSibling;
+    const focusWindow = (target) => {
+        if (target && target.classList.contains('niri-window')) {
+            target.focus({ preventScroll: true });
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }, 50);
+        }
+    };
+
+    const removeTrackAndFocusPrev = (t) => {
+        let target = null;
+        const prevTrack = t.previousElementSibling;
         if (prevTrack && prevTrack.classList.contains('niri-horizontal-track')) {
             const windows = prevTrack.querySelectorAll('.niri-window');
-            targetToFocus = windows[windows.length - 1];
+            target = windows[windows.length - 1];
+        }
+        t.remove();
+        focusWindow(target);
+    };
+
+    const removeWindowAndFocusBest = (w) => {
+        let target = w.previousElementSibling;
+        // If it's the first window, prefer the next one to stay in the same track
+        if (!target || !target.classList.contains('niri-window')) {
+            target = w.nextElementSibling;
+        }
+        w.remove();
+        focusWindow(target);
+    };
+
+    const isFirstWindow = !win.previousElementSibling || !win.previousElementSibling.classList.contains('niri-window');
+    const hasOtherWindows = !!win.nextElementSibling && win.nextElementSibling.classList.contains('niri-window');
+
+    if (isFirstWindow && hasOtherWindows) {
+        const modal = document.getElementById('close-track-modal');
+        if (modal) {
+            modal.showModal();
+            const btnAll = document.getElementById('btn-close-all');
+            const btnWindow = document.getElementById('btn-close-window');
+            
+            const onAll = () => { removeTrackAndFocusPrev(track); modal.close(); };
+            const onWin = () => { removeWindowAndFocusBest(win); modal.close(); };
+            
+            btnAll.addEventListener('click', onAll, { once: true });
+            btnWindow.addEventListener('click', onWin, { once: true });
+            
+            const onModalClose = () => {
+                btnAll.removeEventListener('click', onAll);
+                btnWindow.removeEventListener('click', onWin);
+                modal.removeEventListener('close', onModalClose);
+            };
+            modal.addEventListener('close', onModalClose);
+            return;
         }
     }
-    
+
     if (track.id !== 'niri-track-h-root' && track.querySelectorAll('.niri-window').length === 1) {
-        removeTrack = true;
-    }
-    
-    if (removeTrack) {
-        track.remove();
+        removeTrackAndFocusPrev(track);
     } else {
-        win.remove();
-    }
-    
-    if (targetToFocus && targetToFocus.classList.contains('niri-window')) {
-        targetToFocus.focus({ preventScroll: true });
-        setTimeout(() => {
-            targetToFocus.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-        }, 50);
+        removeWindowAndFocusBest(win);
     }
 };
 

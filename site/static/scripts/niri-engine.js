@@ -228,7 +228,9 @@ function setOverviewWindowOverflow(enabled) {
 }
 
 // apply initial state
-setOverviewWindowOverflow(document.body.classList.contains('overview-mode'));
+const initialOverview = document.body.classList.contains('overview-mode');
+setOverviewWindowOverflow(initialOverview);
+setRibbonsFullWidth(initialOverview);
 
 // enable auto-debug for current session
 try { window.__niriDebugOverview = true; } catch (err) {}
@@ -239,6 +241,7 @@ const _bodyObserver = new MutationObserver((mutations) => {
     if (m.attributeName === 'class') {
       const enabled = document.body.classList.contains('overview-mode');
       setOverviewWindowOverflow(enabled);
+      setRibbonsFullWidth(enabled);
     }
   }
 });
@@ -247,6 +250,7 @@ _bodyObserver.observe(document.body, { attributes: true });
 // Ribbon scroll enable/disable helpers. Some CSS in overview-mode sets ribbons to overflow: visible;
 // enable overflow-x:auto when user interacts so native scrolling works.
 const _ribbonOverflowMap = new WeakMap();
+const _ribbonFullMap = new WeakMap();
 function enableRibbonScroll(ribbon) {
   if (!ribbon) return;
   if (_ribbonOverflowMap.has(ribbon)) return;
@@ -278,6 +282,34 @@ function disableRibbonScroll(ribbon) {
 }
 function disableAllRibbons() {
   document.querySelectorAll('.niri-horizontal-track').forEach(r => disableRibbonScroll(r));
+}
+
+// Keep ribbons fully visible during overview-mode by setting width to scrollWidth
+function setRibbonsFullWidth(enable) {
+  document.querySelectorAll('.niri-horizontal-track').forEach(ribbon => {
+    try {
+      if (enable) {
+        if (!_ribbonFullMap.has(ribbon)) {
+          _ribbonFullMap.set(ribbon, { width: ribbon.style.width || '', whiteSpace: ribbon.style.whiteSpace || '' });
+        }
+        // set inline width to content width so all windows appear inline and visible
+        ribbon.style.width = ribbon.scrollWidth + 'px';
+        ribbon.style.whiteSpace = 'nowrap';
+        // ensure horizontal scroll enabled
+        ribbon.style.overflowX = 'auto';
+      } else {
+        const prev = _ribbonFullMap.get(ribbon);
+        if (prev) {
+          ribbon.style.width = prev.width || '';
+          ribbon.style.whiteSpace = prev.whiteSpace || '';
+          _ribbonFullMap.delete(ribbon);
+        } else {
+          ribbon.style.width = '';
+          ribbon.style.whiteSpace = '';
+        }
+      }
+    } catch (err) {}
+  });
 }
 
 function _nearestTracks(win) {

@@ -259,21 +259,43 @@ function _scrollTrackBy(track, x, y, smooth = false) {
 // Wheel: redirect deltas to outer track when in overview-mode.
 function overviewWheelHandler(e) {
   if (!document.body.classList.contains('overview-mode')) return;
-  const win = e.target && e.target.closest && e.target.closest('.niri-window');
-  if (!win) return; // if not over a window, let normal flow handle it
 
-  // consume event and scroll nearest track instead
+  // determine event target robustly; sometimes target is inner scaled child
+  let win = null;
+  try {
+    win = e.target && e.target.closest && e.target.closest('.niri-window');
+    if (!win && typeof e.clientX === 'number') {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el) win = el.closest && el.closest('.niri-window');
+    }
+  } catch (err) { win = null; }
+
+  // If still no window found, fallback to root scroll
+  const { root, ribbon } = _nearestTracks(win);
+
+  // normalize deltaMode (0=pixel,1=line,2=page)
+  let deltaX = e.deltaX, deltaY = e.deltaY;
+  if (e.deltaMode === 1) { // lines -> approx pixels
+    const LINE_HEIGHT = 16;
+    deltaX *= LINE_HEIGHT; deltaY *= LINE_HEIGHT;
+  } else if (e.deltaMode === 2) { // page
+    const PAGE = window.innerHeight || 800;
+    deltaX *= PAGE; deltaY *= PAGE;
+  }
+
+  // If no specific window under cursor, allow default (scroll outer page)
+  if (!win && !root) return;
+
   e.preventDefault();
   e.stopPropagation();
 
-  const { root, ribbon } = _nearestTracks(win);
-  const absY = Math.abs(e.deltaY), absX = Math.abs(e.deltaX);
+  const absY = Math.abs(deltaY), absX = Math.abs(deltaX);
   if (absY >= absX) {
     // vertical motion -> scroll root
-    _scrollTrackBy(root || document.scrollingElement || document.documentElement, 0, e.deltaY, false);
+    _scrollTrackBy(root || document.scrollingElement || document.documentElement, 0, deltaY, false);
   } else {
     // horizontal motion -> scroll ribbon if present else root
-    _scrollTrackBy(ribbon || root || document.scrollingElement || document.documentElement, e.deltaX, 0, false);
+    _scrollTrackBy(ribbon || root || document.scrollingElement || document.documentElement, deltaX, 0, false);
   }
 }
 

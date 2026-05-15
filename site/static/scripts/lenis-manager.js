@@ -124,6 +124,10 @@
         ribbons.forEach(r => {
             snap.addElement(r, { align: 'start' });
         });
+        const footer = el.querySelector(".site-footer");
+        if (footer) {
+            snap.addElement(footer, { align: "end" });
+        }
       } else {
         const wins = el.querySelectorAll(WINDOW_SELECTOR);
         wins.forEach(w => {
@@ -231,11 +235,14 @@
 
       const ribbon = targetEl.closest(RIBBON_SELECTOR);
       const root = document.querySelector(ROOT_SELECTOR);
+      let scrolled = false;
       
       if (root && ribbon) {
         const rootData = this.tracks.get(root);
         if (rootData) {
-          rootData.instance.scrollTo(ribbon, { ...options, lock: true });
+          // Remove lock: true to allow simultaneous scrolling
+          rootData.instance.scrollTo(ribbon, { ...options });
+          scrolled = true;
         }
       }
 
@@ -243,20 +250,20 @@
         const ribbonData = this.tracks.get(ribbon);
         if (ribbonData) {
           this.registerWindow(targetEl);
-          ribbonData.instance.scrollTo(targetEl);
-          return true;
+          ribbonData.instance.scrollTo(targetEl, { ...options });
+          scrolled = true;
         }
       } else if (root && targetEl === ribbon) {
-          return true;
+          scrolled = true;
       } else if (root && targetEl.closest(ROOT_SELECTOR)) {
           const rootData = this.tracks.get(root);
           if (rootData) {
               rootData.instance.scrollTo(targetEl, options);
-              return true;
+              scrolled = true;
           }
       }
 
-      return false;
+      return scrolled;
     }
   };
 

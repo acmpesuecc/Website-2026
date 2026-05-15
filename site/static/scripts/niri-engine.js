@@ -373,7 +373,15 @@ function overviewWheelHandler(e) {
   e.stopPropagation();
 
   // accumulate and amplify small deltas for smoother touchpad response
-  const HORIZ_FACTOR = 5.0; // sensitivity multiplier (increased per request)
+  // compensate for overview zoom (<1) so horizontal movement feels natural
+  const HORIZ_FACTOR_BASE = 5.0;
+  let zoomComp = 1;
+  try {
+    const vTrack = document.getElementById('niri-track-v');
+    const z = vTrack ? parseFloat(getComputedStyle(vTrack).zoom || '1') : 1;
+    if (Number.isFinite(z) && z > 0 && z < 1) zoomComp = 1 / z;
+  } catch (err) {}
+  const HORIZ_FACTOR = HORIZ_FACTOR_BASE * zoomComp;
   target.__hAccum = (target.__hAccum || 0) + deltaX * HORIZ_FACTOR;
 
   // capture absDelta for adaptive clamping
@@ -415,7 +423,7 @@ function overviewWheelHandler(e) {
     if (target.__snapRestoreTimeout) clearTimeout(target.__snapRestoreTimeout);
     target.__snapRestoreTimeout = setTimeout(() => {
       try { target.style.scrollSnapType = target.__prevScrollSnap || ''; delete target.__prevScrollSnap; } catch (e) {}
-    }, 300);
+    }, 700);
   });
 }
 

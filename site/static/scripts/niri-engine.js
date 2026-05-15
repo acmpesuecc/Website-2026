@@ -373,7 +373,21 @@ function overviewWheelHandler(e) {
 
     // use rAF to avoid jank
     window.requestAnimationFrame(() => {
-      try { target.scrollLeft += amount; } catch (err) { _scrollTrackBy(target, amount, 0, false); }
+      try {
+        if (typeof target.scrollBy === 'function') {
+          target.scrollBy({ left: amount, behavior: 'auto' });
+        } else {
+          target.scrollLeft += amount;
+        }
+      } catch (err) {
+        _scrollTrackBy(target, amount, 0, false);
+      }
+      // debug after scroll
+      if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
+        try {
+          console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth });
+        } catch (e) { console.log('[overview] post-scroll error', e); }
+      }
     });
   }
 }

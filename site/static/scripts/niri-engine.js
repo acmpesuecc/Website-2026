@@ -194,6 +194,7 @@ document.addEventListener('fx:end', (e) => {
 function updateViewportVars() {
   document.documentElement.style.setProperty('--app-width', `${window.innerWidth}px`);
   document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+  try { if (typeof updateOverviewTrackWindowBasis === 'function') updateOverviewTrackWindowBasis(); } catch (err) {}
 }
 window.addEventListener('resize', updateViewportVars);
 updateViewportVars();
@@ -269,10 +270,39 @@ function setOverviewRibbonScroll(enabled) {
   else ribbons.forEach(r => disableRibbonScroll(r));
 }
 
+function updateOverviewTrackWindowBasis() {
+  const inOverview = document.body.classList.contains('overview-mode');
+  document.querySelectorAll('.niri-horizontal-track').forEach((ribbon) => {
+    try {
+      if (!inOverview) {
+        ribbon.style.removeProperty('--overview-window-basis');
+        return;
+      }
+
+      const wins = ribbon.querySelectorAll('.niri-window:not(.w-full)');
+      const count = wins.length;
+      if (count <= 1) {
+        ribbon.style.removeProperty('--overview-window-basis');
+        return;
+      }
+
+      const cs = getComputedStyle(ribbon);
+      const gap = parseFloat(cs.columnGap || cs.gap || '0') || 0;
+      const padL = parseFloat(cs.paddingLeft || '0') || 0;
+      const padR = parseFloat(cs.paddingRight || '0') || 0;
+      const innerW = Math.max(100, ribbon.clientWidth - padL - padR);
+      const basis = Math.max(72, Math.floor((innerW - gap * (count - 1)) / count));
+
+      ribbon.style.setProperty('--overview-window-basis', `${basis}px`);
+    } catch (err) {}
+  });
+}
+
 // apply initial state (must run after ribbon helpers init)
 const initialOverview = document.body.classList.contains('overview-mode');
 setOverviewWindowOverflow(initialOverview);
 setOverviewRibbonScroll(initialOverview);
+updateOverviewTrackWindowBasis();
 
 // enable auto-debug for current session
 try { window.__niriDebugOverview = true; } catch (err) {}
@@ -284,10 +314,20 @@ const _bodyObserver = new MutationObserver((mutations) => {
       const enabled = document.body.classList.contains('overview-mode');
       setOverviewWindowOverflow(enabled);
       setOverviewRibbonScroll(enabled);
+      updateOverviewTrackWindowBasis();
     }
   }
 });
 _bodyObserver.observe(document.body, { attributes: true });
+
+const _trackContainer = document.getElementById('niri-track-v');
+if (_trackContainer) {
+  const _trackObserver = new MutationObserver(() => {
+    if (!document.body.classList.contains('overview-mode')) return;
+    window.requestAnimationFrame(updateOverviewTrackWindowBasis);
+  });
+  _trackObserver.observe(_trackContainer, { childList: true, subtree: true });
+}
 
 function _nearestTracks(win) {
   const root = document.getElementById('niri-track-v');

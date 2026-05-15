@@ -74,7 +74,7 @@ body.overview-mode .niri-horizontal-track {
 body.overview-mode .niri-window {
     cursor: pointer;
     height: calc(var(--app-height) - 3rem);
-    flex: 0 0 calc(var(--app-width) * 0.45 - 2.25rem);
+    flex: 0 0 var(--overview-window-basis, calc(var(--app-width) * 0.45 - 2.25rem));
 }
 
 /* Preserve full-width windows opened from root (class added in niri-engine.js). */

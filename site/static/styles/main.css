@@ -58,7 +58,7 @@ body.overview-mode {
 }
 
 body.overview-mode .niri-vertical-track {
-    zoom: 0.4;
+    zoom: 0.32;
     transform: none;
     overflow: visible;
     height: auto;
@@ -74,7 +74,7 @@ body.overview-mode .niri-horizontal-track {
 body.overview-mode .niri-window {
     cursor: pointer;
     height: calc(var(--app-height) - 3rem);
-    flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
+    flex: 0 0 calc(var(--app-width) * 0.45 - 2.25rem);
 }
 
 body.overview-mode #root-window {
@@ -360,17 +360,17 @@ body.overview-mode .site-footer {
 
     /* Default content scaling */
     body.overview-mode .niri-window > *:not(.mobile-close-btn) {
-        transform: scale(0.5);
+        transform: scale(0.42);
         transform-origin: top left;
-        width: 200%;
-        height: 200%;
+        width: 180%;
+        height: 180%;
     }
 
     /* Even smaller scaling for windows in a Tab Group */
     body.overview-mode .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) .niri-window > *:not(.mobile-close-btn) {
-        transform: scale(0.35);
-        width: 285%; 
-        height: 285%;
+        transform: scale(0.30);
+        width: 260%; 
+        height: 260%;
     }
 
     body.overview-mode .niri-window > .mobile-close-btn {

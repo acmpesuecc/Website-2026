@@ -227,26 +227,6 @@ function setOverviewWindowOverflow(enabled) {
   });
 }
 
-// apply initial state
-const initialOverview = document.body.classList.contains('overview-mode');
-setOverviewWindowOverflow(initialOverview);
-setOverviewRibbonScroll(initialOverview);
-
-// enable auto-debug for current session
-try { window.__niriDebugOverview = true; } catch (err) {}
-
-// observe body.class changes
-const _bodyObserver = new MutationObserver((mutations) => {
-  for (const m of mutations) {
-    if (m.attributeName === 'class') {
-      const enabled = document.body.classList.contains('overview-mode');
-      setOverviewWindowOverflow(enabled);
-      setOverviewRibbonScroll(enabled);
-    }
-  }
-});
-_bodyObserver.observe(document.body, { attributes: true });
-
 // Ribbon scroll enable/disable helpers. Some CSS in overview-mode sets ribbons to overflow: visible;
 // enable overflow-x:auto when user interacts so native scrolling works.
 const _ribbonOverflowMap = new WeakMap();
@@ -288,6 +268,26 @@ function setOverviewRibbonScroll(enabled) {
   if (enabled) ribbons.forEach(r => enableRibbonScroll(r));
   else ribbons.forEach(r => disableRibbonScroll(r));
 }
+
+// apply initial state (must run after ribbon helpers init)
+const initialOverview = document.body.classList.contains('overview-mode');
+setOverviewWindowOverflow(initialOverview);
+setOverviewRibbonScroll(initialOverview);
+
+// enable auto-debug for current session
+try { window.__niriDebugOverview = true; } catch (err) {}
+
+// observe body.class changes
+const _bodyObserver = new MutationObserver((mutations) => {
+  for (const m of mutations) {
+    if (m.attributeName === 'class') {
+      const enabled = document.body.classList.contains('overview-mode');
+      setOverviewWindowOverflow(enabled);
+      setOverviewRibbonScroll(enabled);
+    }
+  }
+});
+_bodyObserver.observe(document.body, { attributes: true });
 
 function _nearestTracks(win) {
   const root = document.getElementById('niri-track-v');

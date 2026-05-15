@@ -61,7 +61,7 @@
             easing: (t) => 1 - Math.pow(1 - t, 5), // Android-elastic
             lerp: 0.25,
             debounce: 0,
-            velocityThreshold: 1.2, // Eager snap
+            velocityThreshold: 0.15, // Let momentum finish before snapping
           };
 
           snap = new window.Snap(instance, snapOptions);

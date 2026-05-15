@@ -181,6 +181,16 @@ body.overview-mode .site-footer {
     border: none;
     border-radius: 0;
     height: var(--app-height);
+    transition: flex-basis 0.3s ease, max-width 0.3s ease, border-radius 0.3s ease;
+}
+
+.niri-horizontal-track:has(> .niri-window:nth-of-type(2)) #root-window {
+    flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
+    max-width: calc(var(--app-width) * 0.5 - 2.25rem);
+    border-right: 1px solid rgba(0, 170, 254, 0.3);
+    border-radius: 16px;
+    height: calc(var(--app-height) - 3rem);
+    margin: 0;
 }
 
 @media (max-width: 1024px) {

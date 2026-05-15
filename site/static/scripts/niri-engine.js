@@ -346,6 +346,7 @@ function overviewWheelHandler(e) {
     // vertical motion -> choose vertical scroll target
     const target = findScrollTarget('y');
     if (!target) return; // nothing scrollable, let browser handle it
+    if (localStorage && localStorage.debugOverview === '1') console.log('[overview] vertical wheel', {deltaY, target: target.tagName, scrollTop: target.scrollTop, scrollHeight: target.scrollHeight, clientHeight: target.clientHeight});
     e.preventDefault();
     e.stopPropagation();
     _scrollTrackBy(target, 0, deltaY, false);
@@ -355,9 +356,22 @@ function overviewWheelHandler(e) {
     if (ribbon) target = ribbon; // prioritize ribbon even if not considered 'scrollable' by computed style
     if (!target) target = findScrollTarget('x') || findScrollTarget('y');
     if (!target) return; // nothing to scroll
+
+    if (localStorage && localStorage.debugOverview === '1') {
+      console.log('[overview] horizontal wheel', {deltaX, deltaMode: e.deltaMode, ribbon: !!ribbon, scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth});
+    }
+
     e.preventDefault();
     e.stopPropagation();
-    _scrollTrackBy(target, deltaX, 0, false);
+
+    // amplify small deltas from precision touchpads
+    const HORIZ_FACTOR = 1.5;
+    const amount = Math.round(deltaX * HORIZ_FACTOR);
+
+    // use rAF to avoid jank
+    window.requestAnimationFrame(() => {
+      try { target.scrollLeft += amount; } catch (err) { _scrollTrackBy(target, amount, 0, false); }
+    });
   }
 }
 

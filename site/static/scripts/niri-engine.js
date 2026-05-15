@@ -230,6 +230,9 @@ function setOverviewWindowOverflow(enabled) {
 // apply initial state
 setOverviewWindowOverflow(document.body.classList.contains('overview-mode'));
 
+// enable auto-debug for current session
+try { window.__niriDebugOverview = true; } catch (err) {}
+
 // observe body.class changes
 const _bodyObserver = new MutationObserver((mutations) => {
   for (const m of mutations) {
@@ -346,7 +349,7 @@ function overviewWheelHandler(e) {
     // vertical motion -> choose vertical scroll target
     const target = findScrollTarget('y');
     if (!target) return; // nothing scrollable, let browser handle it
-    if (localStorage && localStorage.debugOverview === '1') console.log('[overview] vertical wheel', {deltaY, target: target.tagName, scrollTop: target.scrollTop, scrollHeight: target.scrollHeight, clientHeight: target.clientHeight});
+    if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) console.log('[overview] vertical wheel', {deltaY, target: target.tagName, scrollTop: target.scrollTop, scrollHeight: target.scrollHeight, clientHeight: target.clientHeight});
     e.preventDefault();
     e.stopPropagation();
     _scrollTrackBy(target, 0, deltaY, false);
@@ -357,7 +360,7 @@ function overviewWheelHandler(e) {
     if (!target) target = findScrollTarget('x') || findScrollTarget('y');
     if (!target) return; // nothing to scroll
 
-    if (localStorage && localStorage.debugOverview === '1') {
+    if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
       console.log('[overview] horizontal wheel', {deltaX, deltaMode: e.deltaMode, ribbon: !!ribbon, scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth});
     }
 

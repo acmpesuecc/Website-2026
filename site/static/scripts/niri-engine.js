@@ -228,7 +228,9 @@ function setOverviewWindowOverflow(enabled) {
 }
 
 // apply initial state
-setOverviewWindowOverflow(document.body.classList.contains('overview-mode'));
+const initialOverview = document.body.classList.contains('overview-mode');
+setOverviewWindowOverflow(initialOverview);
+setOverviewRibbonScroll(initialOverview);
 
 // enable auto-debug for current session
 try { window.__niriDebugOverview = true; } catch (err) {}
@@ -239,6 +241,7 @@ const _bodyObserver = new MutationObserver((mutations) => {
     if (m.attributeName === 'class') {
       const enabled = document.body.classList.contains('overview-mode');
       setOverviewWindowOverflow(enabled);
+      setOverviewRibbonScroll(enabled);
     }
   }
 });
@@ -278,6 +281,12 @@ function disableRibbonScroll(ribbon) {
 }
 function disableAllRibbons() {
   document.querySelectorAll('.niri-horizontal-track').forEach(r => disableRibbonScroll(r));
+}
+
+function setOverviewRibbonScroll(enabled) {
+  const ribbons = document.querySelectorAll('.niri-horizontal-track');
+  if (enabled) ribbons.forEach(r => enableRibbonScroll(r));
+  else ribbons.forEach(r => disableRibbonScroll(r));
 }
 
 function _nearestTracks(win) {
@@ -493,25 +502,8 @@ document.addEventListener('touchstart', (e) => {
 }, { passive: true, capture: true });
 document.addEventListener('touchmove', overviewTouchMove, { passive: false, capture: true });
 
-// pointer/mouse leave to disable ribbons when not interacting
-let _pointerOverRibbon = null;
-document.addEventListener('pointermove', (e) => {
-  if (!document.body.classList.contains('overview-mode')) return;
-  const el = document.elementFromPoint(e.clientX, e.clientY);
-  const ribbon = el && el.closest ? el.closest('.niri-horizontal-track') : null;
-  if (ribbon && ribbon !== _pointerOverRibbon) {
-    if (_pointerOverRibbon) disableRibbonScroll(_pointerOverRibbon);
-    _pointerOverRibbon = ribbon;
-    enableRibbonScroll(ribbon);
-  } else if (!ribbon && _pointerOverRibbon) {
-    disableRibbonScroll(_pointerOverRibbon);
-    _pointerOverRibbon = null;
-  }
-}, { passive: true, capture: true });
-
-document.addEventListener('pointerleave', (e) => {
-  if (_pointerOverRibbon) { disableRibbonScroll(_pointerOverRibbon); _pointerOverRibbon = null; }
-}, { passive: true, capture: true });
+// Keep all ribbons scroll-enabled during overview-mode.
+// Avoid hover-boundary enable/disable toggles that can stall touchpad scrolling.
 
 // Keyboard: map keys to outer track scroll commands.
 function overviewKeyBlocker(e) {

@@ -373,7 +373,7 @@ function overviewWheelHandler(e) {
   e.stopPropagation();
 
   // accumulate and amplify small deltas for smoother touchpad response
-  const HORIZ_FACTOR = 3.0; // sensitivity multiplier
+  const HORIZ_FACTOR = 5.0; // sensitivity multiplier (increased per request)
   target.__hAccum = (target.__hAccum || 0) + deltaX * HORIZ_FACTOR;
 
   // capture absDelta for adaptive clamping

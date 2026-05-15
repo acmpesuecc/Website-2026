@@ -175,12 +175,6 @@ document.addEventListener('fx:after', (e) => {
 
 // Native scroll snapping focus
 document.addEventListener('fx:end', (e) => {
-  if (window.niriLenis?.onFxEnd) window.niriLenis.onFxEnd(e);
-  
-  // Register newly created horizontal track if any
-  const track = e.detail.cfg.target?.closest('.niri-horizontal-track');
-  if (track && window.niriLenis) window.niriLenis.registerTrack(track);
-
   if (window.niriLenis) window.niriLenis.resizeAll();
 
   const newWinId = e.detail.cfg.newWinId;

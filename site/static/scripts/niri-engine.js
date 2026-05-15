@@ -283,19 +283,43 @@ function overviewWheelHandler(e) {
     deltaX *= PAGE; deltaY *= PAGE;
   }
 
-  // If no specific window under cursor, allow default (scroll outer page)
-  if (!win && !root) return;
+  // determine best scroll target
+  function isScrollable(el, axis) {
+    if (!el) return false;
+    try {
+      if (axis === 'y') return el.scrollHeight > el.clientHeight && getComputedStyle(el).overflowY !== 'visible';
+      return el.scrollWidth > el.clientWidth && getComputedStyle(el).overflowX !== 'visible';
+    } catch (err) { return false; }
+  }
 
-  e.preventDefault();
-  e.stopPropagation();
+  function findScrollTarget(axis) {
+    // prefer ribbon for horizontal, prefer body/scrollingElement for vertical if root isn't scrollable
+    if (axis === 'x') {
+      if (ribbon && isScrollable(ribbon, 'x')) return ribbon;
+      if (root && isScrollable(root, 'x')) return root;
+    } else {
+      if (root && isScrollable(root, 'y')) return root;
+      if (document.scrollingElement && isScrollable(document.scrollingElement, 'y')) return document.scrollingElement;
+      if (document.body && isScrollable(document.body, 'y')) return document.body;
+    }
+    return null;
+  }
 
   const absY = Math.abs(deltaY), absX = Math.abs(deltaX);
   if (absY >= absX) {
-    // vertical motion -> scroll root
-    _scrollTrackBy(root || document.scrollingElement || document.documentElement, 0, deltaY, false);
+    // vertical motion -> choose vertical scroll target
+    const target = findScrollTarget('y');
+    if (!target) return; // nothing scrollable, let browser handle it
+    e.preventDefault();
+    e.stopPropagation();
+    _scrollTrackBy(target, 0, deltaY, false);
   } else {
-    // horizontal motion -> scroll ribbon if present else root
-    _scrollTrackBy(ribbon || root || document.scrollingElement || document.documentElement, deltaX, 0, false);
+    // horizontal motion -> choose horizontal target
+    const target = findScrollTarget('x') || findScrollTarget('y');
+    if (!target) return;
+    e.preventDefault();
+    e.stopPropagation();
+    _scrollTrackBy(target, deltaX, 0, false);
   }
 }
 

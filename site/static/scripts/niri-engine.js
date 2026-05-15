@@ -204,41 +204,156 @@ if (document.readyState === 'loading') {
   injectCloseBtn(document.body);
 }
 
-// Prevent inner window scrolling while in overview mode.
-// Allow clicks to still work so user can exit overview by selecting a window.
-function overviewScrollBlocker(e) {
-  if (!document.body.classList.contains('overview-mode')) return;
+// Enhanced overview-mode scroll handling.
+// Goals:
+// - Prevent inner window native scrolling while in overview-mode.
+// - Allow wheel/keyboard interactions over windows to move outer overview tracks.
+// - Preserve typing in inputs/textareas/contenteditable.
+
+const _windowOverflowMap = new WeakMap();
+function setOverviewWindowOverflow(enabled) {
+  document.querySelectorAll('.niri-window').forEach(win => {
+    try {
+      if (enabled) {
+        _windowOverflowMap.set(win, win.style.overflow || '');
+        win.style.overflow = 'hidden';
+      } else {
+        const prev = _windowOverflowMap.get(win);
+        if (typeof prev !== 'undefined') win.style.overflow = prev;
+        else win.style.overflow = '';
+        _windowOverflowMap.delete(win);
+      }
+    } catch (err) {}
+  });
+}
+
+// apply initial state
+setOverviewWindowOverflow(document.body.classList.contains('overview-mode'));
+
+// observe body.class changes
+const _bodyObserver = new MutationObserver((mutations) => {
+  for (const m of mutations) {
+    if (m.attributeName === 'class') {
+      const enabled = document.body.classList.contains('overview-mode');
+      setOverviewWindowOverflow(enabled);
+    }
+  }
+});
+_bodyObserver.observe(document.body, { attributes: true });
+
+function _nearestTracks(win) {
+  const root = document.getElementById('niri-track-v');
+  const ribbon = win ? win.closest('.niri-horizontal-track') : null;
+  return { root, ribbon };
+}
+
+function _scrollTrackBy(track, x, y, smooth = false) {
+  if (!track) return;
   try {
-    const win = e.target && e.target.closest && e.target.closest('.niri-window');
-    if (win) e.preventDefault();
+    track.scrollBy({ left: x || 0, top: y || 0, behavior: smooth ? 'smooth' : 'auto' });
   } catch (err) {
-    // ignore
+    try { track.scrollLeft += x || 0; track.scrollTop += y || 0; } catch(e) {}
   }
 }
 
-document.addEventListener('wheel', overviewScrollBlocker, { passive: false, capture: true });
-document.addEventListener('touchmove', overviewScrollBlocker, { passive: false, capture: true });
+// Wheel: redirect deltas to outer track when in overview-mode.
+function overviewWheelHandler(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+  const win = e.target && e.target.closest && e.target.closest('.niri-window');
+  if (!win) return; // if not over a window, let normal flow handle it
 
-// Block keyboard keys that cause scrolling while in overview-mode.
-// Allow typing in inputs/textareas and contenteditable areas.
+  // consume event and scroll nearest track instead
+  e.preventDefault();
+  e.stopPropagation();
+
+  const { root, ribbon } = _nearestTracks(win);
+  const absY = Math.abs(e.deltaY), absX = Math.abs(e.deltaX);
+  if (absY >= absX) {
+    // vertical motion -> scroll root
+    _scrollTrackBy(root || document.scrollingElement || document.documentElement, 0, e.deltaY, false);
+  } else {
+    // horizontal motion -> scroll ribbon if present else root
+    _scrollTrackBy(ribbon || root || document.scrollingElement || document.documentElement, e.deltaX, 0, false);
+  }
+}
+
+document.addEventListener('wheel', overviewWheelHandler, { passive: false, capture: true });
+
+// Touch: simple pan routing. Track touchstart -> touchmove deltas, route to nearest track.
+let _touchStart = null;
+function overviewTouchStart(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+  const t = e.touches && e.touches[0];
+  if (!t) return;
+  const win = e.target && e.target.closest && e.target.closest('.niri-window');
+  if (!win) return;
+  _touchStart = { x: t.clientX, y: t.clientY, win };
+}
+
+function overviewTouchMove(e) {
+  if (!document.body.classList.contains('overview-mode') || !_touchStart) return;
+  const t = e.touches && e.touches[0];
+  if (!t) return;
+  const dx = _touchStart.x - t.clientX;
+  const dy = _touchStart.y - t.clientY;
+
+  // decide primary axis
+  const absX = Math.abs(dx), absY = Math.abs(dy);
+  if (absY >= absX) {
+    const { root } = _nearestTracks(_touchStart.win);
+    if (root) {
+      e.preventDefault();
+      _scrollTrackBy(root, 0, dy, false);
+      _touchStart.x = t.clientX; _touchStart.y = t.clientY;
+    }
+  } else {
+    const { ribbon, root } = _nearestTracks(_touchStart.win);
+    const target = ribbon || root;
+    if (target) {
+      e.preventDefault();
+      _scrollTrackBy(target, dx, 0, false);
+      _touchStart.x = t.clientX; _touchStart.y = t.clientY;
+    }
+  }
+}
+
+document.addEventListener('touchstart', overviewTouchStart, { passive: true, capture: true });
+document.addEventListener('touchmove', overviewTouchMove, { passive: false, capture: true });
+
+// Keyboard: map keys to outer track scroll commands.
 function overviewKeyBlocker(e) {
   if (!document.body.classList.contains('overview-mode')) return;
   const scrollKeys = new Set(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','PageUp','PageDown','Home','End']);
-  if (e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar') {
-    // Space scrolls page
-    e.preventDefault();
-    e.stopPropagation();
-    return;
-  }
-  if (!scrollKeys.has(e.key)) return;
+  const spaceKeys = new Set([' ', 'Spacebar']);
+
+  if (!scrollKeys.has(e.key) && !spaceKeys.has(e.key)) return;
 
   const active = document.activeElement;
   if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return;
 
   const win = e.target && e.target.closest && e.target.closest('.niri-window');
-  if (win || (active && active.closest && active.closest('.niri-window'))) {
-    e.preventDefault();
-    e.stopPropagation();
+  if (!win && !(active && active.closest && active.closest('.niri-window'))) return;
+
+  e.preventDefault(); e.stopPropagation();
+
+  const { root, ribbon } = _nearestTracks(win || active);
+  const vw = window.innerHeight || document.documentElement.clientHeight;
+  const vh = vw;
+  const hx = window.innerWidth || document.documentElement.clientWidth;
+
+  switch (e.key) {
+    case 'ArrowDown': _scrollTrackBy(root, 0, Math.max(80, Math.round(vw * 0.08)), true); break;
+    case 'ArrowUp': _scrollTrackBy(root, 0, -Math.max(80, Math.round(vw * 0.08)), true); break;
+    case 'PageDown': _scrollTrackBy(root, 0, Math.round(vw * 0.85), true); break;
+    case 'PageUp': _scrollTrackBy(root, 0, -Math.round(vw * 0.85), true); break;
+    case 'Home': _scrollTrackBy(root, 0, -document.scrollingElement.scrollTop || -9999999, true); break;
+    case 'End': _scrollTrackBy(root, 0, document.scrollingElement.scrollHeight || 9999999, true); break;
+    case 'ArrowLeft': _scrollTrackBy(ribbon || root, -Math.round(hx * 0.2), 0, true); break;
+    case 'ArrowRight': _scrollTrackBy(ribbon || root, Math.round(hx * 0.2), 0, true); break;
+    default:
+      // space or other
+      _scrollTrackBy(root, 0, Math.round(vw * 0.85), true);
+      break;
   }
 }
 

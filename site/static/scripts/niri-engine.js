@@ -373,16 +373,32 @@ function overviewWheelHandler(e) {
   e.stopPropagation();
 
   // accumulate and amplify small deltas for smoother touchpad response
-  const HORIZ_FACTOR = 3.0; // increased sensitivity
-  const MAX_PER_FRAME = 300; // cap per-frame scroll to avoid huge jumps
+  const HORIZ_FACTOR = 3.0; // sensitivity multiplier
   target.__hAccum = (target.__hAccum || 0) + deltaX * HORIZ_FACTOR;
+
+  // capture absDelta for adaptive clamping
+  const absDelta = Math.abs(deltaX);
 
   // flush integer pixels via rAF
   window.requestAnimationFrame(() => {
     let amount = Math.trunc(target.__hAccum);
-    // clamp amount
-    if (amount > MAX_PER_FRAME) amount = MAX_PER_FRAME;
-    if (amount < -MAX_PER_FRAME) amount = -MAX_PER_FRAME;
+
+    // adaptive clamp: scale with viewport and input intensity
+    // base = 20% of viewport width, adaptive = absDelta * factor, cap at target.clientWidth
+    try {
+      const base = Math.max(80, Math.round(target.clientWidth * 0.2));
+      const adaptive = Math.round(absDelta * HORIZ_FACTOR * 6);
+      const cap = Math.max(base, adaptive);
+      const MAX_PER_FRAME = Math.min(cap, Math.max(base, target.clientWidth));
+
+      if (amount > MAX_PER_FRAME) amount = MAX_PER_FRAME;
+      if (amount < -MAX_PER_FRAME) amount = -MAX_PER_FRAME;
+    } catch (e) {
+      // fallback
+      const FALLBACK_MAX = 300;
+      if (amount > FALLBACK_MAX) amount = FALLBACK_MAX;
+      if (amount < -FALLBACK_MAX) amount = -FALLBACK_MAX;
+    }
 
     target.__hAccum -= amount;
     if (amount !== 0) {
@@ -393,7 +409,7 @@ function overviewWheelHandler(e) {
     }
 
     if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
-      try { console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth, amount }); } catch (e) {}
+      try { console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth, amount, absDelta }); } catch (e) {}
     }
 
     if (target.__snapRestoreTimeout) clearTimeout(target.__snapRestoreTimeout);

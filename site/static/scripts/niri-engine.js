@@ -218,3 +218,28 @@ function overviewScrollBlocker(e) {
 
 document.addEventListener('wheel', overviewScrollBlocker, { passive: false, capture: true });
 document.addEventListener('touchmove', overviewScrollBlocker, { passive: false, capture: true });
+
+// Block keyboard keys that cause scrolling while in overview-mode.
+// Allow typing in inputs/textareas and contenteditable areas.
+function overviewKeyBlocker(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+  const scrollKeys = new Set(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','PageUp','PageDown','Home','End']);
+  if (e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar') {
+    // Space scrolls page
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+  if (!scrollKeys.has(e.key)) return;
+
+  const active = document.activeElement;
+  if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return;
+
+  const win = e.target && e.target.closest && e.target.closest('.niri-window');
+  if (win || (active && active.closest && active.closest('.niri-window'))) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}
+
+document.addEventListener('keydown', overviewKeyBlocker, { capture: true });

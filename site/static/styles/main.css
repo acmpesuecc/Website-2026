@@ -104,6 +104,7 @@ body.overview-mode .site-footer {
     width: var(--app-width);
     overflow-y: auto;
     overflow-x: hidden;
+    scroll-snap-type: y proximity;
     scroll-behavior: auto;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     scrollbar-width: none;
@@ -117,10 +118,10 @@ body.overview-mode .site-footer {
     display: flex;
     flex-direction: row;
     min-height: var(--app-height);
-    width: var(--app-width);
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
     padding: 1.5rem;
@@ -135,6 +136,7 @@ body.overview-mode .site-footer {
 .niri-window {
     flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
     height: calc(var(--app-height) - 3rem);
+    scroll-snap-align: start;
     overflow-y: auto;
     border: 1px solid rgba(0, 170, 254, 0.3);
     border-radius: 16px;
@@ -190,6 +192,16 @@ body.overview-mode .site-footer {
     border: none;
     border-radius: 0;
     height: var(--app-height);
+    transition: flex-basis 0.3s ease, max-width 0.3s ease, border-radius 0.3s ease;
+}
+
+.niri-horizontal-track:has(> .niri-window:nth-of-type(2)) #root-window {
+    flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
+    max-width: calc(var(--app-width) * 0.5 - 2.25rem);
+    border-right: 1px solid rgba(0, 170, 254, 0.3);
+    border-radius: 16px;
+    height: calc(var(--app-height) - 3rem);
+    margin: 0;
 }
 
 @media (max-width: 1024px) {

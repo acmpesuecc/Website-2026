@@ -309,7 +309,6 @@ function overviewWheelHandler(e) {
     }
   } catch (err) { win = null; }
 
-  // If still no window found, fallback to root scroll
   const { root, ribbon } = _nearestTracks(win);
 
   // normalize deltaMode (0=pixel,1=line,2=page)
@@ -322,7 +321,7 @@ function overviewWheelHandler(e) {
     deltaX *= PAGE; deltaY *= PAGE;
   }
 
-  // determine best scroll target
+  // helpers
   function isScrollable(el, axis) {
     if (!el) return false;
     try {
@@ -332,7 +331,6 @@ function overviewWheelHandler(e) {
   }
 
   function findScrollTarget(axis) {
-    // prefer ribbon for horizontal, prefer body/scrollingElement for vertical if root isn't scrollable
     if (axis === 'x') {
       if (ribbon && isScrollable(ribbon, 'x')) return ribbon;
       if (root && isScrollable(root, 'x')) return root;
@@ -353,43 +351,51 @@ function overviewWheelHandler(e) {
     e.preventDefault();
     e.stopPropagation();
     _scrollTrackBy(target, 0, deltaY, false);
-  } else {
-    // horizontal motion -> prefer ribbon of window under cursor when present
-    let target = null;
-    if (ribbon) target = ribbon; // prioritize ribbon even if not considered 'scrollable' by computed style
-    if (!target) target = findScrollTarget('x') || findScrollTarget('y');
-    if (!target) return; // nothing to scroll
+    return;
+  }
 
-    if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
-      console.log('[overview] horizontal wheel', {deltaX, deltaMode: e.deltaMode, ribbon: !!ribbon, scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth});
+  // horizontal motion: prefer ribbon under cursor
+  let target = ribbon || findScrollTarget('x') || findScrollTarget('y');
+  if (!target) return;
+
+  if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
+    console.log('[overview] horizontal wheel', {deltaX, deltaMode: e.deltaMode, ribbon: !!ribbon, scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth});
+  }
+
+  // enable ribbon native scroll and temporarily disable scroll-snap
+  try {
+    if (ribbon) enableRibbonScroll(ribbon);
+    if (!target.__prevScrollSnap) target.__prevScrollSnap = target.style.scrollSnapType || '';
+    target.style.scrollSnapType = 'none';
+  } catch (err) {}
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  // accumulate and amplify small deltas for smoother touchpad response
+  const HORIZ_FACTOR = 1.5;
+  target.__hAccum = (target.__hAccum || 0) + deltaX * HORIZ_FACTOR;
+
+  // flush integer pixels via rAF
+  window.requestAnimationFrame(() => {
+    const amount = Math.trunc(target.__hAccum);
+    target.__hAccum -= amount;
+    if (amount !== 0) {
+      try {
+        if (typeof target.scrollBy === 'function') target.scrollBy({ left: amount, behavior: 'auto' });
+        else target.scrollLeft += amount;
+      } catch (err) { _scrollTrackBy(target, amount, 0, false); }
     }
 
-    e.preventDefault();
-    e.stopPropagation();
+    if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
+      try { console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth }); } catch (e) {}
+    }
 
-    // amplify small deltas from precision touchpads
-    const HORIZ_FACTOR = 1.5;
-    const amount = Math.round(deltaX * HORIZ_FACTOR);
-
-    // use rAF to avoid jank
-    window.requestAnimationFrame(() => {
-      try {
-        if (typeof target.scrollBy === 'function') {
-          target.scrollBy({ left: amount, behavior: 'auto' });
-        } else {
-          target.scrollLeft += amount;
-        }
-      } catch (err) {
-        _scrollTrackBy(target, amount, 0, false);
-      }
-      // debug after scroll
-      if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
-        try {
-          console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth });
-        } catch (e) { console.log('[overview] post-scroll error', e); }
-      }
-    });
-  }
+    if (target.__snapRestoreTimeout) clearTimeout(target.__snapRestoreTimeout);
+    target.__snapRestoreTimeout = setTimeout(() => {
+      try { target.style.scrollSnapType = target.__prevScrollSnap || ''; delete target.__prevScrollSnap; } catch (e) {}
+    }, 300);
+  });
 }
 
 document.addEventListener('wheel', (e) => {

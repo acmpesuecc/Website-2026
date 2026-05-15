@@ -7,7 +7,7 @@
 /* ── Members Grid ── */
 .member-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 2rem;
     padding: 1rem 0;
 }
@@ -156,15 +156,7 @@
     margin: 0;
 }
 
-/*changes no. of cards wrt windnow size*/
-
-
-@media (max-width: 900px) {
-    .member-cards { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 560px) {
-    .member-cards { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
     .member-card  { padding: 2rem 1.5rem 1.5rem; }
     .member-photo-wrapper { width: 140px; height: 140px; }
 }

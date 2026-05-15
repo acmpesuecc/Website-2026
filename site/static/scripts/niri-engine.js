@@ -251,17 +251,13 @@ function enableRibbonScroll(ribbon) {
     _ribbonOverflowMap.set(ribbon, { 
       overflowX: ribbon.style.overflowX || '', 
       touchAction: ribbon.style.touchAction || '',
-      width: ribbon.style.width || '',
-      whiteSpace: ribbon.style.whiteSpace || '',
       webkitOverflowScrolling: ribbon.style.webkitOverflowScrolling || ''
     });
 
-    // make ribbon scrollable and expand to content so all windows visible
+    // make ribbon scrollable and enable native horizontal panning
     ribbon.style.overflowX = 'auto';
     ribbon.style.overflowY = 'hidden';
     ribbon.style.touchAction = 'pan-x';
-    ribbon.style.whiteSpace = 'nowrap';
-    ribbon.style.width = 'max-content';
     ribbon.style.webkitOverflowScrolling = 'touch';
   } catch (err) {}
 }
@@ -272,8 +268,6 @@ function disableRibbonScroll(ribbon) {
     try {
       ribbon.style.overflowX = prev.overflowX || '';
       ribbon.style.touchAction = prev.touchAction || '';
-      ribbon.style.width = prev.width || '';
-      ribbon.style.whiteSpace = prev.whiteSpace || '';
       ribbon.style.webkitOverflowScrolling = prev.webkitOverflowScrolling || '';
     } catch (err) {}
     _ribbonOverflowMap.delete(ribbon);

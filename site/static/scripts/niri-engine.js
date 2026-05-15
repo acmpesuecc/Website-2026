@@ -314,9 +314,11 @@ function overviewWheelHandler(e) {
     e.stopPropagation();
     _scrollTrackBy(target, 0, deltaY, false);
   } else {
-    // horizontal motion -> choose horizontal target
-    const target = findScrollTarget('x') || findScrollTarget('y');
-    if (!target) return;
+    // horizontal motion -> prefer ribbon of window under cursor when present
+    let target = null;
+    if (ribbon) target = ribbon; // prioritize ribbon even if not considered 'scrollable' by computed style
+    if (!target) target = findScrollTarget('x') || findScrollTarget('y');
+    if (!target) return; // nothing to scroll
     e.preventDefault();
     e.stopPropagation();
     _scrollTrackBy(target, deltaX, 0, false);

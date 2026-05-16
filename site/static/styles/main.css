@@ -215,7 +215,8 @@ body.overview-mode .site-footer {
     width: var(--app-width);
     overflow-y: auto;
     overflow-x: hidden;
-    scroll-snap-type: y mandatory !important;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
     transition: transform 0.5s;
     scrollbar-width: none;
 }
@@ -232,8 +233,9 @@ body.overview-mode .site-footer {
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    scroll-snap-align: start !important;
+    scroll-snap-align: start;
     scroll-snap-stop: always;
+    scroll-behavior: smooth;
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
     padding: 1.5rem;

@@ -130,14 +130,8 @@ document.addEventListener('fx:config', (e) => {
   const fromRoot = elt.closest('.niri-window')?.id === 'root-window';
 
   if (fromRoot) {
-    const footer = document.querySelector('.site-footer');
-    if (footer) {
-      e.detail.cfg.target = footer;
-      e.detail.cfg.swap = 'beforebegin';
-    } else {
-      e.detail.cfg.target = document.getElementById('niri-track-v');
-      e.detail.cfg.swap = 'beforeend';
-    }
+    e.detail.cfg.target = document.getElementById('niri-track-v');
+    e.detail.cfg.swap = 'beforeend';
   } else {
     const track = elt.closest('.niri-horizontal-track');
     if (track) {

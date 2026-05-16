@@ -248,7 +248,7 @@ body.overview-mode .site-footer {
     overflow-y: auto;
     padding: 1.5rem; /* Inner padding for content */
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 170, 254, 0.5) transparent;
+    scrollbar-color: rgba(28, 44, 84, 0.8) transparent; /* Dark blue theme */
 }
 
 /* Background pseudo-element (clipped) */
@@ -298,11 +298,11 @@ body.overview-mode .site-footer {
     background: transparent;
 }
 .niri-window-inner::-webkit-scrollbar-thumb {
-    background: rgba(0, 170, 254, 0.5); /* Colored according to recent changes */
+    background: rgba(28, 44, 84, 0.6); /* Dark blue theme */
     border-radius: 10px;
 }
 .niri-window-inner::-webkit-scrollbar-thumb:hover {
-    background: #00aafe;
+    background: #1c2c54;
 }
 
 .niri-window:focus,

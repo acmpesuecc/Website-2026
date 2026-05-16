@@ -1044,11 +1044,9 @@ pre {
     background: var(--inline-code-bg);
     border: 1px solid var(--color-border);
     border-radius: 10px;
-    padding: 0.6rem 1.2rem 0.6rem 0.9rem;
-    /* reduced right padding so the card is tighter while the copy button is absolutely positioned */
+    padding: 1.25rem 1.2rem 0.6rem 0.9rem; /* Increased top padding */
     box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
     overflow: hidden;
-    /* keep layout tidy; inner code scrolls */
 }
 
 pre > code,
@@ -1071,51 +1069,6 @@ pre code {
 }
 
 /* Copy button (square, vertically centered) */
-pre button[class*="copy"],
-pre .hljs-copy,
-pre .copy-button {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: #fff;
-    border: 1px solid rgba(59, 130, 246, 0.12);
-    /* subtle blue border */
-    color: var(--color-primary);
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
-    transition:
-        transform 0.12s ease,
-        background 0.12s ease,
-        color 0.12s ease;
-}
-
-pre button[class*="copy"]:hover,
-pre .hljs-copy:hover,
-pre .copy-button:hover {
-    transform: translateY(-50%) scale(1.04);
-    background: var(--color-primary);
-    color: #fff;
-}
-
-/* ensure icons inside copy buttons are appropriately sized */
-pre button[class*="copy"] svg,
-pre .copy-button svg,
-pre .hljs-copy svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-}
-
 p > code,
 li > code,
 dd > code,
@@ -1352,41 +1305,82 @@ pre code {
     box-sizing: border-box;
 }
 
-/* Copy button placed inside code blocks (works with highlightjs copy plugin) */
+/* Unified Copy Button (Liquid Glass style) */
 pre button[class*="copy"],
 pre .hljs-copy,
 pre .copy-button {
     position: absolute;
-    top: 8px;
-    right: 10px;
-    /* nudge slightly inward for better overlap */
-    z-index: 10;
-    background: rgba(0, 12, 35, 0.6);
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 20;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(15, 25, 50, 0.7);
     backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    border: 1px solid rgba(0, 170, 254, 0.3);
-    color: #00aafe;
-    padding: 0.18rem 0.45rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition:
-        background 0.12s,
-        transform 0.08s,
-        box-shadow 0.08s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.15, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Removed right-edge mask; keep copy button flush with the card */
-@media (min-width: 481px) {
-    pre button[class*="copy"],
-    pre .hljs-copy,
-    pre .copy-button {
-        right: 8px;
-    }
+pre button[class*="copy"]:hover,
+pre .hljs-copy:hover,
+pre .copy-button:hover {
+    background: rgba(0, 170, 254, 0.15);
+    border-color: rgba(0, 170, 254, 0.4);
+    color: #fff;
+    transform: scale(1.05);
 }
 
-/* Ensure code blocks are constrained to the page container and are touch-friendly.
+/* Add SVG Icon */
+pre button[class*="copy"]::before,
+pre .hljs-copy::before,
+pre .copy-button::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+/* Hide any text inside the button */
+pre button[class*="copy"] {
+    font-size: 0 !important;
+    text-indent: -9999px;
+}
+
+/* Copied Alert */
+.hljs-copy-alert {
+    position: absolute;
+    top: 0.5rem;
+    right: 3rem; /* Place next to the button */
+    background: #00aafe;
+    color: #fff;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.65rem; /* Even smaller */
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 30;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes hljs-copy-fade {
+    0% { opacity: 0; transform: translateY(10px); }
+    15% { opacity: 1; transform: translateY(0); }
+    85% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-5px); }
+}
+
+/* Ensure code blocks are constrained to the page container and are touch-friendly. */
    - width/max-width prevents the pre element from escaping the container
    - overscroll-behavior/touch-action keep panning inside the code block on mobile
    - pre>code min-width:0 lets inner blocks shrink instead of forcing overflow in flex contexts */
@@ -1395,6 +1389,7 @@ pre {
     /* ensure pre never exceeds the page container; subtract a small margin for padding/copy button */
     max-width: calc(100% - 2rem);
     margin: 0;
+    padding-top: 1.25rem !important;
     /* don't let pre add extra margins outside the container */
     box-sizing: border-box;
     overscroll-behavior: contain;
@@ -1424,24 +1419,7 @@ pre a {
     color: inherit;
 }
 
-pre button[class*="copy"]:hover,
-pre .hljs-copy:hover,
-pre .copy-button:hover {
-    transform: translateY(-1px);
-    background: rgba(0, 170, 254, 0.15);
-}
-
 @media (max-width: 700px) {
-    pre button[class*="copy"],
-    pre .hljs-copy,
-    pre .copy-button {
-        top: 6px;
-        right: 10px;
-        /* pull slightly inwards to avoid edge cropping */
-        font-size: 0.75rem;
-        padding: 0.1rem 0.3rem;
-    }
-
     /* Ensure code has right padding on mobile so the scroller doesn't hide button */
     pre code {
         padding-inline-end: 2.5rem;

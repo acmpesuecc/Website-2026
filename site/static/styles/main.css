@@ -122,15 +122,26 @@ body.overview-mode .niri-window {
     height: calc(var(--app-height) - 3rem);
     flex: 0 0 var(--overview-window-basis, calc(var(--app-width) * 0.45 - 2.25rem));
     border-radius: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: none !important;
+    background: transparent;
+    transition: transform 0.5s cubic-bezier(0.15, 1, 0.3, 1), box-shadow 0.3s ease;
+    overflow: visible;
+}
+
+body.overview-mode .niri-window::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
     background: rgba(20, 30, 60, 0.4);
     backdrop-filter: blur(16px) saturate(180%);
     box-shadow: 
         0 30px 60px rgba(0, 0, 0, 0.5),
         inset 0 1px 1px rgba(255, 255, 255, 0.2),
         inset 0 -1px 1px rgba(0, 0, 0, 0.3);
-    transition: transform 0.5s cubic-bezier(0.15, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    z-index: -2;
+    transition: inherit;
 }
 
 body.overview-mode .niri-window:hover {
@@ -218,7 +229,7 @@ body.overview-mode .site-footer {
 .niri-window {
     flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
     height: calc(var(--app-height) - 3rem);
-    overflow-y: auto;
+    overflow: hidden !important; /* Window itself does NOT scroll */
     scroll-snap-align: center;
     scroll-snap-stop: always;
     border-radius: 16px;
@@ -226,10 +237,17 @@ body.overview-mode .site-footer {
     position: relative;
     border: none !important;
     background: transparent; /* Background moved to ::before */
-    padding: 2rem;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 170, 254, 0.3) transparent;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem; /* Outer padding to inset inner container */
     transition: flex-basis 0.3s ease;
+}
+
+.niri-window-inner {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    padding: 1.5rem; /* Inner padding for content */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 170, 254, 0.5) transparent;
 }
 
 /* Background pseudo-element (clipped) */
@@ -271,19 +289,19 @@ body.overview-mode .site-footer {
     box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
 }
 
-.niri-window::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+.niri-window-inner::-webkit-scrollbar {
+    width: 8px; /* Slightly thicker */
+    height: 8px;
 }
-.niri-window::-webkit-scrollbar-track {
+.niri-window-inner::-webkit-scrollbar-track {
     background: transparent;
 }
-.niri-window::-webkit-scrollbar-thumb {
-    background: rgba(0, 170, 254, 0.3);
+.niri-window-inner::-webkit-scrollbar-thumb {
+    background: rgba(0, 170, 254, 0.5); /* Colored according to recent changes */
     border-radius: 10px;
 }
-.niri-window::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 170, 254, 0.6);
+.niri-window-inner::-webkit-scrollbar-thumb:hover {
+    background: #00aafe;
 }
 
 .niri-window:focus,

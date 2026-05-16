@@ -177,6 +177,16 @@ function injectWindowControls(container) {
   });
 }
 
+function wrapWindowContent(win) {
+  if (!win || win.querySelector('.niri-window-inner')) return;
+  const inner = document.createElement('div');
+  inner.className = 'niri-window-inner';
+  while (win.firstChild) {
+    inner.appendChild(win.firstChild);
+  }
+  win.appendChild(inner);
+}
+
 // Global click handler for window controls (survives HTML serialization)
 document.addEventListener('click', (e) => {
   const minBtn = e.target.closest('.niri-minimize-btn');
@@ -205,6 +215,7 @@ document.addEventListener('fx:after', (e) => {
   const content = doc.querySelector('.niri-window');
 
   if (content) {
+    wrapWindowContent(content);
     content.setAttribute('data-url', e.detail.cfg.action);
     // Generate unique ID for paxi to track this window
     if (!content.id || content.id === 'root-window') {
@@ -269,8 +280,12 @@ window.addEventListener('resize', updateViewportVars);
 updateViewportVars();
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => injectWindowControls(document.body));
+  document.addEventListener('DOMContentLoaded', () => {
+    wrapWindowContent(document.getElementById('root-window'));
+    injectWindowControls(document.body);
+  });
 } else {
+  wrapWindowContent(document.getElementById('root-window'));
   injectWindowControls(document.body);
 }
 

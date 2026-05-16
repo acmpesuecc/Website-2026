@@ -522,10 +522,23 @@ function overviewWheelHandler(e) {
 }
 
 document.addEventListener('wheel', (e) => {
-  // ensure ribbon becomes scrollable when user tries horizontal scroll with touchpad
-  if (document.body.classList.contains('overview-mode')) {
-    let win = null;
-    try { win = e.target && e.target.closest && e.target.closest('.niri-window'); } catch(err) { win = null; }
+  let win = null;
+  try { win = e.target && e.target.closest && e.target.closest('.niri-window'); } catch(err) { win = null; }
+
+  if (!document.body.classList.contains('overview-mode')) {
+    // Normal mode: prevent scrolling inside unfocused windows
+    if (win && e.target.closest('.niri-window-inner')) {
+      const isFocused = win === document.activeElement || win.contains(document.activeElement);
+      if (!isFocused) {
+        // Prevent vertical scrolling to force the user to click/focus first
+        if (Math.abs(e.deltaY) >= Math.abs(e.deltaX)) {
+          e.preventDefault();
+          return;
+        }
+      }
+    }
+  } else {
+    // ensure ribbon becomes scrollable when user tries horizontal scroll with touchpad
     if (!win && typeof e.clientX === 'number') {
       const el = document.elementFromPoint(e.clientX, e.clientY);
       if (el) win = el.closest && el.closest('.niri-window');
@@ -533,6 +546,7 @@ document.addEventListener('wheel', (e) => {
     const ribbon = win ? win.closest('.niri-horizontal-track') : null;
     if (ribbon) enableRibbonScroll(ribbon);
   }
+  
   overviewWheelHandler(e);
 }, { passive: false, capture: true });
 

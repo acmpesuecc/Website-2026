@@ -70,7 +70,8 @@ body.overview-mode #root-window::before {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
-  z-index: 1;
+  z-index: 10;
+  position: relative;
 }
 
 .niri-root-content {
@@ -79,40 +80,43 @@ body.overview-mode #root-window::before {
   align-items: center;
   text-align: center;
   width: 100%;
+  position: relative;
+  z-index: 11;
 }
 
 .root-logo {
   width: 470px;
   height: auto;
   margin-bottom: 1.5rem;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 20px rgba(255,255,255,0.05));
+  opacity: 1;
+  filter: drop-shadow(0 0 30px rgba(0, 170, 254, 0.2));
   transition: all 0.25s ease;
 }
 
 .root-logo:hover {
-  opacity: 1;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .root-eyebrow {
   font-size: 1.5rem;
   font-weight: 400;
   letter-spacing: 0.15em;
-  color: #6b7fa3;
+  color: #a3c4ec;
   margin: 0 0 1.25rem 0;
   text-transform: uppercase;
   box-sizing: border-box;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .root-tagline {
   font-size: clamp(1rem, 3vw, 1.35rem);
   font-weight: 400;
   line-height: 1.6;
-  color: #a1a1aa !important;
+  color: #e2e8f0 !important;
   margin: 0 0 3rem 0;
   width: 100%;
   box-sizing: border-box;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .root-nav.glass-pill {

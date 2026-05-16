@@ -535,7 +535,10 @@ document.addEventListener('wheel', (e) => {
           e.preventDefault();
           const rootTrack = document.getElementById('niri-track-v');
           if (rootTrack) {
-            rootTrack.scrollTop += e.deltaY;
+            let dy = e.deltaY;
+            if (e.deltaMode === 1) dy *= 16; // lines
+            else if (e.deltaMode === 2) dy *= window.innerHeight; // page
+            _scrollTrackBy(rootTrack, 0, dy);
           }
           return;
         }

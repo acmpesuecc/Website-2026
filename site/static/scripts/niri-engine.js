@@ -526,13 +526,17 @@ document.addEventListener('wheel', (e) => {
   try { win = e.target && e.target.closest && e.target.closest('.niri-window'); } catch(err) { win = null; }
 
   if (!document.body.classList.contains('overview-mode')) {
-    // Normal mode: prevent scrolling inside unfocused windows
+    // Normal mode: prevent scrolling inside unfocused windows, forward to vertical track
     if (win && e.target.closest('.niri-window-inner')) {
       const isFocused = win === document.activeElement || win.contains(document.activeElement);
       if (!isFocused) {
-        // Prevent vertical scrolling to force the user to click/focus first
+        // Intercept vertical scrolling to prevent inner scroll, but scroll the main track instead
         if (Math.abs(e.deltaY) >= Math.abs(e.deltaX)) {
           e.preventDefault();
+          const rootTrack = document.getElementById('niri-track-v');
+          if (rootTrack) {
+            rootTrack.scrollTop += e.deltaY;
+          }
           return;
         }
       }

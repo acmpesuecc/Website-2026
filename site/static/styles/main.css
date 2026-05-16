@@ -212,6 +212,8 @@ body.overview-mode .site-footer {
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     scroll-behavior: smooth;
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
@@ -358,9 +360,11 @@ body.overview-mode .site-footer {
     }
 
     .niri-horizontal-track {
-        padding: 0 0.625rem; /* Balanced horizontal padding */
+        padding: 1rem 0.625rem; /* Vertical padding for top gap */
         gap: 0.625rem;
-        align-items: center; /* Center windows vertically within the track */
+        align-items: center; 
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
     }
 
     body.overview-mode {
@@ -399,17 +403,19 @@ body.overview-mode .site-footer {
         grid-column: 1 / -1; /* Span the entire row! */
     }
 
-    /* Heading for the Tab Group */
-    body.overview-mode .niri-horizontal-track[data-group-name]:has(> .niri-window:nth-of-type(2))::before {
+    /* Heading for all tracks in mobile overview */
+    body.overview-mode .niri-horizontal-track[data-group-name]::before {
         content: attr(data-group-name);
-        grid-column: 1 / -1; /* Span across the internal grid */
+        grid-column: 1 / -1; 
         font-family: var(--font-family-sans);
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: 1.1rem;
+        font-weight: 700;
         color: #a3c4ec;
-        padding: 4px 8px 8px 8px;
+        padding: 8px;
         display: flex;
         align-items: center;
+        opacity: 1;
+        position: relative;
     }
 
     /* Track with ONLY ONE window */
@@ -433,16 +439,29 @@ body.overview-mode .site-footer {
     body.overview-mode .niri-window {
         width: 100%;
         aspect-ratio: 3 / 4;
-        height: auto; 
+        height: auto !important; 
         min-height: 240px;
         margin: 0;
         border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 170, 254, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        background: #00122e; 
-        border: 1px solid rgba(0, 170, 254, 0.4);
+        background: transparent !important; 
+        border: none !important;
         position: relative;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        overflow: hidden;
+        overflow: visible;
+        clip-path: none;
+    }
+
+    body.overview-mode .niri-window::before {
+        background: rgba(20, 30, 60, 0.5);
+        backdrop-filter: blur(12px) saturate(180%);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        /* Smaller mobile notch geometry */
+        clip-path: polygon(0 0, calc(100% - 65px) 0, calc(100% - 50px) 36px, 100% 36px, 100% 100%, 0 100%);
+    }
+
+    body.overview-mode .niri-window::after {
+        /* Sync focus ring with mobile notch geometry */
+        clip-path: polygon(0 0, calc(100% - 65px) 0, calc(100% - 50px) 36px, 100% 36px, 100% 100%, 0 100%);
     }
 
     /* Window inside Tab Group is much smaller */
@@ -522,16 +541,19 @@ body.overview-mode .site-footer {
     /* Default content scaling */
     body.overview-mode .niri-window > *:not(.niri-window-controls) {
         transform: scale(0.42);
-        transform-origin: top left;
-        width: 180%;
-        height: 180%;
+        transform-origin: center top;
+        width: 238%; 
+        height: 238%;
+        margin-left: -69%; /* Offset to center the scaled content perfectly */
     }
 
     /* Even smaller scaling for windows in a Tab Group */
     body.overview-mode .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) .niri-window > *:not(.niri-window-controls) {
         transform: scale(0.30);
-        width: 260%; 
-        height: 260%;
+        transform-origin: center top;
+        width: 333%; 
+        height: 333%;
+        margin-left: -116%;
     }
 
     body.overview-mode .niri-window {

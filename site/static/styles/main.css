@@ -221,20 +221,54 @@ body.overview-mode .site-footer {
     overflow-y: auto;
     scroll-snap-align: center;
     scroll-snap-stop: always;
-    border: 1px solid rgba(0, 170, 254, 0.3);
     border-radius: 16px;
     box-sizing: border-box;
     position: relative;
-    transition:
-        flex-basis 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    background: rgba(0, 12, 35, 0.6);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: none !important;
+    background: transparent; /* Background moved to ::before */
     padding: 2rem;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 170, 254, 0.3) transparent;
+    transition: flex-basis 0.3s ease;
+}
+
+/* Background pseudo-element (clipped) */
+.niri-window::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 12, 35, 0.6);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-radius: inherit;
+    /* Inward shelf cutout: dips down and right */
+    clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    z-index: -2;
+    transition: box-shadow 0.3s ease;
+}
+
+/* The Integrated Focus Ring (Border) */
+.niri-window::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    padding: 2px;
+    background: rgba(0, 170, 254, 0.5);
+    border-radius: inherit;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    /* FOLLOW THE CHAMFER! */
+    clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    z-index: 120;
+}
+
+.niri-window:focus::after,
+.niri-window:focus-within::after {
+    background: #00aafe;
+    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
 }
 
 .niri-window::-webkit-scrollbar {
@@ -460,58 +494,76 @@ body.overview-mode .site-footer {
         height: 260%;
     }
 
-    body.overview-mode .niri-window .niri-window-controls {
-        position: absolute;
-        transform: none; 
-        top: 0;
-        right: 0;
-        z-index: 110;
-        pointer-events: auto; 
+    body.overview-mode .niri-window {
+        border: none !important;
+        background: transparent;
+        box-shadow: none;
+        transition: transform 0.5s cubic-bezier(0.15, 1, 0.3, 1), box-shadow 0.3s ease;
+        /* Remove clip-path so controls aren't hidden */
+        clip-path: none;
+        overflow: visible; /* Let the pseudo-elements handle clipping */
+    }
+    
+    body.overview-mode .niri-window::before {
+        background: rgba(20, 30, 60, 0.4);
+        backdrop-filter: blur(16px) saturate(180%);
+        box-shadow: 
+            0 30px 60px rgba(0, 0, 0, 0.5),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.3);
+        /* Inward shelf cutout for overview mode */
+        clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    }
+
+    body.overview-mode .niri-window::after {
+        clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 }
 
 .niri-window-controls {
     position: absolute;
-    top: -1px;
-    right: -1px;
-    z-index: 110;
-    background: rgba(10, 20, 40, 0.85);
+    top: 0;
+    right: 0;
+    width: 120px; /* Match the cutout start */
+    height: 40px; /* Match the cutout depth */
+    z-index: 130;
+    background: rgba(15, 25, 50, 0.9);
     backdrop-filter: blur(20px) saturate(190%);
-    
-    /* Integrated borders: only show bottom and left (slanted) */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-top: none;
-    border-right: none;
-    
-    padding: 8px 14px 8px 30px;
+    padding: 0 12px 0 20px;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
-    /* Slanted notch shape: Wider at top, slants inward at bottom-left */
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 24px 100%);
-    border-top-right-radius: 16px; /* Match default window radius */
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* Slant left edge to match the window cutout */
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 20px 100%);
+    border-top-right-radius: 16px;
     pointer-events: auto;
 }
 
-body.overview-mode .niri-window .niri-window-controls {
-    border-top-right-radius: 32px; /* Match overview window radius */
-    top: -1px;
-    right: -1px;
+/* Dedicated slanted border for the notch */
+.niri-window-controls::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px 2px 0 0; /* Top and right borders */
+    background: rgba(0, 170, 254, 0.5); /* Match base opacity */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    border-top-right-radius: inherit;
+    transition: background 0.3s ease;
 }
 
-/* Inherit border color from window focus ring */
-.niri-window:focus .niri-window-controls,
-.niri-window:focus-within .niri-window-controls {
-    border-color: #00aafe;
-    background: rgba(0, 12, 35, 0.98);
-    box-shadow: 0 0 15px rgba(0, 170, 254, 0.2);
+.niri-window:focus .niri-window-controls::after,
+.niri-window:focus-within .niri-window-controls::after {
+    background: #00aafe;
+    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
 }
 
 .niri-control-btn {
-    background: transparent;
-    border: 1px solid transparent;
-    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     padding: 6px;
     display: flex;
@@ -567,14 +619,7 @@ body.overview-mode .niri-window .niri-window-controls {
 }
 
 @media (max-width: 1024px) {
-    /* Adjust notch for mobile overview */
-    body.overview-mode .niri-window .niri-window-controls {
-        padding: 4px 8px 4px 16px;
-        clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
-    }
-}
 
-.fab-overview {
     position: fixed;
     bottom: 20px;
     right: 20px;

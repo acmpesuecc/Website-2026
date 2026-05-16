@@ -244,6 +244,7 @@ body.overview-mode .site-footer {
 .niri-window-inner {
     height: 100%;
     width: 100%;
+    box-sizing: border-box;
     overflow-y: auto;
     padding: 1.5rem; /* Inner padding for content */
     scrollbar-width: thin;

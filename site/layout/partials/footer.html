@@ -23,36 +23,37 @@
             </div>
         </div>
     </div>
-    <dialog id="help-modal">
-        <div class="help-content">
-            <h2>Keyboard Shortcuts</h2>
-            <ul>
-                <li><code>Shift + Q</code>: Close current window</li>
-                <li><code>Shift + F</code>: Toggle full-width window</li>
-                <li><code>D</code>: Toggle overview mode</li>
-                <li><code>/</code>: Toggle this help menu</li>
-                <li><code>Esc</code>: Close menu/modal</li>
-            </ul>
-            <form method="dialog"><button>Close</button></form>
-        </div>
-    </dialog>
-
-    <dialog id="close-track-modal">
-        <div class="help-content">
-            <h2>Close Track?</h2>
-            <p>You are closing the main window of this track. Do you want to close the entire track or just this window?</p>
-            <div class="modal-actions">
-                <button id="btn-close-all">Close all</button>
-                <button id="btn-close-window">Close this window only</button>
-                <form method="dialog"><button class="btn-cancel">Cancel</button></form>
-            </div>
-        </div>
-    </dialog>
-
-    <button class="fab-overview" aria-label="Toggle Overview Mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-    </button>
 
     <script>(function () { var el = document.getElementById('site-year'); if (el) el.textContent = new Date().getFullYear(); })();</script>
 </footer>
+
+<dialog id="help-modal">
+    <div class="help-content">
+        <h2>Keyboard Shortcuts</h2>
+        <ul>
+            <li><code>Shift + Q</code>: Close current window</li>
+            <li><code>Shift + F</code>: Toggle full-width window</li>
+            <li><code>D</code>: Toggle overview mode</li>
+            <li><code>/</code>: Toggle this help menu</li>
+            <li><code>Esc</code>: Close menu/modal</li>
+        </ul>
+        <form method="dialog"><button>Close</button></form>
+    </div>
+</dialog>
+
+<dialog id="close-track-modal">
+    <div class="help-content">
+        <h2>Close Track?</h2>
+        <p>You are closing the main window of this track. Do you want to close the entire track or just this window?</p>
+        <div class="modal-actions">
+            <button id="btn-close-all">Close all</button>
+            <button id="btn-close-window">Close this window only</button>
+            <form method="dialog"><button class="btn-cancel">Cancel</button></form>
+        </div>
+    </div>
+</dialog>
+
+<button class="fab-overview" aria-label="Toggle Overview Mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+</button>
 {{end}}

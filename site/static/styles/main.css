@@ -139,7 +139,7 @@ body.overview-mode .niri-window::before {
         0 30px 60px rgba(0, 0, 0, 0.5),
         inset 0 1px 1px rgba(255, 255, 255, 0.2),
         inset 0 -1px 1px rgba(0, 0, 0, 0.3);
-    clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, calc(100% - 100px) 0, calc(100% - 80px) 40px, 100% 40px, 100% 100%, 0 100%);
     z-index: -2;
     transition: inherit;
 }
@@ -261,7 +261,7 @@ body.overview-mode .site-footer {
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-radius: inherit;
     /* Inward shelf cutout: dips down and right */
-    clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, calc(100% - 100px) 0, calc(100% - 80px) 40px, 100% 40px, 100% 100%, 0 100%);
     z-index: -2;
     transition: box-shadow 0.3s ease;
 }
@@ -279,7 +279,7 @@ body.overview-mode .site-footer {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     /* FOLLOW THE CHAMFER! */
-    clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+    clip-path: polygon(0 0, calc(100% - 100px) 0, calc(100% - 80px) 40px, 100% 40px, 100% 100%, 0 100%);
     transition: background 0.3s ease, box-shadow 0.3s ease;
     z-index: 120;
 }
@@ -530,11 +530,11 @@ body.overview-mode .site-footer {
             0 30px 60px rgba(0, 0, 0, 0.5),
             inset 0 -1px 1px rgba(0, 0, 0, 0.3);
         /* Inward shelf cutout for overview mode */
-        clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+        clip-path: polygon(0 0, calc(100% - 100px) 0, calc(100% - 80px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 
     body.overview-mode .niri-window::after {
-        clip-path: polygon(0 0, calc(100% - 120px) 0, calc(100% - 100px) 40px, 100% 40px, 100% 100%, 0 100%);
+        clip-path: polygon(0 0, calc(100% - 100px) 0, calc(100% - 80px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 }
 
@@ -542,7 +542,7 @@ body.overview-mode .site-footer {
     position: absolute;
     top: 0;
     right: 0;
-    width: 120px; /* Match the cutout start */
+    width: 100px; /* Match the cutout start */
     height: 40px; /* Match the cutout depth */
     z-index: 130;
     background: rgba(15, 25, 50, 0.9);

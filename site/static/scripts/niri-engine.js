@@ -158,8 +158,14 @@ function injectWindowControls(container) {
       
       const minBtn = document.createElement('button');
       minBtn.className = 'niri-control-btn niri-minimize-btn';
-      minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>';
-      minBtn.setAttribute('aria-label', 'Toggle full width');
+      const isFull = win.classList.contains('w-full');
+      if (isFull) {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="13" height="13" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+        minBtn.setAttribute('aria-label', 'Restore window size');
+      } else {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>';
+        minBtn.setAttribute('aria-label', 'Maximize window');
+      }
 
       const closeBtn = document.createElement('button');
       closeBtn.className = 'niri-control-btn niri-close-btn';
@@ -195,6 +201,17 @@ document.addEventListener('click', (e) => {
     const win = minBtn.closest('.niri-window');
     if (win) {
       win.classList.toggle('w-full');
+      const isFull = win.classList.contains('w-full');
+      
+      // Update icon: square for maximize, overlapping squares for restore
+      if (isFull) {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="13" height="13" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+        minBtn.setAttribute('aria-label', 'Restore window size');
+      } else {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>';
+        minBtn.setAttribute('aria-label', 'Maximize window');
+      }
+
       // Ensure the window remains centered after resizing
       setTimeout(() => {
         win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });

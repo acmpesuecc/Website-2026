@@ -273,6 +273,11 @@ document.addEventListener('fx:after', (e) => {
 
 // Native scroll snapping focus
 document.addEventListener('fx:end', (e) => {
+  // Re-trigger syntax highlighting for newly injected content
+  if (typeof hljs !== 'undefined') {
+    hljs.highlightAll();
+  }
+
   const newWinId = e.detail.cfg.newWinId;
   if (newWinId) {
     const win = document.getElementById(newWinId);

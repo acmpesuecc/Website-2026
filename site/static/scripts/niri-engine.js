@@ -193,7 +193,13 @@ document.addEventListener('click', (e) => {
   if (minBtn) {
     e.stopPropagation();
     const win = minBtn.closest('.niri-window');
-    if (win) win.classList.toggle('w-full');
+    if (win) {
+      win.classList.toggle('w-full');
+      // Ensure the window remains centered after resizing
+      setTimeout(() => {
+        win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }, 50);
+    }
     return;
   }
   

@@ -275,8 +275,20 @@ body.overview-mode .niri-landing {
           requestAnimationFrame(animate);
           return;
         }
-        currentX += (targetX - currentX) * 0.15;
-        currentY += (targetY - currentY) * 0.15;
+
+        if (window.innerWidth <= 768) {
+          // Mobile: Vertical wave effect
+          const time = Date.now() / 2000;
+          const rect = rootWindow.getBoundingClientRect();
+          currentX = rect.width / 2; // Center horizontally
+          // Oscillate slowly from bottom to top
+          currentY = (0.5 + Math.sin(time) * 0.5) * rect.height;
+        } else {
+          // Desktop: Pointer following
+          currentX += (targetX - currentX) * 0.15;
+          currentY += (targetY - currentY) * 0.15;
+        }
+
         rootWindow.style.setProperty('--cursor-x', `${currentX}px`);
         rootWindow.style.setProperty('--cursor-y', `${currentY}px`);
         if (rootWindow.isConnected) {

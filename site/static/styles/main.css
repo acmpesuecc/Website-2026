@@ -475,16 +475,20 @@ body.overview-mode .site-footer {
     top: -1px;
     right: -1px;
     z-index: 110;
-    background: rgba(10, 20, 40, 0.9);
+    background: rgba(10, 20, 40, 0.85);
     backdrop-filter: blur(20px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     
-    padding: 6px 12px 6px 24px;
+    /* Integrated borders: only show bottom and left (slanted) */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    border-right: none;
+    
+    padding: 8px 14px 8px 30px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    /* Slanted notch shape: start from top edge, slant down to left edge */
-    clip-path: polygon(24px 0, 100% 0, 100% 100%, 0 100%);
+    gap: 12px;
+    /* Slanted notch shape: Wider at top, slants inward at bottom-left */
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 24px 100%);
     border-top-right-radius: 16px; /* Match default window radius */
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     pointer-events: auto;

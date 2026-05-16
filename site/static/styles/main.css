@@ -445,7 +445,7 @@ body.overview-mode .site-footer {
     }
 
     /* Default content scaling */
-    body.overview-mode .niri-window > *:not(.mobile-close-btn) {
+    body.overview-mode .niri-window > *:not(.niri-window-controls) {
         transform: scale(0.42);
         transform-origin: top left;
         width: 180%;
@@ -453,61 +453,115 @@ body.overview-mode .site-footer {
     }
 
     /* Even smaller scaling for windows in a Tab Group */
-    body.overview-mode .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) .niri-window > *:not(.mobile-close-btn) {
+    body.overview-mode .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) .niri-window > *:not(.niri-window-controls) {
         transform: scale(0.30);
         width: 260%; 
         height: 260%;
     }
 
-    body.overview-mode .niri-window > .mobile-close-btn {
+    body.overview-mode .niri-window .niri-window-controls {
         position: absolute;
         transform: none; 
-        top: 8px;
-        right: 8px;
-        width: 32px; 
-        height: 32px;
+        top: 0;
+        right: 0;
+        z-index: 110;
         pointer-events: auto; 
-        background: rgba(0, 12, 35, 0.8);
-        backdrop-filter: blur(4px);
-        border: 1px solid rgba(0, 170, 254, 0.5);
-        color: #fff;
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        border-radius: 50%;
-    }
-
-    /* Smaller close button in Tab Groups */
-    body.overview-mode .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) .niri-window > .mobile-close-btn {
-        width: 24px;
-        height: 24px;
-        top: 6px;
-        right: 6px;
-        font-size: 1rem;
     }
 }
 
-.mobile-close-btn {
+.niri-window-controls {
     position: sticky;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
+    z-index: 110;
     float: right;
-    background: rgba(0, 170, 254, 0.15);
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    border: 1px solid rgba(0, 170, 254, 0.4);
-    color: #fff;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    background: rgba(10, 20, 40, 0.6);
+    backdrop-filter: blur(20px) saturate(190%);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 16px 8px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Slanted notch shape */
+    clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: auto;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Connect to focus ring */
+.niri-window:focus .niri-window-controls,
+.niri-window:focus-within .niri-window-controls {
+    border-color: #00aafe;
+    background: rgba(0, 12, 35, 0.85);
+}
+
+.niri-control-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    z-index: 100;
+    padding: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.niri-control-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1) translateY(-1px);
+}
+
+.niri-close-btn:hover {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+}
+
+/* Minimized State */
+.niri-window.minimized {
+    flex: 0 0 64px !important;
+    min-width: 64px !important;
+    max-width: 64px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    cursor: pointer;
+    background: rgba(0, 12, 35, 0.9);
+}
+
+.niri-window.minimized > *:not(.niri-window-controls) {
+    display: none;
+}
+
+.niri-window.minimized .niri-window-controls {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    clip-path: none;
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    padding: 0;
+    flex-direction: row-reverse;
+}
+
+.niri-window.minimized .niri-minimize-btn svg {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 1024px) {
+    /* Adjust notch for mobile overview */
+    body.overview-mode .niri-window .niri-window-controls {
+        padding: 4px 8px 4px 16px;
+        clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+    }
 }
 
 .fab-overview {

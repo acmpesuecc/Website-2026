@@ -147,16 +147,48 @@ document.addEventListener('fx:config', (e) => {
   }
 });
 
-function injectCloseBtn(container) {
+function injectWindowControls(container) {
   const wins = container.querySelectorAll('.niri-window');
   wins.forEach(win => {
     if (win.id === 'root-window') return;
-    if (!win.querySelector('.mobile-close-btn')) {
+    
+    // Un-minimize on click
+    win.addEventListener('click', (e) => {
+      if (win.classList.contains('minimized')) {
+        win.classList.remove('minimized');
+        e.stopPropagation();
+      }
+    });
+
+    if (!win.querySelector('.niri-window-controls')) {
+      const controls = document.createElement('div');
+      controls.className = 'niri-window-controls';
+      
+      const minBtn = document.createElement('button');
+      minBtn.className = 'niri-control-btn niri-minimize-btn';
+      minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+      minBtn.setAttribute('aria-label', 'Minimize window');
+      minBtn.onclick = (e) => {
+        e.stopPropagation();
+        win.classList.toggle('minimized');
+      };
+
       const closeBtn = document.createElement('button');
-      closeBtn.className = 'mobile-close-btn';
-      closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      closeBtn.className = 'niri-control-btn niri-close-btn';
+      closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
       closeBtn.setAttribute('aria-label', 'Close window');
-      win.prepend(closeBtn);
+      closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        window.closeNiriWindow(win);
+      };
+
+      controls.appendChild(minBtn);
+      controls.appendChild(closeBtn);
+      win.prepend(controls);
+      
+      // Remove old close button if it exists (legacy)
+      const oldBtn = win.querySelector('.mobile-close-btn');
+      if (oldBtn) oldBtn.remove();
     }
   });
 }
@@ -190,13 +222,13 @@ document.addEventListener('fx:after', (e) => {
         ribbon.setAttribute('data-group-name', elt.textContent.trim());
       }
       ribbon.appendChild(content);
-      injectCloseBtn(ribbon);
+      injectWindowControls(ribbon);
       e.detail.cfg.text = ribbon.outerHTML;
     } else {
       // Append half-width to current track
       const temp = document.createElement('div');
       temp.appendChild(content);
-      injectCloseBtn(temp);
+      injectWindowControls(temp);
       e.detail.cfg.text = temp.innerHTML;
     }
   }
@@ -234,9 +266,9 @@ window.addEventListener('resize', updateViewportVars);
 updateViewportVars();
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => injectCloseBtn(document.body));
+  document.addEventListener('DOMContentLoaded', () => injectWindowControls(document.body));
 } else {
-  injectCloseBtn(document.body);
+  injectWindowControls(document.body);
 }
 
 // Enhanced overview-mode scroll handling.

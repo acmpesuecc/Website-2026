@@ -129,11 +129,22 @@ body.overview-mode .niri-window {
     overflow: visible;
 }
 
-body.overview-mode .niri-window::before {
+/* Ensure controls are clickable even in overview */
+body.overview-mode .niri-window .niri-window-controls {
+    pointer-events: auto !important;
+}
+
+body.overview-mode .niri-window::before,
+body.overview-mode .niri-window::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
+    z-index: -2;
+    transition: inherit;
+}
+
+body.overview-mode .niri-window::before {
     background: rgba(20, 30, 60, 0.4);
     backdrop-filter: blur(16px) saturate(180%);
     box-shadow: 
@@ -141,8 +152,17 @@ body.overview-mode .niri-window::before {
         inset 0 1px 1px rgba(255, 255, 255, 0.2),
         inset 0 -1px 1px rgba(0, 0, 0, 0.3);
     clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
-    z-index: -2;
-    transition: inherit;
+}
+
+body.overview-mode .niri-window::after {
+    z-index: 120;
+    pointer-events: none;
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
 }
 
 body.overview-mode .niri-window:hover {
@@ -341,15 +361,16 @@ body.overview-mode .site-footer {
 
     .niri-window::before,
     .niri-window::after {
-        /* Smaller 65px notch for mobile (close button only) */
-        clip-path: polygon(0 0, calc(100% - 65px) 0, calc(100% - 50px) 36px, 100% 36px, 100% 100%, 0 100%);
+        /* Standardized 90px notch for mobile */
+        clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 
     .niri-window-controls {
-        width: 65px !important;
-        height: 36px !important;
-        padding: 0 8px 0 0 !important;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 15px 100%) !important;
+        width: 90px !important;
+        height: 40px !important;
+        padding: 0 10px 0 0 !important;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 20px 100%) !important;
+        pointer-events: auto !important; /* Enable close button in overview */
     }
 
     .niri-minimize-btn {
@@ -459,13 +480,13 @@ body.overview-mode .site-footer {
         background: rgba(20, 30, 60, 0.5);
         backdrop-filter: blur(12px) saturate(180%);
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-        /* Smaller mobile notch geometry */
-        clip-path: polygon(0 0, calc(100% - 65px) 0, calc(100% - 50px) 36px, 100% 36px, 100% 100%, 0 100%);
+        /* Standardized 90px notch geometry */
+        clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 
     body.overview-mode .niri-window::after {
-        /* Sync focus ring with mobile notch geometry */
-        clip-path: polygon(0 0, calc(100% - 65px) 0, calc(100% - 50px) 36px, 100% 36px, 100% 100%, 0 100%);
+        /* Sync focus ring with standardized notch geometry */
+        clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 
     /* Window inside Tab Group is much smaller */

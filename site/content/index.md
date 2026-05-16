@@ -277,12 +277,17 @@ body.overview-mode .niri-landing {
         }
 
         if (window.innerWidth <= 1024) {
-          // Mobile: Constant vertical wave effect (bottom to top)
+          // Mobile: Sine-wave path from bottom to top
           const rect = rootWindow.getBoundingClientRect();
-          currentX = rect.width / 2; // Center horizontally
-          // Continuous flow from bottom to top
-          const speed = 0.05; // Adjust speed as needed
-          currentY = rect.height - ((Date.now() * speed) % (rect.height + 200)) + 100;
+          const time = Date.now();
+          const speed = 0.08; 
+          
+          // Move vertically from bottom to top
+          currentY = rect.height - ((time * speed) % (rect.height + 400)) + 200;
+          
+          // Oscillate horizontally to create the wave motion
+          const amplitude = rect.width * 0.35;
+          currentX = (rect.width / 2) + Math.sin(time / 700) * amplitude;
         } else {
           // Desktop: Pointer following
           currentX += (targetX - currentX) * 0.15;

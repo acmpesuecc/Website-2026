@@ -57,6 +57,7 @@ body.overview-mode {
     box-sizing: border-box;
     background: rgba(0, 8, 24, 0.3);
     backdrop-filter: blur(20px) saturate(180%);
+    scroll-snap-type: y mandatory;
 }
 
 body.overview-mode::before {
@@ -403,33 +404,34 @@ body.overview-mode .site-footer {
         grid-column: 1 / -1; /* Span the entire row! */
     }
 
-    /* Heading for all tracks in mobile overview */
-    body.overview-mode .niri-horizontal-track[data-group-name]::before {
-        content: attr(data-group-name);
-        grid-column: 1 / -1; 
-        font-family: var(--font-family-sans);
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #a3c4ec;
-        padding: 8px;
-        display: flex;
-        align-items: center;
-        opacity: 1;
-        position: relative;
-    }
-
     /* Track with ONLY ONE window */
     body.overview-mode .niri-horizontal-track:not(:has(> .niri-window:nth-of-type(2))) {
         display: block;
         width: 100%;
         height: auto;
         min-height: auto;
-        margin-bottom: 0;
-        padding: 0;
+        margin-bottom: 0.5rem;
+        padding: 40px 0 0 0; /* Room for heading */
         background: transparent;
         border-radius: 0;
         border: none;
         overflow: visible;
+        position: relative;
+    }
+
+    /* Heading for all tracks in mobile overview */
+    body.overview-mode .niri-horizontal-track[data-group-name]::before {
+        content: attr(data-group-name);
+        position: absolute;
+        top: 8px;
+        left: 0;
+        font-family: var(--font-family-sans);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #a3c4ec;
+        display: flex;
+        align-items: center;
+        opacity: 1;
     }
 
     body.overview-mode .niri-horizontal-track:first-child {
@@ -538,13 +540,13 @@ body.overview-mode .site-footer {
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(28, 44, 84, 0.4);
     }
 
-    /* Default content scaling */
-    body.overview-mode .niri-window > *:not(.niri-window-controls) {
+    /* Default content scaling (skip root-window which has its own logic) */
+    body.overview-mode .niri-window:not(#root-window) > *:not(.niri-window-controls) {
         transform: scale(0.42);
         transform-origin: center top;
         width: 238%; 
         height: 238%;
-        margin-left: -69%; /* Offset to center the scaled content perfectly */
+        margin-left: -69%; 
     }
 
     /* Even smaller scaling for windows in a Tab Group */

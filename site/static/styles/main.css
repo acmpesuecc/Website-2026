@@ -361,12 +361,12 @@ body.overview-mode .site-footer {
 
     .niri-window::before,
     .niri-window::after {
-        /* Standardized 90px notch for mobile */
-        clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
+        /* Compact 75px notch for mobile (close button only) */
+        clip-path: polygon(0 0, calc(100% - 75px) 0, calc(100% - 55px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 
     .niri-window-controls {
-        width: 90px !important;
+        width: 75px !important;
         height: 40px !important;
         padding: 0 10px 0 0 !important;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 20px 100%) !important;
@@ -598,11 +598,11 @@ body.overview-mode .site-footer {
             0 30px 60px rgba(0, 0, 0, 0.5),
             inset 0 -1px 1px rgba(0, 0, 0, 0.3);
         /* Inward shelf cutout for overview mode */
-        clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
+        clip-path: polygon(0 0, calc(100% - 75px) 0, calc(100% - 55px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 
     body.overview-mode .niri-window::after {
-        clip-path: polygon(0 0, calc(100% - 90px) 0, calc(100% - 70px) 40px, 100% 40px, 100% 100%, 0 100%);
+        clip-path: polygon(0 0, calc(100% - 75px) 0, calc(100% - 55px) 40px, 100% 40px, 100% 100%, 0 100%);
     }
 }
 

@@ -639,6 +639,26 @@ body.overview-mode .site-footer {
     justify-content: center;
 }
 
+.fab-overview {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(0, 170, 254, 0.6);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    color: #000c23;
+    border: 1px solid rgba(0, 170, 254, 0.8);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .fab-overview svg {
     width: 24px;
     height: 24px;

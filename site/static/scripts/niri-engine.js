@@ -566,7 +566,7 @@ document.addEventListener('wheel', (e) => {
             let dy = e.deltaY;
             if (e.deltaMode === 1) dy *= 16; // lines
             else if (e.deltaMode === 2) dy *= window.innerHeight; // page
-            _scrollTrackBy(rootTrack, 0, dy);
+            _scrollTrackBy(rootTrack, 0, dy, true);
           }
           return;
         }

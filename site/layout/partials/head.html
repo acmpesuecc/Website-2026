@@ -60,7 +60,8 @@
     <meta property="og:title" content="{{ $PageData.Frontmatter.Title }}" />
     <meta property="og:description" content="{{ $PageData.Frontmatter.Description }}" />
     <meta property="og:image" content="{{ $PageData.Frontmatter.PreviewImage }}" />
-
+    <meta property="og:url" content="{{ .DeepDataMerge.LayoutConfig.BaseURL }}{{ .PageURL }}" />
+    <link rel="canonical" href="{{ .DeepDataMerge.LayoutConfig.BaseURL }}{{ .PageURL }}" />
     <meta name="description" content="{{ $PageData.Frontmatter.Description }}" />
 
     <script defer>

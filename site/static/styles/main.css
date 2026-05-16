@@ -332,9 +332,30 @@ body.overview-mode .site-footer {
 
 @media (max-width: 1024px) {
     .niri-window {
-        flex-basis: 100%;
-        padding: 0.75rem 0.75rem 0.25rem 0.75rem; /* Revert to smaller in-window padding */
-        height: calc(var(--app-height) - 1rem); /* 0.5rem top + 0.5rem bottom padding from track */
+        flex-basis: 92%;
+        padding: 0.5rem; 
+        height: calc(var(--app-height) - 1.5rem);
+    }
+
+    .niri-window::before,
+    .niri-window::after {
+        /* Smaller 65px notch for mobile (close button only) */
+        clip-path: polygon(0 0, calc(100% - 65px) 0, calc(100% - 50px) 36px, 100% 36px, 100% 100%, 0 100%);
+    }
+
+    .niri-window-controls {
+        width: 65px !important;
+        height: 36px !important;
+        padding: 0 8px 0 0 !important;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 15px 100%) !important;
+    }
+
+    .niri-minimize-btn {
+        display: none !important;
+    }
+
+    .niri-window-inner {
+        padding: 1.25rem;
     }
 
     .niri-horizontal-track {

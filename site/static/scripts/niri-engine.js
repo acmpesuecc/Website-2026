@@ -158,8 +158,8 @@ function injectWindowControls(container) {
       
       const minBtn = document.createElement('button');
       minBtn.className = 'niri-control-btn niri-minimize-btn';
-      minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
-      minBtn.setAttribute('aria-label', 'Minimize window');
+      minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>';
+      minBtn.setAttribute('aria-label', 'Toggle full width');
 
       const closeBtn = document.createElement('button');
       closeBtn.className = 'niri-control-btn niri-close-btn';
@@ -183,7 +183,7 @@ document.addEventListener('click', (e) => {
   if (minBtn) {
     e.stopPropagation();
     const win = minBtn.closest('.niri-window');
-    if (win) win.classList.toggle('minimized');
+    if (win) win.classList.toggle('w-full');
     return;
   }
   
@@ -193,12 +193,6 @@ document.addEventListener('click', (e) => {
     const win = closeBtn.closest('.niri-window');
     if (win && window.closeNiriWindow) window.closeNiriWindow(win);
     return;
-  }
-  
-  const win = e.target.closest('.niri-window');
-  if (win && win.classList.contains('minimized')) {
-    win.classList.remove('minimized');
-    e.stopPropagation();
   }
 });
 

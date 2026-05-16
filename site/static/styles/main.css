@@ -267,8 +267,8 @@ body.overview-mode .site-footer {
 
 .niri-window:focus::after,
 .niri-window:focus-within::after {
-    background: #00aafe;
-    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
+    background: #1c2c54;
+    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
 }
 
 .niri-window::-webkit-scrollbar {
@@ -289,8 +289,8 @@ body.overview-mode .site-footer {
 .niri-window:focus,
 .niri-window:focus-within {
     outline: none;
-    border-color: #00aafe;
-    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
+    border-color: #1c2c54;
+    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
 }
 
 .niri-window.w-full {
@@ -475,8 +475,8 @@ body.overview-mode .site-footer {
     body.overview-mode .niri-window:focus-within {
         transform: translateY(-4px) scale(1.02);
         z-index: 10;
-        border-color: #00aafe;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 170, 254, 0.4);
+        border-color: #1c2c54;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 12px rgba(28, 44, 84, 0.4);
     }
 
     /* Default content scaling */
@@ -556,8 +556,8 @@ body.overview-mode .site-footer {
 
 .niri-window:focus .niri-window-controls::after,
 .niri-window:focus-within .niri-window-controls::after {
-    background: #00aafe;
-    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
+    background: #1c2c54;
+    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
 }
 
 .niri-control-btn {
@@ -585,37 +585,10 @@ body.overview-mode .site-footer {
     color: #ff3b30;
 }
 
-/* Minimized State */
-.niri-window.minimized {
-    flex: 0 0 64px !important;
-    min-width: 64px !important;
-    max-width: 64px !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    cursor: pointer;
-    background: rgba(0, 12, 35, 0.9);
-}
-
-.niri-window.minimized > *:not(.niri-window-controls) {
-    display: none;
-}
-
-.niri-window.minimized .niri-window-controls {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, -50%) rotate(90deg);
-    clip-path: none;
-    background: transparent;
-    border: none;
-    backdrop-filter: none;
-    padding: 0;
-    flex-direction: row-reverse;
-}
-
-.niri-window.minimized .niri-minimize-btn svg {
-    transform: rotate(90deg);
+/* Dim unfocused windows to emphasize the active one */
+.niri-horizontal-track:focus-within .niri-window:not(:focus):not(:focus-within) {
+    opacity: 0.7;
+    filter: brightness(0.7);
 }
 
 @media (max-width: 1024px) {

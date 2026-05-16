@@ -152,14 +152,6 @@ function injectWindowControls(container) {
   wins.forEach(win => {
     if (win.id === 'root-window') return;
     
-    // Un-minimize on click
-    win.addEventListener('click', (e) => {
-      if (win.classList.contains('minimized')) {
-        win.classList.remove('minimized');
-        e.stopPropagation();
-      }
-    });
-
     if (!win.querySelector('.niri-window-controls')) {
       const controls = document.createElement('div');
       controls.className = 'niri-window-controls';
@@ -168,19 +160,11 @@ function injectWindowControls(container) {
       minBtn.className = 'niri-control-btn niri-minimize-btn';
       minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
       minBtn.setAttribute('aria-label', 'Minimize window');
-      minBtn.onclick = (e) => {
-        e.stopPropagation();
-        win.classList.toggle('minimized');
-      };
 
       const closeBtn = document.createElement('button');
       closeBtn.className = 'niri-control-btn niri-close-btn';
       closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
       closeBtn.setAttribute('aria-label', 'Close window');
-      closeBtn.onclick = (e) => {
-        e.stopPropagation();
-        window.closeNiriWindow(win);
-      };
 
       controls.appendChild(minBtn);
       controls.appendChild(closeBtn);
@@ -192,6 +176,31 @@ function injectWindowControls(container) {
     }
   });
 }
+
+// Global click handler for window controls (survives HTML serialization)
+document.addEventListener('click', (e) => {
+  const minBtn = e.target.closest('.niri-minimize-btn');
+  if (minBtn) {
+    e.stopPropagation();
+    const win = minBtn.closest('.niri-window');
+    if (win) win.classList.toggle('minimized');
+    return;
+  }
+  
+  const closeBtn = e.target.closest('.niri-close-btn');
+  if (closeBtn) {
+    e.stopPropagation();
+    const win = closeBtn.closest('.niri-window');
+    if (win && window.closeNiriWindow) window.closeNiriWindow(win);
+    return;
+  }
+  
+  const win = e.target.closest('.niri-window');
+  if (win && win.classList.contains('minimized')) {
+    win.classList.remove('minimized');
+    e.stopPropagation();
+  }
+});
 
 // Shell stripping, sizing, and track injection
 document.addEventListener('fx:after', (e) => {

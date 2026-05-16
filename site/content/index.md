@@ -276,13 +276,13 @@ body.overview-mode .niri-landing {
           return;
         }
 
-        if (window.innerWidth <= 768) {
-          // Mobile: Vertical wave effect
-          const time = Date.now() / 2000;
+        if (window.innerWidth <= 1024) {
+          // Mobile: Constant vertical wave effect (bottom to top)
           const rect = rootWindow.getBoundingClientRect();
           currentX = rect.width / 2; // Center horizontally
-          // Oscillate slowly from bottom to top
-          currentY = (0.5 + Math.sin(time) * 0.5) * rect.height;
+          // Continuous flow from bottom to top
+          const speed = 0.05; // Adjust speed as needed
+          currentY = rect.height - ((Date.now() * speed) % (rect.height + 200)) + 100;
         } else {
           // Desktop: Pointer following
           currentX += (targetX - currentX) * 0.15;

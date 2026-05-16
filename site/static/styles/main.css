@@ -212,8 +212,6 @@ body.overview-mode .site-footer {
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
     scroll-behavior: smooth;
     border-bottom: 1px solid rgba(0, 170, 254, 0.2);
     gap: 1.5rem;
@@ -332,9 +330,10 @@ body.overview-mode .site-footer {
 
 @media (max-width: 1024px) {
     .niri-window {
-        flex-basis: calc(100% - 2.5rem); /* Consistent 1.25rem gap on each side */
+        flex-basis: calc(100% - 1.25rem); /* Wider windows on mobile */
         padding: 0.5rem; 
-        height: calc(var(--app-height) - 1.5rem);
+        height: calc(var(--app-height) - 3rem); /* Shorter height to ensure top/bottom gap */
+        margin: 0 auto; /* Extra insurance for centering */
     }
 
     .niri-window::before,
@@ -359,8 +358,9 @@ body.overview-mode .site-footer {
     }
 
     .niri-horizontal-track {
-        padding: 0 1.25rem; /* Balanced horizontal padding */
-        gap: 1.25rem;
+        padding: 0 0.625rem; /* Balanced horizontal padding */
+        gap: 0.625rem;
+        align-items: center; /* Center windows vertically within the track */
     }
 
     body.overview-mode {

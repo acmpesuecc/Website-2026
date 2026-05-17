@@ -40,8 +40,10 @@ layout: page
   pointer-events: none;
   background-image: radial-gradient(rgba(0, 170, 254, 0.8) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
-  -webkit-mask-image: radial-gradient(circle 150px at var(--cursor-x, -150px) var(--cursor-y, -150px), rgba(0, 0, 0, 1), transparent);
-  mask-image: radial-gradient(circle 150px at var(--cursor-x, -150px) var(--cursor-y, -150px), rgba(0, 0, 0, 1), transparent);
+  -webkit-mask: radial-gradient(150px circle at var(--cursor-x, -200px) var(--cursor-y, -200px), black 0%, transparent 100%) no-repeat;
+  mask: radial-gradient(150px circle at var(--cursor-x, -200px) var(--cursor-y, -200px), black 0%, transparent 100%) no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
   z-index: 0;
   transition: opacity 0.3s;
 }

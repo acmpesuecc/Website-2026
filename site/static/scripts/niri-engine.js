@@ -4,32 +4,67 @@ window.closeNiriWindow = function(win) {
     if (!win || win.id === 'root-window') return;
     
     const track = win.closest('.niri-horizontal-track');
-    let targetToFocus = win.previousElementSibling;
-    let removeTrack = false;
     
-    if (!targetToFocus || !targetToFocus.classList.contains('niri-window')) {
-        const prevTrack = track.previousElementSibling;
+    const focusWindow = (target) => {
+        if (target && target.classList.contains('niri-window')) {
+            target.focus({ preventScroll: true });
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }, 50);
+        }
+    };
+
+    const removeTrackAndFocusPrev = (t) => {
+        let target = null;
+        const prevTrack = t.previousElementSibling;
         if (prevTrack && prevTrack.classList.contains('niri-horizontal-track')) {
             const windows = prevTrack.querySelectorAll('.niri-window');
-            targetToFocus = windows[windows.length - 1];
+            target = windows[windows.length - 1];
+        }
+        t.remove();
+        focusWindow(target);
+    };
+
+    const removeWindowAndFocusBest = (w) => {
+        let target = w.previousElementSibling;
+        // If it's the first window, prefer the next one to stay in the same track
+        if (!target || !target.classList.contains('niri-window')) {
+            target = w.nextElementSibling;
+        }
+        w.remove();
+        focusWindow(target);
+    };
+
+    const isFirstWindow = !win.previousElementSibling || !win.previousElementSibling.classList.contains('niri-window');
+    const hasOtherWindows = !!win.nextElementSibling && win.nextElementSibling.classList.contains('niri-window');
+
+    if (isFirstWindow && hasOtherWindows) {
+        const modal = document.getElementById('close-track-modal');
+        if (modal) {
+            modal.showModal();
+            const btnAll = document.getElementById('btn-close-all');
+            const btnWindow = document.getElementById('btn-close-window');
+            
+            const onAll = () => { removeTrackAndFocusPrev(track); modal.close(); };
+            const onWin = () => { removeWindowAndFocusBest(win); modal.close(); };
+            
+            btnAll.addEventListener('click', onAll, { once: true });
+            btnWindow.addEventListener('click', onWin, { once: true });
+            
+            const onModalClose = () => {
+                btnAll.removeEventListener('click', onAll);
+                btnWindow.removeEventListener('click', onWin);
+                modal.removeEventListener('close', onModalClose);
+            };
+            modal.addEventListener('close', onModalClose);
+            return;
         }
     }
-    
+
     if (track.id !== 'niri-track-h-root' && track.querySelectorAll('.niri-window').length === 1) {
-        removeTrack = true;
-    }
-    
-    if (removeTrack) {
-        track.remove();
+        removeTrackAndFocusPrev(track);
     } else {
-        win.remove();
-    }
-    
-    if (targetToFocus && targetToFocus.classList.contains('niri-window')) {
-        targetToFocus.focus({ preventScroll: true });
-        setTimeout(() => {
-            targetToFocus.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-        }, 50);
+        removeWindowAndFocusBest(win);
     }
 };
 
@@ -72,7 +107,8 @@ document.addEventListener('scrollend', (e) => {
     }
 }, { capture: true });
 
-// Target switching: Main pages spawn new ribbons, sub-pages append to current ribbon
+// Target switching: from landing page spawns new full-width tracks,
+// from inside pages appends half-width windows to current track
 document.addEventListener('fx:config', (e) => {
   const trigger = e.detail.cfg.trigger;
   if (!trigger) return;
@@ -91,15 +127,11 @@ document.addEventListener('fx:config', (e) => {
     return;
   }
 
-  if (elt.hasAttribute('fx-main-page')) {
-    const footer = document.querySelector('.site-footer');
-    if (footer) {
-      e.detail.cfg.target = footer;
-      e.detail.cfg.swap = 'beforebegin';
-    } else {
-      e.detail.cfg.target = document.getElementById('niri-track-v');
-      e.detail.cfg.swap = 'beforeend';
-    }
+  const fromRoot = elt.closest('.niri-window')?.id === 'root-window';
+
+  if (fromRoot) {
+    e.detail.cfg.target = document.getElementById('niri-track-v');
+    e.detail.cfg.swap = 'beforeend';
   } else {
     const track = elt.closest('.niri-horizontal-track');
     if (track) {
@@ -109,21 +141,89 @@ document.addEventListener('fx:config', (e) => {
   }
 });
 
-function injectCloseBtn(container) {
+function injectWindowControls(container) {
   const wins = container.querySelectorAll('.niri-window');
   wins.forEach(win => {
     if (win.id === 'root-window') return;
-    if (!win.querySelector('.mobile-close-btn')) {
+    
+    if (!win.querySelector('.niri-window-controls')) {
+      const controls = document.createElement('div');
+      controls.className = 'niri-window-controls';
+      
+      const minBtn = document.createElement('button');
+      minBtn.className = 'niri-control-btn niri-minimize-btn';
+      const isFull = win.classList.contains('w-full');
+      if (isFull) {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="13" height="13" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+        minBtn.setAttribute('aria-label', 'Restore window size');
+      } else {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>';
+        minBtn.setAttribute('aria-label', 'Maximize window');
+      }
+
       const closeBtn = document.createElement('button');
-      closeBtn.className = 'mobile-close-btn';
-      closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      closeBtn.className = 'niri-control-btn niri-close-btn';
+      closeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
       closeBtn.setAttribute('aria-label', 'Close window');
-      win.prepend(closeBtn);
+
+      controls.appendChild(minBtn);
+      controls.appendChild(closeBtn);
+      win.prepend(controls);
+      
+      // Remove old close button if it exists (legacy)
+      const oldBtn = win.querySelector('.mobile-close-btn');
+      if (oldBtn) oldBtn.remove();
     }
   });
 }
 
-// Shell stripping and Mobile injection
+function wrapWindowContent(win) {
+  if (!win || win.querySelector('.niri-window-inner')) return;
+  const inner = document.createElement('div');
+  inner.className = 'niri-window-inner';
+  while (win.firstChild) {
+    inner.appendChild(win.firstChild);
+  }
+  win.appendChild(inner);
+}
+
+// Global click handler for window controls (survives HTML serialization)
+document.addEventListener('click', (e) => {
+  const minBtn = e.target.closest('.niri-minimize-btn');
+  if (minBtn) {
+    e.stopPropagation();
+    const win = minBtn.closest('.niri-window');
+    if (win) {
+      win.classList.toggle('w-full');
+      const isFull = win.classList.contains('w-full');
+      
+      // Update icon: square for maximize, overlapping squares for restore
+      if (isFull) {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="13" height="13" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+        minBtn.setAttribute('aria-label', 'Restore window size');
+      } else {
+        minBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>';
+        minBtn.setAttribute('aria-label', 'Maximize window');
+      }
+
+      // Ensure the window remains centered after resizing
+      setTimeout(() => {
+        win.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }, 50);
+    }
+    return;
+  }
+  
+  const closeBtn = e.target.closest('.niri-close-btn');
+  if (closeBtn) {
+    e.stopPropagation();
+    const win = closeBtn.closest('.niri-window');
+    if (win && window.closeNiriWindow) window.closeNiriWindow(win);
+    return;
+  }
+});
+
+// Shell stripping, sizing, and track injection
 document.addEventListener('fx:after', (e) => {
   const trigger = e.detail.cfg.trigger;
   const elt = trigger?.target.closest('[fx-action]');
@@ -132,6 +232,7 @@ document.addEventListener('fx:after', (e) => {
   const content = doc.querySelector('.niri-window');
 
   if (content) {
+    wrapWindowContent(content);
     content.setAttribute('data-url', e.detail.cfg.action);
     // Generate unique ID for paxi to track this window
     if (!content.id || content.id === 'root-window') {
@@ -139,9 +240,12 @@ document.addEventListener('fx:after', (e) => {
     }
     content.setAttribute('tabindex', '-1');
     e.detail.cfg.newWinId = content.id;
-    
-    if (elt && elt.hasAttribute('fx-main-page')) {
-      // Wrap main pages in a new horizontal track
+
+    const fromRoot = elt && elt.closest('.niri-window')?.id === 'root-window';
+
+    if (fromRoot) {
+      content.classList.add('w-full');
+      // Wrap in a new horizontal track
       const ribbon = document.createElement('div');
       ribbon.className = 'niri-horizontal-track';
       ribbon.id = 'track-' + Math.random().toString(36).substr(2, 9);
@@ -149,12 +253,13 @@ document.addEventListener('fx:after', (e) => {
         ribbon.setAttribute('data-group-name', elt.textContent.trim());
       }
       ribbon.appendChild(content);
-      injectCloseBtn(ribbon);
+      injectWindowControls(ribbon);
       e.detail.cfg.text = ribbon.outerHTML;
     } else {
+      // Append half-width to current track
       const temp = document.createElement('div');
       temp.appendChild(content);
-      injectCloseBtn(temp);
+      injectWindowControls(temp);
       e.detail.cfg.text = temp.innerHTML;
     }
   }
@@ -162,6 +267,11 @@ document.addEventListener('fx:after', (e) => {
 
 // Native scroll snapping focus
 document.addEventListener('fx:end', (e) => {
+  // Re-trigger syntax highlighting for newly injected content
+  if (typeof hljs !== 'undefined') {
+    hljs.highlightAll();
+  }
+
   const newWinId = e.detail.cfg.newWinId;
   if (newWinId) {
     const win = document.getElementById(newWinId);
@@ -192,7 +302,372 @@ window.addEventListener('resize', updateViewportVars);
 updateViewportVars();
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => injectCloseBtn(document.body));
+  document.addEventListener('DOMContentLoaded', () => {
+    wrapWindowContent(document.getElementById('root-window'));
+    injectWindowControls(document.body);
+  });
 } else {
-  injectCloseBtn(document.body);
+  wrapWindowContent(document.getElementById('root-window'));
+  injectWindowControls(document.body);
 }
+
+// Enhanced overview-mode scroll handling.
+// Goals:
+// - Prevent inner window native scrolling while in overview-mode.
+// - Allow wheel/keyboard interactions over windows to move outer overview tracks.
+// - Preserve typing in inputs/textareas/contenteditable.
+
+const _windowOverflowMap = new WeakMap();
+function setOverviewWindowOverflow(enabled) {
+  document.querySelectorAll('.niri-window').forEach(win => {
+    try {
+      if (enabled) {
+        _windowOverflowMap.set(win, win.style.overflow || '');
+        win.style.overflow = 'hidden';
+      } else {
+        const prev = _windowOverflowMap.get(win);
+        if (typeof prev !== 'undefined') win.style.overflow = prev;
+        else win.style.overflow = '';
+        _windowOverflowMap.delete(win);
+      }
+    } catch (err) {}
+  });
+}
+
+// Ribbon scroll enable/disable helpers. Some CSS in overview-mode sets ribbons to overflow: visible;
+// enable overflow-x:auto when user interacts so native scrolling works.
+const _ribbonOverflowMap = new WeakMap();
+function enableRibbonScroll(ribbon) {
+  if (!ribbon) return;
+  if (_ribbonOverflowMap.has(ribbon)) return;
+  try {
+    _ribbonOverflowMap.set(ribbon, { 
+      overflowX: ribbon.style.overflowX || '', 
+      touchAction: ribbon.style.touchAction || '',
+      webkitOverflowScrolling: ribbon.style.webkitOverflowScrolling || ''
+    });
+
+    // make ribbon scrollable and enable native horizontal panning
+    ribbon.style.overflowX = 'auto';
+    ribbon.style.overflowY = 'hidden';
+    ribbon.style.touchAction = 'pan-x';
+    ribbon.style.webkitOverflowScrolling = 'touch';
+  } catch (err) {}
+}
+function disableRibbonScroll(ribbon) {
+  if (!ribbon) return;
+  const prev = _ribbonOverflowMap.get(ribbon);
+  if (prev) {
+    try {
+      ribbon.style.overflowX = prev.overflowX || '';
+      ribbon.style.touchAction = prev.touchAction || '';
+      ribbon.style.webkitOverflowScrolling = prev.webkitOverflowScrolling || '';
+    } catch (err) {}
+    _ribbonOverflowMap.delete(ribbon);
+  }
+}
+function disableAllRibbons() {
+  document.querySelectorAll('.niri-horizontal-track').forEach(r => disableRibbonScroll(r));
+}
+
+function setOverviewRibbonScroll(enabled) {
+  const ribbons = document.querySelectorAll('.niri-horizontal-track');
+  if (enabled) ribbons.forEach(r => enableRibbonScroll(r));
+  else ribbons.forEach(r => disableRibbonScroll(r));
+}
+
+// apply initial state (must run after ribbon helpers init)
+const initialOverview = document.body.classList.contains('overview-mode');
+setOverviewWindowOverflow(initialOverview);
+setOverviewRibbonScroll(initialOverview);
+
+// enable auto-debug for current session
+try { window.__niriDebugOverview = true; } catch (err) {}
+
+// observe body.class changes
+const _bodyObserver = new MutationObserver((mutations) => {
+  for (const m of mutations) {
+    if (m.attributeName === 'class') {
+      const enabled = document.body.classList.contains('overview-mode');
+      setOverviewWindowOverflow(enabled);
+      setOverviewRibbonScroll(enabled);
+    }
+  }
+});
+_bodyObserver.observe(document.body, { attributes: true });
+
+function _nearestTracks(win) {
+  const root = document.getElementById('niri-track-v');
+  const ribbon = win ? win.closest('.niri-horizontal-track') : null;
+  return { root, ribbon };
+}
+
+function _scrollTrackBy(track, x, y, smooth = false) {
+  if (!track) return;
+  try {
+    track.scrollBy({ left: x || 0, top: y || 0, behavior: smooth ? 'smooth' : 'auto' });
+  } catch (err) {
+    try { track.scrollLeft += x || 0; track.scrollTop += y || 0; } catch(e) {}
+  }
+}
+
+// Wheel: redirect deltas to outer track when in overview-mode.
+function overviewWheelHandler(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+
+  // determine event target robustly; sometimes target is inner scaled child
+  let win = null;
+  try {
+    win = e.target && e.target.closest && e.target.closest('.niri-window');
+    if (!win && typeof e.clientX === 'number') {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el) win = el.closest && el.closest('.niri-window');
+    }
+  } catch (err) { win = null; }
+
+  const { root, ribbon } = _nearestTracks(win);
+
+  // normalize deltaMode (0=pixel,1=line,2=page)
+  let deltaX = e.deltaX, deltaY = e.deltaY;
+  if (e.deltaMode === 1) { // lines -> approx pixels
+    const LINE_HEIGHT = 16;
+    deltaX *= LINE_HEIGHT; deltaY *= LINE_HEIGHT;
+  } else if (e.deltaMode === 2) { // page
+    const PAGE = window.innerHeight || 800;
+    deltaX *= PAGE; deltaY *= PAGE;
+  }
+
+  // helpers
+  function isScrollable(el, axis) {
+    if (!el) return false;
+    try {
+      if (axis === 'y') return el.scrollHeight > el.clientHeight && getComputedStyle(el).overflowY !== 'visible';
+      return el.scrollWidth > el.clientWidth && getComputedStyle(el).overflowX !== 'visible';
+    } catch (err) { return false; }
+  }
+
+  function findScrollTarget(axis) {
+    if (axis === 'x') {
+      if (ribbon && isScrollable(ribbon, 'x')) return ribbon;
+      if (root && isScrollable(root, 'x')) return root;
+    } else {
+      if (root && isScrollable(root, 'y')) return root;
+      if (document.scrollingElement && isScrollable(document.scrollingElement, 'y')) return document.scrollingElement;
+      if (document.body && isScrollable(document.body, 'y')) return document.body;
+    }
+    return null;
+  }
+
+  const absY = Math.abs(deltaY), absX = Math.abs(deltaX);
+  if (absY >= absX) {
+    // vertical motion -> choose vertical scroll target
+    const target = findScrollTarget('y');
+    if (!target) return; // nothing scrollable, let browser handle it
+    if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) console.log('[overview] vertical wheel', {deltaY, target: target.tagName, scrollTop: target.scrollTop, scrollHeight: target.scrollHeight, clientHeight: target.clientHeight});
+    e.preventDefault();
+    e.stopPropagation();
+    _scrollTrackBy(target, 0, deltaY, false);
+    return;
+  }
+
+  // horizontal motion: prefer ribbon under cursor
+  let target = ribbon || findScrollTarget('x') || findScrollTarget('y');
+  if (!target) return;
+
+  if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
+    console.log('[overview] horizontal wheel', {deltaX, deltaMode: e.deltaMode, ribbon: !!ribbon, scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth});
+  }
+
+  // enable ribbon native scroll and temporarily disable scroll-snap
+  try {
+    if (ribbon) enableRibbonScroll(ribbon);
+    if (!target.__prevScrollSnap) target.__prevScrollSnap = target.style.scrollSnapType || '';
+    target.style.scrollSnapType = 'none';
+  } catch (err) {}
+
+  e.preventDefault();
+  e.stopPropagation();
+
+  // accumulate and amplify small deltas for smoother touchpad response
+  // compensate for overview zoom (<1) so horizontal movement feels natural
+  const HORIZ_FACTOR_BASE = 8.0;
+  let zoomComp = 1;
+  try {
+    const vTrack = document.getElementById('niri-track-v');
+    const z = vTrack ? parseFloat(getComputedStyle(vTrack).zoom || '1') : 1;
+    if (Number.isFinite(z) && z > 0 && z < 1) zoomComp = 1 / z;
+  } catch (err) {}
+  const HORIZ_FACTOR = HORIZ_FACTOR_BASE * zoomComp;
+  target.__hAccum = (target.__hAccum || 0) + deltaX * HORIZ_FACTOR;
+
+  // capture absDelta for adaptive clamping
+  const absDelta = Math.abs(deltaX);
+
+  // flush integer pixels via rAF
+  window.requestAnimationFrame(() => {
+    let amount = Math.trunc(target.__hAccum);
+
+    // adaptive clamp: scale with viewport and input intensity
+    // base = 20% of viewport width, adaptive = absDelta * factor, cap at target.clientWidth
+    try {
+      const base = Math.max(80, Math.round(target.clientWidth * 0.2));
+      const adaptive = Math.round(absDelta * HORIZ_FACTOR * 6);
+      const cap = Math.max(base, adaptive);
+      const MAX_PER_FRAME = Math.min(cap, Math.max(base, target.clientWidth));
+
+      if (amount > MAX_PER_FRAME) amount = MAX_PER_FRAME;
+      if (amount < -MAX_PER_FRAME) amount = -MAX_PER_FRAME;
+    } catch (e) {
+      // fallback
+      const FALLBACK_MAX = 300;
+      if (amount > FALLBACK_MAX) amount = FALLBACK_MAX;
+      if (amount < -FALLBACK_MAX) amount = -FALLBACK_MAX;
+    }
+
+    target.__hAccum -= amount;
+    if (amount !== 0) {
+      try {
+        if (typeof target.scrollBy === 'function') target.scrollBy({ left: amount, behavior: 'auto' });
+        else target.scrollLeft += amount;
+      } catch (err) { _scrollTrackBy(target, amount, 0, false); }
+    }
+
+    if ((window.__niriDebugOverview) || (localStorage && localStorage.debugOverview === '1')) {
+      try { console.log('[overview] post-scroll', { scrollLeft: target.scrollLeft, scrollWidth: target.scrollWidth, clientWidth: target.clientWidth, amount, absDelta }); } catch (e) {}
+    }
+
+    if (target.__snapRestoreTimeout) clearTimeout(target.__snapRestoreTimeout);
+    target.__snapRestoreTimeout = setTimeout(() => {
+      try { target.style.scrollSnapType = target.__prevScrollSnap || ''; delete target.__prevScrollSnap; } catch (e) {}
+    }, 700);
+  });
+}
+
+document.addEventListener('wheel', (e) => {
+  let win = null;
+  try { win = e.target && e.target.closest && e.target.closest('.niri-window'); } catch(err) { win = null; }
+
+  if (!document.body.classList.contains('overview-mode')) {
+    // Normal mode: prevent scrolling inside unfocused windows, forward to vertical track
+    if (win && e.target.closest('.niri-window-inner')) {
+      const isFocused = win === document.activeElement || win.contains(document.activeElement);
+      if (!isFocused) {
+        // Intercept vertical scrolling to prevent inner scroll, but scroll the main track instead
+        if (Math.abs(e.deltaY) >= Math.abs(e.deltaX)) {
+          e.preventDefault();
+          const rootTrack = document.getElementById('niri-track-v');
+          if (rootTrack) {
+            let dy = e.deltaY;
+            if (e.deltaMode === 1) dy *= 16; // lines
+            else if (e.deltaMode === 2) dy *= window.innerHeight; // page
+            _scrollTrackBy(rootTrack, 0, dy);
+          }
+          return;
+        }
+      }
+    }
+  } else {
+    // ensure ribbon becomes scrollable when user tries horizontal scroll with touchpad
+    if (!win && typeof e.clientX === 'number') {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el) win = el.closest && el.closest('.niri-window');
+    }
+    const ribbon = win ? win.closest('.niri-horizontal-track') : null;
+    if (ribbon) enableRibbonScroll(ribbon);
+  }
+  
+  overviewWheelHandler(e);
+}, { passive: false, capture: true });
+
+// Touch: simple pan routing. Track touchstart -> touchmove deltas, route to nearest track.
+let _touchStart = null;
+function overviewTouchStart(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+  const t = e.touches && e.touches[0];
+  if (!t) return;
+  const win = e.target && e.target.closest && e.target.closest('.niri-window');
+  if (!win) return;
+  _touchStart = { x: t.clientX, y: t.clientY, win };
+}
+
+function overviewTouchMove(e) {
+  if (!document.body.classList.contains('overview-mode') || !_touchStart) return;
+  const t = e.touches && e.touches[0];
+  if (!t) return;
+  const dx = _touchStart.x - t.clientX;
+  const dy = _touchStart.y - t.clientY;
+
+  // decide primary axis
+  const absX = Math.abs(dx), absY = Math.abs(dy);
+  if (absY >= absX) {
+    const { root } = _nearestTracks(_touchStart.win);
+    if (root) {
+      e.preventDefault();
+      _scrollTrackBy(root, 0, dy, false);
+      _touchStart.x = t.clientX; _touchStart.y = t.clientY;
+    }
+  } else {
+    const { ribbon, root } = _nearestTracks(_touchStart.win);
+    const target = ribbon || root;
+    if (target) {
+      e.preventDefault();
+      _scrollTrackBy(target, dx, 0, false);
+      _touchStart.x = t.clientX; _touchStart.y = t.clientY;
+    }
+  }
+}
+
+document.addEventListener('touchstart', (e) => {
+  if (document.body.classList.contains('overview-mode')) {
+    const t = e.touches && e.touches[0];
+    if (t) {
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const ribbon = el && el.closest ? el.closest('.niri-horizontal-track') : null;
+      if (ribbon) enableRibbonScroll(ribbon);
+    }
+  }
+  overviewTouchStart(e);
+}, { passive: true, capture: true });
+document.addEventListener('touchmove', overviewTouchMove, { passive: false, capture: true });
+
+// Keep all ribbons scroll-enabled during overview-mode.
+// Avoid hover-boundary enable/disable toggles that can stall touchpad scrolling.
+
+// Keyboard: map keys to outer track scroll commands.
+function overviewKeyBlocker(e) {
+  if (!document.body.classList.contains('overview-mode')) return;
+  const scrollKeys = new Set(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','PageUp','PageDown','Home','End']);
+  const spaceKeys = new Set([' ', 'Spacebar']);
+
+  if (!scrollKeys.has(e.key) && !spaceKeys.has(e.key)) return;
+
+  const active = document.activeElement;
+  if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) return;
+
+  const win = e.target && e.target.closest && e.target.closest('.niri-window');
+  if (!win && !(active && active.closest && active.closest('.niri-window'))) return;
+
+  e.preventDefault(); e.stopPropagation();
+
+  const { root, ribbon } = _nearestTracks(win || active);
+  const vw = window.innerHeight || document.documentElement.clientHeight;
+  const vh = vw;
+  const hx = window.innerWidth || document.documentElement.clientWidth;
+
+  switch (e.key) {
+    case 'ArrowDown': _scrollTrackBy(root, 0, Math.max(80, Math.round(vw * 0.08)), true); break;
+    case 'ArrowUp': _scrollTrackBy(root, 0, -Math.max(80, Math.round(vw * 0.08)), true); break;
+    case 'PageDown': _scrollTrackBy(root, 0, Math.round(vw * 0.85), true); break;
+    case 'PageUp': _scrollTrackBy(root, 0, -Math.round(vw * 0.85), true); break;
+    case 'Home': _scrollTrackBy(root, 0, -document.scrollingElement.scrollTop || -9999999, true); break;
+    case 'End': _scrollTrackBy(root, 0, document.scrollingElement.scrollHeight || 9999999, true); break;
+    case 'ArrowLeft': _scrollTrackBy(ribbon || root, -Math.round(hx * 0.2), 0, true); break;
+    case 'ArrowRight': _scrollTrackBy(ribbon || root, Math.round(hx * 0.2), 0, true); break;
+    default:
+      // space or other
+      _scrollTrackBy(root, 0, Math.round(vw * 0.85), true);
+      break;
+  }
+}
+
+document.addEventListener('keydown', overviewKeyBlocker, { capture: true });

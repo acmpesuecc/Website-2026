@@ -36,13 +36,6 @@
             return;
         }
         
-        let closeBtn = evt.target.closest('.mobile-close-btn');
-        if(closeBtn) {
-            let win = closeBtn.closest('.niri-window');
-            if (win) window.closeNiriWindow(win);
-            return;
-        }
-        
         let win = evt.target.closest('.niri-window');
         let interactive = evt.target.closest('a, button, input');
         if(win && !interactive) {
@@ -106,8 +99,9 @@
                 </div>
             </section>
         </div>
-        {{template "footer" .}}
+        
     </main>
+    {{template "footer" .}}
 </body>
 </html>
 {{ end }}

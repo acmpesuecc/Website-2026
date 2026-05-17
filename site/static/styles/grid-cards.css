@@ -7,7 +7,7 @@
 /* ── Members Grid ── */
 .member-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 2rem;
     padding: 1rem 0;
 }
@@ -17,19 +17,27 @@
     flex-direction: column;
     align-items: center;
     min-height: 300px;
-    padding: 2rem 2.5rem 1.5rem;
-    border: 1px solid rgba(0, 170, 254, 0.2);
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    background: #000c23;
+    padding: 2.25rem 2.5rem 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    background: rgba(0, 12, 35, 0.5);
+    backdrop-filter: blur(16px) saturate(180%);
     color: #ffffff;
     text-align: center;
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.15, 1, 0.3, 1);
 }
 
 .member-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 170, 254, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transform: translateY(-6px) scale(1.01);
+    background: rgba(0, 170, 254, 0.08);
+    border-color: rgba(0, 170, 254, 0.4);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 24px 48px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .member-photo-wrapper {
     width: 120px;
@@ -156,15 +164,7 @@
     margin: 0;
 }
 
-/*changes no. of cards wrt windnow size*/
-
-
-@media (max-width: 900px) {
-    .member-cards { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 560px) {
-    .member-cards { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
     .member-card  { padding: 2rem 1.5rem 1.5rem; }
     .member-photo-wrapper { width: 140px; height: 140px; }
 }

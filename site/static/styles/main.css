@@ -128,9 +128,9 @@ body.overview-mode .niri-window {
     transition: transform 0.5s cubic-bezier(0.15, 1, 0.3, 1), box-shadow 0.3s ease;
     overflow: visible;
     
-    /* Hardware Notch: Clip the parent for 90px desktop overview notch */
-    -webkit-clip-path: polygon(0 0, calc(100% - 92px) 0, calc(100% - 72px) 40px, 100% 40px, 100% 100%, 0 100%);
-    clip-path: polygon(0 0, calc(100% - 92px) 0, calc(100% - 72px) 40px, 100% 40px, 100% 100%, 0 100%);
+    /* Hardware Notch: Parent clipping removed to restore button visibility */
+    -webkit-clip-path: none;
+    clip-path: none;
 }
 
 /* Ensure controls are clickable even in overview */
@@ -268,9 +268,9 @@ body.overview-mode .site-footer {
     padding: 0.5rem 0.5rem 0.5rem 0.5rem; /* Outer padding to inset inner container */
     transition: flex-basis 0.3s ease;
     
-    /* Hardware Notch: Clip the parent so children don't overflow the slant */
-    -webkit-clip-path: polygon(0 0, calc(100% - 92px) 0, calc(100% - 72px) 40px, 100% 40px, 100% 100%, 0 100%);
-    clip-path: polygon(0 0, calc(100% - 92px) 0, calc(100% - 72px) 40px, 100% 40px, 100% 100%, 0 100%);
+    /* Hardware Notch: Parent clipping removed to restore button visibility */
+    -webkit-clip-path: none;
+    clip-path: none;
 }
 
 .niri-window-inner {
@@ -371,9 +371,9 @@ body.overview-mode .site-footer {
         height: calc(var(--app-height) - 3rem); /* Shorter height to ensure top/bottom gap */
         margin: 0 auto; /* Extra insurance for centering */
         
-        /* Hardware Notch: Clip the parent for 75px mobile notch */
-        -webkit-clip-path: polygon(0 0, calc(100% - 77px) 0, calc(100% - 57px) 40px, 100% 40px, 100% 100%, 0 100%);
-        clip-path: polygon(0 0, calc(100% - 77px) 0, calc(100% - 57px) 40px, 100% 40px, 100% 100%, 0 100%);
+        /* Hardware Notch: Parent clipping removed to restore button visibility */
+        -webkit-clip-path: none;
+        clip-path: none;
     }
 
     .niri-window::before,

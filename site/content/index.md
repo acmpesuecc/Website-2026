@@ -45,8 +45,9 @@ layout: page
   transition: opacity 0.3s;
   
   /* Primary Mask: clip-path (Robust in Chromium) */
-  -webkit-clip-path: circle(150px at var(--cursor-x, -500px) var(--cursor-y, -500px));
-  clip-path: circle(150px at var(--cursor-x, -500px) var(--cursor-y, -500px));
+  /* Apply the window slant to the background container itself */
+  -webkit-clip-path: polygon(0 0, calc(100% - 92px) 0, calc(100% - 72px) 40px, 100% 40px, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, calc(100% - 92px) 0, calc(100% - 72px) 40px, 100% 40px, 100% 100%, 0 100%);
 
   /* Secondary Mask: Smooth edges (Progressive Enhancement) */
   -webkit-mask-image: radial-gradient(150px at var(--cursor-x, -500px) var(--cursor-y, -500px), black 0%, transparent 100%);

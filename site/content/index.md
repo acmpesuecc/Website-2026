@@ -4,6 +4,7 @@ layout: page
 ---
 
 <div class="niri-landing">
+  <div id="root-dots"></div>
   <div class="niri-root-content">
     <img src="/static/images/acmpesuecc2.png" alt="ACM PESU ECC Logo" class="root-logo" draggable="false">
     <p class="root-eyebrow">PES University EC Campus ACM Student Chapter</p>
@@ -26,29 +27,35 @@ layout: page
 <style>
 /* Base root window styling */
 #root-window {
-  background-color: #000c23;
-  background-image: radial-gradient(rgba(0, 170, 254, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background: transparent !important;
   position: relative;
 }
 
 /* Glowing Dot trail effect */
-#root-window::before {
-  content: "";
+#root-dots {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none;
-  background-image: radial-gradient(rgba(0, 170, 254, 0.8) 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
-  -webkit-mask: radial-gradient(150px circle at var(--cursor-x, -200px) var(--cursor-y, -200px), black 0%, transparent 100%) no-repeat;
-  mask: radial-gradient(150px circle at var(--cursor-x, -200px) var(--cursor-y, -200px), black 0%, transparent 100%) no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
+  background-color: #000c23;
+  background-image: 
+    radial-gradient(rgba(0, 170, 254, 0.1) 1px, transparent 1px),
+    radial-gradient(rgba(0, 170, 254, 0.8) 1.5px, transparent 1.5px);
+  background-size: 24px 24px, 24px 24px;
   z-index: 0;
   transition: opacity 0.3s;
+  
+  /* Primary Mask: clip-path (Robust in Chromium) */
+  -webkit-clip-path: circle(150px at var(--cursor-x, -500px) var(--cursor-y, -500px));
+  clip-path: circle(150px at var(--cursor-x, -500px) var(--cursor-y, -500px));
+
+  /* Secondary Mask: Smooth edges (Progressive Enhancement) */
+  -webkit-mask-image: radial-gradient(150px at var(--cursor-x, -500px) var(--cursor-y, -500px), black 0%, transparent 100%);
+  mask-image: radial-gradient(150px at var(--cursor-x, -500px) var(--cursor-y, -500px), black 0%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
-body.overview-mode #root-window::before {
+body.overview-mode #root-dots {
   opacity: 0 !important;
   visibility: hidden;
 }

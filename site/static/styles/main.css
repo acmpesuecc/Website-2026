@@ -364,6 +364,20 @@ body.overview-mode .site-footer {
     border: none;
     border-radius: 0;
     height: var(--app-height);
+    background: transparent !important;
+}
+
+/* Root window: Remove hardware notch and clipping */
+#root-window,
+#root-window .niri-window-inner,
+#root-window::before,
+#root-window::after {
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
+}
+
+#root-window .niri-window-controls {
+    display: none !important;
 }
 
 @media (max-width: 1024px) {

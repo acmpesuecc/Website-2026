@@ -268,6 +268,13 @@ body.overview-mode .niri-landing {
 <script>
   (function() {
     const rootWindow = document.getElementById('root-window');
+    const rootDots = document.getElementById('root-dots');
+    
+    // Move dots to the parent window so it covers the background and uses correct coordinates
+    if (rootWindow && rootDots) {
+      rootWindow.prepend(rootDots);
+    }
+
     if (rootWindow && !rootWindow.dataset.cursorBound) {
       let currentX = -200, currentY = -200;
       let targetX = -200, targetY = -200;

@@ -1072,6 +1072,23 @@ h1 {
     margin-bottom: 1rem;
 }
 
+.post-metadata {
+    margin: 1rem 0 2rem;
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    margin-right: 0.5rem;
+    background: var(--inline-code-bg);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
 .authors-placeholder p {
     margin: 0 0 0.6rem 0;
     color: var(--color-text);

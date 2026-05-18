@@ -12,8 +12,25 @@
                     <section class="body">
 
                 {{ if ne (len $PageData.Frontmatter.Title) 0 }}
-                <div class="post-description">
+                <div class="post-header">
                     <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                    {{ if or $PageData.Frontmatter.Authors $PageData.Frontmatter.Date $PageData.Frontmatter.Tags }}
+                    <div class="post-metadata">
+                        {{ if $PageData.Frontmatter.Authors }}
+                        <span class="post-authors">By {{ range $i, $a := $PageData.Frontmatter.Authors }}{{ if $i }}, {{ end }}{{ $a }}{{ end }}</span>
+                        {{ end }}
+                        {{ if $PageData.Frontmatter.Date }}
+                        <span class="post-date">• {{ $PageData.Frontmatter.Date }}</span>
+                        {{ end }}
+                        {{ if $PageData.Frontmatter.Tags }}
+                        <div class="post-tags">
+                            {{ range $PageData.Frontmatter.Tags }}
+                            <a href="/tags/{{ . | lower }}.html" class="tag-pill">{{ . }}</a>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+                    </div>
+                    {{ end }}
                 </div>
                 {{ end }}
 

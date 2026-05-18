@@ -308,11 +308,11 @@ updateViewportVars();
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    wrapWindowContent(document.getElementById('root-window'));
+    wrapWindowContent(document.getElementById('root-window') || document.getElementById('win-direct'));
     injectWindowControls(document.body);
   });
 } else {
-  wrapWindowContent(document.getElementById('root-window'));
+  wrapWindowContent(document.getElementById('root-window') || document.getElementById('win-direct'));
   injectWindowControls(document.body);
 }
 

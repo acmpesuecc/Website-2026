@@ -3,6 +3,11 @@
 window.closeNiriWindow = function(win) {
     if (!win || win.id === 'root-window') return;
     
+    if (document.querySelectorAll('.niri-window').length <= 1) {
+        window.location.href = '/';
+        return;
+    }
+    
     const track = win.closest('.niri-horizontal-track');
     
     const focusWindow = (target) => {

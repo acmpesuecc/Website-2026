@@ -2146,14 +2146,13 @@ a > code {
         gap: 2rem;
     }
 }
-    transform: translateY(-2px);
-}
 
 .actions button > * {
     pointer-events: none;
 }
 
 .actions button:hover {
+    background: rgba(0, 170, 254, 0.15);
     transform: translateY(-1px);
 }
 

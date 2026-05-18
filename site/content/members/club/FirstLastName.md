@@ -1,6 +1,9 @@
 ---
 title: anna
-description: Member
+description: Club Member
+tagline: "Marketing maven in the making!"
+hobbies: ["Singing", "Dance"]
+interesting_info: "I love creative storytelling."
 collections: ["members"]
 tags: ["marketing"]
 previewImage: "https://github.com/username.png"

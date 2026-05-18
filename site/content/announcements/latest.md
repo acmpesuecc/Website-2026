@@ -3,19 +3,14 @@ title: Announcement
 description: Official announcement from ACM PESUECC
 date: "2026-05-18"
 collections: ["announcements"]
+previewimage: /static/images/carbon.png
 ---
-<style>
-h1 {
-  font-size: clamp(2.4rem, 5vw, 4.2rem) !important;
-  line-height: 1.1;
-}
-</style>
 
-<div style="max-width: 950px; margin: 0 auto; padding: 1.5rem 0;">
+<div class="announcement-container">
 
-<img src="/static/images/carbon.png" alt="Announcement Banner" style="width:100%; border-radius:24px;" />
+<img src="/static/images/carbon.png" alt="Announcement Banner" class="announcement-banner" />
 
-<div style="margin-top: 2rem; text-align: center; line-height: 1.8;">
+<div class="announcement-body">
 
 ### Big things are cooking 🍳
 

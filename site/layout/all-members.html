@@ -8,7 +8,12 @@
                 <div class="container site-main">
                     <article class="content">
 
-                    <h2>{{$PageData.Frontmatter.Title}}</h2>
+                    <header class="collection-hero">
+                        <div class="hero-content">
+                            <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                            <p class="collection-desc">Meet the team behind ACM PESUECC.</p>
+                        </div>
+                    </header>
 
                     {{ $members := index .DeepDataMerge.CollectionsMap "collections/members.html" }}
                     {{ $priorityRoles := slice "Chair" "Vice Chair" "Secretary" "Treasurer" "Membership Chair" "Webmaster" }}

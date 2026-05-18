@@ -2300,9 +2300,16 @@ a > code {
     color: #c8c9cd;
 }
 
+.blog-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .blog-date {
     font-size: 0.75rem;
-    color: #8bb8d6;
+    color: var(--color-text);
+    margin-top: 0;
 }
 
 .card-meta {
@@ -2324,7 +2331,7 @@ a > code {
     background: rgba(0, 170, 254, 0.1);
     padding: 0.15rem 0.4rem;
     border-radius: 6px;
-    color: #8bb8d6;
+    color: var(--color-text);
     border: 1px solid rgba(0, 170, 254, 0.2);
     text-transform: lowercase;
 }
@@ -2419,9 +2426,9 @@ a > code {
 
 .event-date {
     font-size: 0.8rem;
-    color: #00aafe;
+    color: var(--color-text);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-top: 0.5rem;
+    margin-top: 0;
 }

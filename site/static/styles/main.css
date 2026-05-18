@@ -782,7 +782,7 @@ body.overview-mode .site-footer {
     background: rgba(0, 12, 35, 0.6);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    color: #00aafe;
+    color: var(--brand-color);
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -1608,7 +1608,7 @@ h3 > code,
 h4 > code,
 a > code {
     font-family: JuliaMono, monospace;
-    color: #00aafe;
+    color: var(--brand-color);
     background-color: var(--inline-code-bg);
     /* Allow inline code to wrap on small viewports */
     white-space: pre-wrap;
@@ -1984,7 +1984,7 @@ a > code {
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     border: 1px solid rgba(0, 170, 254, 0.3);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    color: #00aafe;
+    color: var(--brand-color);
     padding: 0.2rem;
     width: 38px;
     height: 38px;
@@ -2036,7 +2036,7 @@ a > code {
 
 .profile-role-large {
     font-size: 1.5rem;
-    color: #00aafe;
+    color: var(--brand-color);
     margin-top: -0.5rem;
     font-weight: 600;
 }
@@ -2045,7 +2045,7 @@ a > code {
     font-style: italic;
     font-size: 1.2rem;
     color: var(--color-text);
-    border-left: 4px solid #00aafe;
+    border-left: 4px solid var(--brand-color);
     padding-left: 1rem;
     margin: 1.5rem 0;
     opacity: 0.9;
@@ -2067,7 +2067,7 @@ a > code {
 }
 
 .social-icon-link:hover {
-    color: #00aafe;
+    color: var(--brand-color);
     opacity: 1;
     transform: translateY(-2px);
 }
@@ -2117,7 +2117,7 @@ a > code {
     padding: 0.4rem 1rem;
     border-radius: 100px;
     font-size: 0.9rem;
-    color: #00aafe;
+    color: var(--brand-color);
     border: 1px solid rgba(0, 170, 254, 0.2);
 }
 
@@ -2133,7 +2133,7 @@ a > code {
     }
     .profile-tagline {
         border-left: none;
-        border-top: 2px solid #00aafe;
+        border-top: 2px solid var(--brand-color);
         padding-left: 0;
         padding-top: 1rem;
     }
@@ -2223,7 +2223,7 @@ a > code {
 /* Slightly smaller search box to match screenshot, centered with fixed positioning */
 .search-box {
     background: #000c23;
-    color: #00aafe;
+    color: var(--brand-color);
     padding: 1.5rem;
     border-radius: 12px;
     width: calc(100% - 2rem);
@@ -2272,7 +2272,7 @@ a > code {
 
 .search-input-row input[type="text"]:focus {
     outline: none;
-    border-color: #00aafe;
+    border-color: var(--brand-color);
     box-shadow: 0 0 10px rgba(0, 170, 254, 0.2);
 }
 
@@ -2286,7 +2286,7 @@ a > code {
     border-radius: 8px;
     padding: 0.4rem 0.6rem;
     font-size: 1.1rem;
-    color: #00aafe;
+    color: var(--brand-color);
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -2650,4 +2650,24 @@ a > code {
     font-size: 0.9rem;
     color: #a3c4ec;
     margin: 0;
+}
+
+/* Collection Hero Styles */
+.collection-hero {
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.collection-hero h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, var(--brand-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.collection-desc {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    line-height: 1.6;
 }

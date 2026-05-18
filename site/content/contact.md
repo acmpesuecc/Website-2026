@@ -73,7 +73,7 @@ layout: page
 .manifesto-body p {
   font-size: 1.25rem;
   line-height: 1.6;
-  color: #00aafe
+  color: var(--brand-color)
   max-width: 600px;
   margin-bottom: 60px;
   opacity: 0.9;
@@ -113,16 +113,16 @@ layout: page
   height: 44px;
   border-radius: 50%;
   text-decoration: none;
-  color: #00aafe !important;
+  color: var(--brand-color) !important;
   background: rgba(0, 170, 254, 0.08);
   border: 1px solid rgba(0, 170, 254, 0.18);
   transition: all 0.2s ease;
 }
 
 .icon-link:hover {
-  background: #00aafe;
+  background: var(--brand-color);
   color: #000c23 !important;
-  border-color: #00aafe;
+  border-color: var(--brand-color);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 170, 254, 0.2);
 }
@@ -145,15 +145,15 @@ layout: page
   }
 
   .icon-link {
-    color: #00aafe !important;
+    color: var(--brand-color) !important;
     background: rgba(0, 170, 254, 0.12);
     border-color: rgba(0, 170, 254, 0.22);
   }
 
   .icon-link:hover {
-    background: #00aafe;
+    background: var(--brand-color);
     color: #000c23 !important;
-    border-color: #00aafe;
+    border-color: var(--brand-color);
   }
 }
 

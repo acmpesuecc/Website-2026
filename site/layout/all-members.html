@@ -10,27 +10,50 @@
 
                     <h2>{{$PageData.Frontmatter.Title}}</h2>
 
+                    {{ $members := index .DeepDataMerge.CollectionsMap "collections/members.html" }}
+                    {{ $priorityRoles := slice "Chair" "Vice Chair" "Secretary" "Treasurer" "Membership Chair" "Webmaster" }}
+
                     <h2>Core Team</h2>
                     <section class="member-cards-grid">
-                        {{ $roles := slice "Chair" "Vice Chair" "Secretary" "Treasurer" "Membership Chair" "Webmaster" }}
-                        {{ range $role := $roles }}
-                            {{ range $key, $members := $.DeepDataMerge.CollectionsMap }}
-                                {{ if eq $key "collections/members.html" }}
-                                    {{ range $Post := $members }}
-                                        {{ if and (contains $Post.CompleteURL "/core/") (eq $Post.Frontmatter.Description $role) }}
-                                            <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                                                <div class="member-thumb">
-                                                    {{if $Post.Frontmatter.PreviewImage}}
-                                                    <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
-                                                    {{end}}
-                                                </div>
-                                                <div class="member-card-info-compact">
-                                                    <h3>{{$Post.Frontmatter.Title}}</h3>
-                                                    <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
-                                                </div>
-                                            </a>
-                                        {{ end }}
-                                    {{ end }}
+                        {{ /* 1. Show priority roles in order */ }}
+                        {{ range $role := $priorityRoles }}
+                            {{ range $Post := $members }}
+                                {{ if and (contains $Post.CompleteURL "/core/") (eq $Post.Frontmatter.Description $role) }}
+                                    <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                        <div class="member-thumb">
+                                            {{if $Post.Frontmatter.PreviewImage}}
+                                            <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
+                                            {{end}}
+                                        </div>
+                                        <div class="member-card-info-compact">
+                                            <h3>{{$Post.Frontmatter.Title}}</h3>
+                                            <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
+                                        </div>
+                                    </a>
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+
+                        {{ /* 2. Show other core members not in priority list */ }}
+                        {{ range $Post := $members }}
+                            {{ if contains $Post.CompleteURL "/core/" }}
+                                {{ $isPriority := false }}
+                                {{ $desc := $Post.Frontmatter.Description }}
+                                {{ range $role := $priorityRoles }}
+                                    {{ if eq $desc $role }}{{ $isPriority = true }}{{ end }}
+                                {{ end }}
+                                {{ if not $isPriority }}
+                                    <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                        <div class="member-thumb">
+                                            {{if $Post.Frontmatter.PreviewImage}}
+                                            <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
+                                            {{end}}
+                                        </div>
+                                        <div class="member-card-info-compact">
+                                            <h3>{{$Post.Frontmatter.Title}}</h3>
+                                            <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
+                                        </div>
+                                    </a>
                                 {{ end }}
                             {{ end }}
                         {{ end }}
@@ -38,23 +61,19 @@
 
                     <h2>Club Members</h2>
                     <section class="member-cards-grid">
-                        {{ range $key, $members := .DeepDataMerge.CollectionsMap }}
-                            {{ if eq $key "collections/members.html" }}
-                                {{ range $Post := $members }}
-                                    {{ if contains $Post.CompleteURL "/club/" }}
-                                        <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                                            <div class="member-thumb">
-                                                {{if $Post.Frontmatter.PreviewImage}}
-                                                <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
-                                                {{end}}
-                                            </div>
-                                            <div class="member-card-info-compact">
-                                                <h3>{{$Post.Frontmatter.Title}}</h3>
-                                                <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
-                                            </div>
-                                        </a>
-                                    {{ end }}
-                                {{ end }}
+                        {{ range $Post := $members }}
+                            {{ if contains $Post.CompleteURL "/club/" }}
+                                <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                    <div class="member-thumb">
+                                        {{if $Post.Frontmatter.PreviewImage}}
+                                        <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
+                                        {{end}}
+                                    </div>
+                                    <div class="member-card-info-compact">
+                                        <h3>{{$Post.Frontmatter.Title}}</h3>
+                                        <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
+                                    </div>
+                                </a>
                             {{ end }}
                         {{ end }}
                     </section>

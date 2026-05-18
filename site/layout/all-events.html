@@ -6,6 +6,14 @@
         <div class="niri-horizontal-track" id="niri-track-h-root">
             <section class="niri-window" id="root-window" role="main" tabindex="-1">
                 <div class="container site-main">
+                    <header class="collection-hero">
+                        <div class="hero-content">
+                            <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                            {{ if $PageData.Frontmatter.Description }}
+                            <p class="collection-desc">{{ $PageData.Frontmatter.Description }}</p>
+                            {{ end }}
+                        </div>
+                    </header>
                     <article class="content">
                         <section class="events-grid">
                 {{range $key, $events := .DeepDataMerge.CollectionsMap}}

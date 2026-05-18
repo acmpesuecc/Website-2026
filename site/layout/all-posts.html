@@ -24,7 +24,16 @@
                                 <div class="blog-info">
                                     <h3>{{$Post.Frontmatter.Title}}</h3>
                                     <p>{{$Post.Frontmatter.Description}}</p>
-                                    <span class="blog-date">{{$Post.Frontmatter.Date}}</span>
+                                    <div class="card-meta">
+                                        <span class="blog-date">{{$Post.Frontmatter.Date}}</span>
+                                        {{ if $Post.Frontmatter.Tags }}
+                                        <div class="card-tags">
+                                            {{ range $Post.Frontmatter.Tags }}
+                                            <span class="tag-label">{{ . }}</span>
+                                            {{ end }}
+                                        </div>
+                                        {{ end }}
+                                    </div>
                                 </div>
                             </div>
                         </a>

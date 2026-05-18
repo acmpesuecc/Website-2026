@@ -2,7 +2,7 @@
   "navbar": [
     { "Announcements": "collections/announcements.html" },
     { "About": "about.html" },
-    { "Members": "members.html" },
+    { "Members": "collections/members.html" },
     { "Events": "collections/events.html" },
     { "Blogs": "collections/blogs.html" },
     { "Contact": "contact.html" }

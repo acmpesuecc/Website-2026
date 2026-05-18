@@ -10,33 +10,25 @@
             <section class="body">
 
                 {{ if ne (len $PageData.Frontmatter.Title) 0 }}
-                <div class="post-description">
+                <div class="post-header">
                     <h1>{{ $PageData.Frontmatter.Title }}</h1>
-                    <div class="page-date">
-                        {{ if ne (len $PageData.Frontmatter.Date) 0 }}
-                        Published on {{$PageData.Frontmatter.Date}}
-                        {{end}}
-                    </div>
-                    <div class="authors-placeholder">
-                        <p>
-                            <!-- if length of frontmatter authors is 0 -->
-                            {{ if ne (len $PageData.Frontmatter.Authors) 0 }}
-                            Authors:
-                            {{range $PageData.Frontmatter.Authors }}
-                            {{ . }} |
+                    {{ if or $PageData.Frontmatter.Authors $PageData.Frontmatter.Date $PageData.Frontmatter.Tags }}
+                    <div class="post-metadata">
+                        {{ if $PageData.Frontmatter.Authors }}
+                        <span class="post-authors">By {{ range $i, $a := $PageData.Frontmatter.Authors }}{{ if $i }}, {{ end }}{{ $a }}{{ end }}</span>
+                        {{ end }}
+                        {{ if $PageData.Frontmatter.Date }}
+                        <span class="post-date">{{ if $PageData.Frontmatter.Authors }}• {{ end }}{{ $PageData.Frontmatter.Date }}</span>
+                        {{ end }}
+                        {{ if $PageData.Frontmatter.Tags }}
+                        <div class="post-tags" style="margin-top: 0.5rem;">
+                            {{ range $PageData.Frontmatter.Tags }}
+                            <a href="/tags/{{ . }}.html" class="tag-pill">{{ . }}</a>
                             {{ end }}
-                            {{ end }}
-                        </p>
-                    </div>
-                    <div class="tags-placeholder">
-                        {{ if ne (len $PageData.Frontmatter.Tags) 0 }}
-                        {{range $PageData.Frontmatter.Tags}}
-                        <div class="tag">
-                            <a href="/tags/{{.}}.html">{{.}}</a>
                         </div>
-                        {{end}}
                         {{ end }}
                     </div>
+                    {{ end }}
                 </div>
                 {{ end }}
 

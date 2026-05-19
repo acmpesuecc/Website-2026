@@ -1,10 +1,7 @@
 ---
-group: "core"
+layout: member-profile
 title: Saankhya
 description: Webmaster
-tagline: "Crafting digital experiences."
-hobbies: ["Biking", "Movies"]
-interesting_info: "Web design is my creative outlet."
 collections: ["members"]
 tags: ["core"]
 previewImage: "https://github.com/username.png"

@@ -20,10 +20,9 @@
 
                     <h2>Core Team</h2>
                     <section class="member-cards-grid">
-                        {{ /* 1. Show priority roles in order */ }}
                         {{ range $role := $priorityRoles }}
                             {{ range $Post := $members }}
-                                {{ if and (eq $Post.Frontmatter.Group "core") (eq $Post.Frontmatter.Description $role) }}
+                                {{ if and (contains $Post.CompleteURL "core/") (eq $Post.Frontmatter.Description $role) }}
                                     <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
                                         <div class="member-thumb">
                                             {{if $Post.Frontmatter.PreviewImage}}
@@ -39,9 +38,8 @@
                             {{ end }}
                         {{ end }}
 
-                        {{ /* 2. Show other core members not in priority list */ }}
                         {{ range $Post := $members }}
-                            {{ if eq $Post.Frontmatter.Group "core" }}
+                            {{ if contains $Post.CompleteURL "core/" }}
                                 {{ $isPriority := false }}
                                 {{ $desc := $Post.Frontmatter.Description }}
                                 {{ range $role := $priorityRoles }}
@@ -67,7 +65,7 @@
                     <h2>Club Members</h2>
                     <section class="member-cards-grid">
                         {{ range $Post := $members }}
-                            {{ if eq $Post.Frontmatter.Group "club" }}
+                            {{ if contains $Post.CompleteURL "club/" }}
                                 <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
                                     <div class="member-thumb">
                                         {{if $Post.Frontmatter.PreviewImage}}

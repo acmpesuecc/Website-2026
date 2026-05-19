@@ -1,0 +1,50 @@
+{{ define "member-profile" }}
+{{$PageData := index .DeepDataMerge.Templates .PageURL}}
+{{ template "head" .}}
+{{template "niri-logic" .}}
+<main class="niri-vertical-track" id="niri-track-v">
+    <div class="niri-horizontal-track" id="niri-track-h-root">
+        <section class="niri-window" id="root-window" role="main" tabindex="-1">
+            <div class="container site-main">
+                <article class="content">
+                <section class="body">
+                    <div class="member-profile">
+                        <div class="profile-header-grid">
+                            <div class="profile-photo-large">
+                                {{ if $PageData.Frontmatter.PreviewImage }}
+                                <img src="{{ $PageData.Frontmatter.PreviewImage }}" alt="{{ $PageData.Frontmatter.Title }}" />
+                                {{ end }}
+                            </div>
+                            <div class="profile-intro">
+                                <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                                <p class="profile-role-large">{{ $PageData.Frontmatter.Description }}</p>
+                                <div class="profile-socials">
+                                    {{ range $PageData.Frontmatter.CustomFields }}
+                                        {{ range $platform, $url := . }}
+                                            <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="social-icon-link" title="{{ $platform }}">
+                                                {{ if eq $platform "Github" }}GitHub{{ else if eq $platform "Linkedin" }}LinkedIn{{ else }}{{ $platform }}{{ end }}
+                                            </a>
+                                        {{ end }}
+                                    {{ end }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-content-grid">
+                            <div class="profile-main-content">
+                                <div class="bio-section">
+                                    <h2>About</h2>
+                                    {{ $PageData.Body }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                </article>
+            </div>
+        </section>
+    </div>
+</main>
+{{template "footer" .}}
+</body>
+</html>
+{{ end }}

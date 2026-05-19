@@ -15,71 +15,61 @@
                         </div>
                     </header>
 
-                    {{ $members := index .DeepDataMerge.CollectionsMap "collections/members.html" }}
-                    {{ $priorityRoles := slice "Chair" "Vice Chair" "Secretary" "Treasurer" "Membership Chair" "Webmaster" }}
-
-                    <h2>Core Team</h2>
-                    <section class="member-cards-grid">
-                        {{ range $role := $priorityRoles }}
-                            {{ range $Post := $members }}
-                                {{ if and (contains $Post.CompleteURL "core/") (eq $Post.Frontmatter.Description $role) }}
+                    {{ range $key, $members := .DeepDataMerge.CollectionsMap }}
+                        {{ if eq $key "collections/members.html" }}
+                            <h2>Core Team</h2>
+                            <section class="member-cards-grid">
+                                {{ range $Post := $members }} {{ if eq $Post.Frontmatter.Description "Chair" }}
                                     <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                                        <div class="member-thumb">
-                                            {{if $Post.Frontmatter.PreviewImage}}
-                                            <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
-                                            {{end}}
-                                        </div>
-                                        <div class="member-card-info-compact">
-                                            <h3>{{$Post.Frontmatter.Title}}</h3>
-                                            <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
-                                        </div>
+                                        <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                        <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
                                     </a>
-                                {{ end }}
-                            {{ end }}
-                        {{ end }}
-
-                        {{ range $Post := $members }}
-                            {{ if contains $Post.CompleteURL "core/" }}
-                                {{ $isPriority := false }}
-                                {{ $desc := $Post.Frontmatter.Description }}
-                                {{ range $role := $priorityRoles }}
-                                    {{ if eq $desc $role }}{{ $isPriority = true }}{{ end }}
-                                {{ end }}
-                                {{ if not $isPriority }}
+                                {{ end }}{{ end }}
+                                {{ range $Post := $members }} {{ if eq $Post.Frontmatter.Description "Vice Chair" }}
                                     <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                                        <div class="member-thumb">
-                                            {{if $Post.Frontmatter.PreviewImage}}
-                                            <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
-                                            {{end}}
-                                        </div>
-                                        <div class="member-card-info-compact">
-                                            <h3>{{$Post.Frontmatter.Title}}</h3>
-                                            <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
-                                        </div>
+                                        <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                        <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
                                     </a>
-                                {{ end }}
-                            {{ end }}
-                        {{ end }}
-                    </section>
+                                {{ end }}{{ end }}
+                                {{ range $Post := $members }} {{ if eq $Post.Frontmatter.Description "Secretary" }}
+                                    <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                        <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                        <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
+                                    </a>
+                                {{ end }}{{ end }}
+                                {{ range $Post := $members }} {{ if eq $Post.Frontmatter.Description "Treasurer" }}
+                                    <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                        <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                        <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
+                                    </a>
+                                {{ end }}{{ end }}
+                                {{ range $Post := $members }} {{ if eq $Post.Frontmatter.Description "Membership Chair" }}
+                                    <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                        <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                        <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
+                                    </a>
+                                {{ end }}{{ end }}
+                                {{ range $Post := $members }} {{ if eq $Post.Frontmatter.Description "Webmaster" }}
+                                    <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                        <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                        <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
+                                    </a>
+                                {{ end }}{{ end }}
+                            </section>
 
-                    <h2>Club Members</h2>
-                    <section class="member-cards-grid">
-                        {{ range $Post := $members }}
-                            {{ if contains $Post.CompleteURL "club/" }}
-                                <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                                    <div class="member-thumb">
-                                        {{if $Post.Frontmatter.PreviewImage}}
-                                        <img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>
-                                        {{end}}
-                                    </div>
-                                    <div class="member-card-info-compact">
-                                        <h3>{{$Post.Frontmatter.Title}}</h3>
-                                        <p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p>
-                                    </div>
-                                </a>
-                            {{ end }}
+                            <h2>Club Members</h2>
+                            <section class="member-cards-grid">
+                                {{ range $Post := $members }}
+                                    {{ if eq $Post.Frontmatter.Description "Club Member" }}
+                                        <a class="member-card-compact" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
+                                            <div class="member-thumb">{{if $Post.Frontmatter.PreviewImage}}<img src="{{$Post.Frontmatter.PreviewImage}}" alt="{{$Post.Frontmatter.Title}}"/>{{end}}</div>
+                                            <div class="member-card-info-compact"><h3>{{$Post.Frontmatter.Title}}</h3><p class="member-designation-compact">{{$Post.Frontmatter.Description}}</p></div>
+                                        </a>
+                                    {{ end }}
+                                {{ end }}
+                            </section>
                         {{ end }}
-                    </section>
+                    {{ end }}
 
                     </article>
                 </div>

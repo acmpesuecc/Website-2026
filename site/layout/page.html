@@ -1,52 +1,13 @@
 {{ define "page"}}
 {{$PageData := index .DeepDataMerge.Templates .PageURL}}
 {{ template "head" .}}
-
-{{template "niri-logic" .}}
-
-    <main class="niri-vertical-track" id="niri-track-v">
-        <div class="niri-horizontal-track" id="niri-track-h-root">
-            <section class="niri-window" id="root-window" role="main" tabindex="-1">
-                <div class="container site-main">
-                    <article class="content">
-                    <section class="body">
-
-                    {{ if ne (len $PageData.Frontmatter.Title) 0 }}
-                    <div class="post-header">
-                        <h1>{{ $PageData.Frontmatter.Title }}</h1>
-                        {{ if or $PageData.Frontmatter.Authors $PageData.Frontmatter.Date $PageData.Frontmatter.Tags }}
-                        <div class="post-metadata">
-                            {{ if $PageData.Frontmatter.Authors }}
-                            <span class="post-authors">By {{ range $i, $a := $PageData.Frontmatter.Authors }}{{ if $i }}, {{ end }}{{ $a }}{{ end }}</span>
-                            {{ end }}
-                            {{ if $PageData.Frontmatter.Date }}
-                            <span class="post-date">{{ if $PageData.Frontmatter.Authors }}• {{ end }}{{ $PageData.Frontmatter.Date }}</span>
-                            {{ end }}
-                            {{ if $PageData.Frontmatter.Tags }}
-                            <div class="post-tags" style="margin-top: 0.5rem;">
-                                {{ range $PageData.Frontmatter.Tags }}
-                                <a href="/tags/{{ . }}.html" class="tag-pill">{{ . }}</a>
-                                {{ end }}
-                            </div>
-                            {{ end }}
-                        </div>
-                        {{ end }}
-                    </div>
-                    {{ end }}
-
-                    <!-- shows the markdown body -->
-                    <div class="page-body">
-                        {{$PageData.Body}}
-                    </div>
-                    </section>
-                    </article>
-                    </div>
-                    </section>
-                    </div>
-                    </main>
-                    {{template "footer" .}}
-
-                    </body>
-
-                    </html>
-                    {{ end }}
+<body class="site-body">
+    <main class="container site-main">
+        <article class="content">
+            <h1>{{ $PageData.Frontmatter.Title }}</h1>
+            {{$PageData.Body}}
+        </article>
+    </main>
+</body>
+</html>
+{{ end }}

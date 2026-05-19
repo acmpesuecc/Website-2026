@@ -1,5 +1,6 @@
 {{ define "all-posts"}}
-{{$PageData := index .DeepDataMerge.Collections .PageURL}}
+{{ $PageData := index .DeepDataMerge.Templates .PageURL }}
+{{ if eq $PageData nil }} {{ $PageData = .TemplateData }} {{ end }}
 {{ template "head" .}}
 {{template "niri-logic" .}}
     <main class="niri-vertical-track" id="niri-track-v">

@@ -33,38 +33,39 @@
                         {{ end }}
                         <button type="button" class="copy-link-btn" aria-label="Copy link to this page"
                             on-click="
-                                 evt.stopPropagation();
-                                let btn = evt.currentTarget;
-                                let canonical = document.querySelector('link[rel=&quot;canonical&quot;]');
-                                let url = canonical ? canonical.href : window.location.href;
-                                let label = btn.querySelector('.copy-link-label');
-                                let done = ()=>{
-                                    btn.classList.add('is-copied');
-                                    if(label) label.textContent = 'Copied!';
-                                    setTimeout(()=>{
-                                        btn.classList.remove('is-copied');
-                                        if(label) label.textContent = 'Copy link';
-                                    }, 1800);
-                                };
-                                let fail = ()=>{
-                                    if(label) label.textContent = 'Press Ctrl+C';
-                                    setTimeout(()=>{ if(label) label.textContent = 'Copy link'; }, 1800);
-                                };
-                                let fallback = ()=>{
-                                    try {
-                                        let ta = document.createElement('textarea');
-                                        ta.value = url; ta.setAttribute('readonly','');
-                                        ta.style.position='fixed'; ta.style.left='-9999px';
-                                        document.body.appendChild(ta); ta.select();
-                                        document.execCommand('copy') ? done() : fail();
-                                        document.body.removeChild(ta);
-                                    } catch(e) { fail(); }
-                                };
-                                if(navigator.clipboard && window.isSecureContext) {
-                                    navigator.clipboard.writeText(url).then(done).catch(fallback);
-                                } else {
-                                    fallback();
-                                }
+                            evt.stopPropagation();
+                           let btn = evt.currentTarget;
+                           let win = btn.closest('.niri-window');
+                           let dataUrl = win ? win.getAttribute('data-url') : null;
+                           let url = dataUrl ? new URL(dataUrl, window.location.origin).href : window.location.href;
+                           let label = btn.querySelector('.copy-link-label');
+                           let done = ()=>{
+                               btn.classList.add('is-copied');
+                               if(label) label.textContent = 'Copied!';
+                               setTimeout(()=>{
+                                   btn.classList.remove('is-copied');
+                                   if(label) label.textContent = 'Copy link';
+                               }, 1800);
+                           };
+                           let fail = ()=>{
+                               if(label) label.textContent = 'Press Ctrl+C';
+                               setTimeout(()=>{ if(label) label.textContent = 'Copy link'; }, 1800);
+                           };
+                           let fallback = ()=>{
+                               try {
+                                   let ta = document.createElement('textarea');
+                                   ta.value = url; ta.setAttribute('readonly','');
+                                   ta.style.position='fixed'; ta.style.left='-9999px';
+                                   document.body.appendChild(ta); ta.select();
+                                   document.execCommand('copy') ? done() : fail();
+                                   document.body.removeChild(ta);
+                               } catch(e) { fail(); }
+                           };
+                           if(navigator.clipboard && window.isSecureContext) {
+                               navigator.clipboard.writeText(url).then(done).catch(fallback);
+                           } else {
+                               fallback();
+                           }
                             ">
                             <svg class="copy-link-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>

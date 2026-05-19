@@ -1,8 +1,9 @@
 ---
-title: Saankhya
-description: Webmaster
+layout: member-profile
+title: anna
+description: Club Member
 collections: ["members"]
-tags: ["core"]
+tags: ["marketing"]
 previewImage: "https://github.com/username.png"
 customFields:
     - Github: https://github.com/username

@@ -1,6 +1,7 @@
 ---
-title: Lakshit
-description: Secretary
+layout: member-profile
+title: Saankhya
+description: Webmaster
 collections: ["members"]
 tags: ["core"]
 previewImage: "https://github.com/username.png"

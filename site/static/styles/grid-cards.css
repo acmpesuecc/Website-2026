@@ -98,8 +98,8 @@
     font-size: clamp(0.8rem, 1.2vw, 0.95rem);
     font-weight: 600;
     text-decoration: none;
-    color: #00aafe;
-    border: 1px solid #00aafe;
+    color: var(--brand-color);
+    border: 1px solid var(--brand-color);
     padding: 0.4rem;
     border-radius: 50%;
     width: 38px;
@@ -108,7 +108,7 @@
 }
 
 .member-links a:hover {
-    background: #00aafe;
+    background: var(--brand-color);
     color: #000c23;
 }
 

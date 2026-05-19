@@ -1,6 +1,7 @@
 ---
-title: Ashmita
-description: Vice Chair
+layout: member-profile
+title: Shivangi
+description: Treasurer
 collections: ["members"]
 tags: ["core"]
 previewImage: "https://github.com/username.png"

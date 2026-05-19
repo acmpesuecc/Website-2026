@@ -1,9 +1,10 @@
 ---
-title: Shivangi
-description: Treasurer
+layout: member-profile
+title: Vinaayak
+description: Chair
 collections: ["members"]
 tags: ["core"]
-previewImage: "https://github.com/username.png"
+previewImage: "vinaayak.jpg"
 customFields:
     - Github: https://github.com/username
     - Linkedin: https://www.linkedin.com/in/example

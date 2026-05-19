@@ -1,8 +1,9 @@
 ---
-title: anna
-description: Member
+layout: member-profile
+title: Andey
+description: Webmaster
 collections: ["members"]
-tags: ["marketing"]
+tags: ["core"]
 previewImage: "https://github.com/username.png"
 customFields:
     - Github: https://github.com/username

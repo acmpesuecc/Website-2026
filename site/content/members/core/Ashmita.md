@@ -1,6 +1,7 @@
 ---
-title: Andey
-description: Webmaster
+layout: member-profile
+title: Ashmita
+description: Vice Chair
 collections: ["members"]
 tags: ["core"]
 previewImage: "https://github.com/username.png"

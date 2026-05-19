@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Saankhya
 description: Webmaster
 tagline: "Crafting digital experiences."

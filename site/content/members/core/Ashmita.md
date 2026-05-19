@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Ashmita
 description: Vice Chair
 tagline: "Leading with vision and purpose."

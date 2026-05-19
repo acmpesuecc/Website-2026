@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Andey
 description: Webmaster
 tagline: "Always exploring new tech!"

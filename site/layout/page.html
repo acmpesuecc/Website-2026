@@ -11,7 +11,7 @@
                     <article class="content">
                     <section class="body">
 
-                    {{ if contains .PageURL "members/" }}
+                    {{ if or (eq $PageData.Frontmatter.Group "core") (eq $PageData.Frontmatter.Group "club") }}
                     <div class="member-profile">
                     <div class="profile-header-grid">
                         <div class="profile-photo-large">

@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Bhuvigna
 description: Membership Chair
 tagline: "Building a stronger community together."

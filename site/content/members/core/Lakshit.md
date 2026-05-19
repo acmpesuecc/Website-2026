@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Lakshit
 description: Secretary
 tagline: "Organized and efficient execution."

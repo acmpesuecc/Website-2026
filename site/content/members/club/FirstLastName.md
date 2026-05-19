@@ -1,4 +1,5 @@
 ---
+group: "club"
 title: anna
 description: Club Member
 tagline: "Marketing maven in the making!"

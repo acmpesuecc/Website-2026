@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Shivangi
 description: Treasurer
 tagline: "Managing resources for growth."

@@ -1,4 +1,5 @@
 ---
+group: "core"
 title: Vinaayak
 description: Chair
 tagline: "Driving innovation and excellence."

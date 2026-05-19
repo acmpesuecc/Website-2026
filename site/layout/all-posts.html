@@ -1,8 +1,16 @@
 {{ define "all-posts"}}
 {{ $PageData := index .DeepDataMerge.Templates .PageURL }}
-{{ if eq $PageData nil }} {{ $PageData = .TemplateData }} {{ end }}
+{{ if eq (printf "%s" .PageURL) "collections/blogs.html" }}
+    {{ $TargetURL := "blogs/index.html" }}
+    {{ range $u, $data := .DeepDataMerge.Templates }}
+        {{ if eq (printf "%s" $data.CompleteURL) $TargetURL }}
+            {{ $PageData = $data }}
+        {{ end }}
+    {{ end }}
+{{ end }}
 {{ template "head" .}}
 {{template "niri-logic" .}}
+
     <main class="niri-vertical-track" id="niri-track-v">
         <div class="niri-horizontal-track" id="niri-track-h-root">
             <section class="niri-window" id="root-window" role="main" tabindex="-1">
@@ -15,6 +23,7 @@
                             {{ end }}
                         </div>
                     </header>
+
                     <article class="content">
                     <section class="blogs-list">
                         {{range $key, $posts := .DeepDataMerge.CollectionsMap}}
@@ -55,7 +64,7 @@
                 </div>
             </section>
         </div>
-        
+
     </main>
     {{template "footer" .}}
 </body>

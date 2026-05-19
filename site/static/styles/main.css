@@ -316,6 +316,7 @@ body.overview-mode .site-footer {
 
 .niri-window {
     flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
+    min-width: 0; /* Prevent flex blowout from large content */
     height: calc(var(--app-height) - 3rem);
     overflow: visible !important; /* Allow the inner container and controls to breathe */
     scroll-snap-align: center;
@@ -503,6 +504,7 @@ body.overview-mode .site-footer {
 @media (max-width: 1024px) {
     .niri-window {
         flex-basis: calc(100% - 1.25rem); /* Wider windows on mobile */
+        max-width: calc(100vw - 1.25rem);
         padding: 0.5rem;
         height: calc(
             var(--app-height) - 3rem
@@ -1303,7 +1305,10 @@ figure > figcaption > * {
 }
 
 img {
-    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
 
@@ -1716,6 +1721,7 @@ nav > .navigations > .header-element-author {
 }
 
 iframe {
+    max-width: 100%;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     display: block;

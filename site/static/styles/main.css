@@ -1080,6 +1080,10 @@ h1 {
     color: var(--color-text-dim);
 }
 
+.post-tags {
+    margin-top: 0.5rem;
+}
+
 .tag-pill {
     display: inline-block;
     padding: 0.2rem 0.6rem;

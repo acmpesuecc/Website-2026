@@ -23,7 +23,7 @@
                             <span class="post-date">{{ if $PageData.Frontmatter.Authors }}• {{ end }}{{ $PageData.Frontmatter.Date }}</span>
                             {{ end }}
                             {{ if $PageData.Frontmatter.Tags }}
-                            <div class="post-tags" style="margin-top: 0.5rem;">
+                            <div class="post-tags">
                                 {{ range $PageData.Frontmatter.Tags }}
                                 <a href="/tags/{{ . }}.html" class="tag-pill">{{ . }}</a>
                                 {{ end }}

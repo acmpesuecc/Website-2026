@@ -47,7 +47,7 @@
                                             {{ if $Post.Frontmatter.Tags }}
                                             <div class="card-tags">
                                                 {{ range $Post.Frontmatter.Tags }}
-                                                <span class="tag-label">{{ . }}</span>
+                                                <span class="tag-label" fx-action="/tags/{{ . }}.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend" onclick="event.preventDefault(); event.stopPropagation();">{{ . }}</span>
                                                 {{ end }}
                                             </div>
                                             {{ end }}

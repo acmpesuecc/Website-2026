@@ -2836,6 +2836,15 @@ a > code {
     color: var(--color-text);
     border: 1px solid rgba(0, 170, 254, 0.2);
     text-transform: lowercase;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.tag-label:hover {
+    background: rgba(0, 170, 254, 0.25);
+    border-color: rgba(0, 170, 254, 0.4);
 }
 
 /* ── EVENTS (tall cards, 2 column grid) ── */

@@ -51,7 +51,17 @@
     background: transparent !important;
     outline: none !important;
     padding: 0.5rem;
-    transition: flex-basis 0.3s ease;
+    transition:
+        flex-basis 0.3s ease,
+        opacity 0.4s ease,
+        filter 0.4s ease;
+}
+
+/* Dim unfocused windows to emphasize the active one */
+.niri-horizontal-track:focus-within
+    .niri-window:not(:focus):not(:focus-within) {
+    opacity: 0.7;
+    filter: brightness(0.7);
 }
 
 .niri-window-inner {
@@ -72,7 +82,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 12, 35, 0.65); /* Slightly darker for better contrast */
+    background: rgba(0, 12, 35, 0.6);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-radius: inherit;
@@ -88,8 +98,8 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    padding: 1px; /* Thinner border */
-    background: rgba(255, 255, 255, 0.1);
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: inherit;
     -webkit-mask:
         linear-gradient(#fff 0 0) content-box,
@@ -106,8 +116,8 @@
 
 .niri-window:focus::after,
 .niri-window:focus-within::after {
-    background: var(--brand-color);
-    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
+    background: #1c2c54;
+    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
 }
 
 .niri-window.w-full {
@@ -147,7 +157,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 10px;
     -webkit-clip-path: var(--notch-controls-desktop);
     clip-path: var(--notch-controls-desktop);
     border-top-right-radius: 16px;
@@ -161,30 +171,33 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
-    padding: 4px;
+    padding: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    transition: all 0.2s ease;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .niri-control-btn:hover {
     color: #fff;
-    background: rgba(255, 255, 255, 0.15);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.1) translateY(-1px);
 }
 
 .niri-close-btn:hover {
-    background: rgba(255, 59, 48, 0.3);
+    background: rgba(255, 59, 48, 0.2);
     color: #ff3b30;
 }
 
 @media (max-width: 1024px) {
     .niri-window {
-        flex-basis: calc(100% - 1rem);
-        max-width: calc(100vw - 1rem);
-        height: calc(var(--app-height) - 2rem);
+        flex-basis: calc(100% - 1.25rem);
+        max-width: calc(100vw - 1.25rem);
+        padding: 0.5rem;
+        height: calc(var(--app-height) - 3rem);
+        margin: 0 auto;
     }
 
     .niri-window-inner,
@@ -196,6 +209,7 @@
 
     .niri-window-controls {
         width: 77px !important;
+        padding: 0 10px 0 0 !important;
         -webkit-clip-path: polygon(
             0 0,
             100% 0,

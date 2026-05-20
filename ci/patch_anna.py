@@ -3,7 +3,7 @@ import os
 
 def patch_anna(anna_dir):
     parser_path = os.path.join(anna_dir, "pkg/parser/parser.go")
-    
+
     if not os.path.exists(parser_path):
         print(f"Error: {parser_path} not found")
         sys.exit(1)
@@ -37,10 +37,10 @@ def patch_anna(anna_dir):
     print("Patch applied. Verifying...")
     with open(parser_path, "r") as f:
         patched = f.read()
-    
+
     count = patched.count("alertcallouts")
     print(f"Found {count} occurrences of 'alertcallouts' (expected 3: import + 2 usages)")
-    
+
     if count != 3:
         print(f"Patch failed: found {count} occurrences instead of 3")
         sys.exit(1)
@@ -49,5 +49,5 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python3 patch_anna.py <anna_source_directory>")
         sys.exit(1)
-    
+
     patch_anna(sys.argv[1])

@@ -591,7 +591,7 @@ body.overview-mode .site-footer {
         padding-bottom: 4rem;
         width: 100%;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         box-sizing: border-box;
         align-items: start;
     }
@@ -600,7 +600,7 @@ body.overview-mode .site-footer {
     body.overview-mode
         .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
         width: 100%;
         height: auto;
@@ -658,6 +658,8 @@ body.overview-mode .site-footer {
 
     body.overview-mode .niri-window {
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
         aspect-ratio: 3 / 4;
         height: auto !important;
         min-height: 240px;

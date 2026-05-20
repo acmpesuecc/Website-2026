@@ -3,22 +3,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
-* {
-    box-sizing: border-box;
-}
-
 :root {
     --brand-color: #00aafe;
     --color-white: #ffffff;
     --font-family-sans:
-        "Inter", "Roboto Mono", system-ui, -apple-system, "Segoe UI", Roboto,
+        "Roboto Mono", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
         "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     --font-family-serif: "Lora", Georgia, "Times New Roman", Times, serif;
-    --font-family-mono: "PT Mono", "Roboto Mono", monospace;
+    font-family: var(--font-family-serif);
 
     --app-width: 100vw;
     --app-height: 100vh;
 
+    /* Variables from later in original file */
     --color-text: #a3c4ec;
     --color-text-dim: #3881d6;
     --color-text-low: #656d7690;
@@ -36,6 +33,7 @@
     --color-primary-low: #0969da1a;
 
     --color-border: #d1d9e0;
+    /* subtle horizontal rule color (lighter than border) */
     --color-hr: rgba(2, 6, 23, 0.06);
     --color-surface: #141b41;
 
@@ -44,8 +42,8 @@
     --style-hover-scale: 1;
     --style-container-width: 40rem;
 
-    --style-body-font: 1rem;
-    --style-body-font-mobile: 0.95rem;
+    --style-body-font: 1.1rem;
+    --style-body-font-mobile: 1.1rem;
 
     --animation-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
@@ -71,8 +69,8 @@
 
 i,
 em {
-    font-family: "Inter", var(--font-family-sans);
-    font-style: italic;
+    font-family: "InterItalic", var(--font-family-sans);
+    font-style: normal;
 }
 
 strong,
@@ -88,25 +86,29 @@ html {
 body {
     margin: 0;
     overflow: hidden;
-    font-size: var(--style-body-font);
+    font-size: clamp(
+        1rem,
+        1.2vw + 0.5rem,
+        1.2rem
+    ); /* Responsive base text for all elements */
     font-weight: 400;
     font-family: var(--font-family-sans);
-    color: #e2e8f0;
+    color: #e2e8f0; /* Improved contrast */
     background-color: #000c23;
     background-image:
         radial-gradient(
             circle at 15% 50%,
-            rgba(0, 170, 254, 0.1),
+            rgba(0, 170, 254, 0.15),
             transparent 40%
         ),
         radial-gradient(
             circle at 85% 30%,
-            rgba(139, 184, 214, 0.08),
+            rgba(139, 184, 214, 0.1),
             transparent 40%
         );
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 @font-face {
@@ -117,7 +119,7 @@ body {
 
 @supports (font-variation-settings: normal) {
     :root {
-        font-family: "Inter", sans-serif;
+        font-family: Inter;
     }
 }
 

@@ -26,12 +26,12 @@ h6 {
 
 h1 {
     font-size: clamp(2.5rem, 8vw, 4.5rem);
-    margin: 2.5rem 0 2rem; /* Increased top and bottom margin for better spacing */
+    margin: 2.5rem 0 2rem;
 }
 
 h2 {
     font-size: clamp(1.5rem, 4vw, 2rem);
-    margin: 2.5rem 0 1.5rem; /* Increased bottom margin */
+    margin: 2.5rem 0 1.5rem;
 }
 
 h3 {
@@ -39,7 +39,7 @@ h3 {
     margin: 2rem 0 0.75rem;
 }
 
-/* Global text wrapping for headings, paragraphs, lists, anchors and common containers */
+/* Global text wrapping */
 .container,
 .content,
 .site-main,
@@ -65,7 +65,7 @@ code {
     overflow-wrap: anywhere;
     word-wrap: break-word;
     word-break: break-word;
-    hyphens: none; /* Prevent splitting normal words with hyphens */
+    hyphens: none;
     white-space: normal;
 }
 
@@ -76,44 +76,36 @@ code {
     box-sizing: border-box;
 }
 
-/* Make fenced code blocks preserve whitespace, allow both X/Y scrolling and avoid vertical squish */
+/* Make fenced code blocks preserve whitespace */
 pre {
     position: relative;
-    /* for the copy button */
     white-space: pre;
-    /* do not wrap code lines */
     display: block;
     overflow-x: auto;
     overflow-y: auto;
     max-height: 520px;
-    /* limit vertical size and enable scroll */
     padding: 1.25rem 1.2rem;
     margin: 0.9rem 0;
     border-radius: 12px;
     background-color: var(--inline-code-bg);
     border: 1px solid rgba(2, 6, 23, 0.06);
     -webkit-overflow-scrolling: touch;
-    /* smooth scrolling on mobile */
     box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
 }
 
 pre > code {
     white-space: pre;
-    /* ensure code inside pre does not wrap */
     display: block;
 }
 
-/* Page container to make a readable docs layout */
+/* Page container */
 .container {
     box-sizing: border-box;
     margin: 0 auto;
-    /* a little more breathing room inside the page container */
     padding: 1rem;
-    /* Use characters-based measure for optimal line length on articles */
     max-width: 65ch;
 }
 
-/* Responsive container adjustments */
 @media (min-width: 900px) {
     .container {
         max-width: 48rem;
@@ -150,29 +142,95 @@ figure > figcaption > * {
     margin: 0;
 }
 
-/* Copy-link button (article pages) */
+/* Article metadata and copy-link button */
+.page-date {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    margin-bottom: 2rem;
+}
+
+.post-description {
+    font-size: 1.2rem;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+}
+
+.post-metadata {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.metadata-info {
+    font-size: 0.9rem;
+    color: var(--color-primary);
+}
+
+.metadata-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.post-authors {
+    font-weight: 600;
+}
+
+.post-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: var(--inline-code-bg);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--color-primary);
+    transition: all 0.2s ease;
+}
+
+.tag-pill:hover {
+    background: var(--color-background-dim);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
 .copy-link-btn {
     position: static;
-    margin-top: 1rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0.5rem;
+    gap: 0.45rem;
+    padding: 0.5rem 0.85rem;
     font-family: var(--font-family-sans);
     font-size: 0.85rem;
     font-weight: 600;
     line-height: 1;
-    color: var(--brand-color);
-    background: transparent;
-    border: none;
+    color: #00aafe;
+    background: rgba(0, 12, 35, 0.4);
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    border-radius: 10px;
     cursor: pointer;
-    transition: color 0.2s ease;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.2s ease;
     white-space: nowrap;
     z-index: 5;
 }
 
 .copy-link-btn:hover {
-    color: var(--color-white);
+    background: rgba(0, 170, 254, 0.15);
+    border-color: rgba(0, 170, 254, 0.5);
+    transform: translateY(-1px);
 }
 
 .copy-link-btn:active {
@@ -184,14 +242,15 @@ figure > figcaption > * {
     outline-offset: 2px;
 }
 
-.copy-link-btn .copy-link-icon,
-.copy-link-btn .copy-link-check {
+/* Copy button icons */
+.copy-link-icon,
+.copy-link-check {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
 }
 
-.copy-link-btn .copy-link-check {
+.copy-link-check {
     display: none;
 }
 
@@ -218,7 +277,7 @@ figure > figcaption > * {
     }
 }
 
-/* Unified Copy Button (Liquid Glass style for code blocks) */
+/* Unified Copy Button (for code blocks) */
 pre button[class*="copy"],
 pre .hljs-copy,
 pre .copy-button {
@@ -252,7 +311,6 @@ pre .copy-button:hover {
     transform: scale(1.05);
 }
 
-/* Add SVG Icon */
 pre button[class*="copy"]::before,
 pre .hljs-copy::before,
 pre .copy-button::before {
@@ -268,7 +326,6 @@ pre .copy-button::before {
     mask-size: contain;
 }
 
-/* Hide any text inside the button */
 pre button[class*="copy"] {
     font-size: 0 !important;
     text-indent: -9999px;
@@ -314,47 +371,37 @@ pre button[class*="copy"] {
     }
 }
 
+/* Misc elements */
 img {
     max-width: 100%;
     height: auto;
     display: block;
     box-sizing: border-box;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 1.5rem auto;
+    border-radius: 8px;
+}
 
-    margin-top: 0.1rem;
-    margin-bottom: 0.1rem;
-
-    overflow: hidden;
-    object-fit: cover;
-    object-position: center center;
+iframe {
+    max-width: 100%;
+    margin: 1rem auto;
+    display: block;
+    border: none;
+    background-color: var(--color-background);
 }
 
 blockquote {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     padding: 0.75rem 1.2rem;
     background-color: var(--inline-code-bg);
-
-    /* Constrain and wrap to avoid overflowing the page container */
+    border-left: 4px solid var(--brand-color);
     max-width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    overflow-x: auto;
-    /* allow narrow horizontal scroll inside the quote */
 }
 
 blockquote > * {
     margin: 0;
-}
-
-/* Ensure any code or pre elements inside a blockquote do not push layout */
-
-blockquote > * {
     color: var(--color-text);
 }
 
-/* Ensure any code or pre elements inside a blockquote do not push layout */
 blockquote pre,
 blockquote code {
     max-width: 100%;
@@ -364,7 +411,7 @@ blockquote code {
     overflow-x: auto;
 }
 
-/* Anchor link styling (the little '#') */
+/* Anchor link styling */
 .anchor {
     color: var(--color-text-dim);
     text-decoration: none;
@@ -397,7 +444,6 @@ h1#table-of-contents + ul li {
 h1#table-of-contents + ul a {
     color: var(--color-primary-dim);
     text-decoration: none;
-    border-bottom: none;
 }
 
 h1#table-of-contents + ul a:hover {
@@ -405,21 +451,19 @@ h1#table-of-contents + ul a:hover {
     text-decoration: underline;
 }
 
-/* Content paragraphs and lists spacing */
 ul,
 ol {
     margin: 0.6rem 0 0.6rem 1.1rem;
 }
 
+/* Video containers */
 .video-container-1610 {
     position: relative;
     padding-bottom: 62.5%;
     height: 0;
     margin-bottom: 0.5rem;
 }
-
 .video-container-1610 iframe {
-    margin-bottom: 0.5rem;
     position: absolute;
     top: 0;
     left: 0;
@@ -433,9 +477,7 @@ ol {
     height: 0;
     margin-bottom: 0.5rem;
 }
-
 .video-container iframe {
-    margin-bottom: 0.5rem;
     position: absolute;
     top: 0;
     left: 0;
@@ -443,18 +485,11 @@ ol {
     height: 100%;
 }
 
-/* Lastfm CSS */
+/* Lastfm */
 #lastfm {
     margin: 1rem 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
-}
-
-#lastfm .lastfm-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
 }
 
 #lastfm .lastfm-row {
@@ -462,125 +497,32 @@ ol {
     grid-template-columns: 56px 1fr auto;
     align-items: center;
     gap: 1.2rem;
-    padding: 0.45rem 0.45rem;
-    border-bottom: 1px solid var(--color-text-low, #e0e0e0);
-}
-
-#lastfm .lastfm-row.now-playing {
-    background-color: var(--inline-code-bg);
-    padding: 0.75rem;
-    padding-left: calc(0.75rem + 10px);
-    padding-right: calc(0.75rem + 10px);
-    border-bottom: none;
-    margin: 0 -10px 0.75rem -10px;
-}
-
-#lastfm .lastfm-row:last-child {
-    border-bottom: none;
+    padding: 0.45rem;
+    border-bottom: 1px solid var(--color-text-low);
 }
 
 #lastfm .cover {
     width: 56px;
     height: 56px;
-    border: 1px solid var(--color-text-low, #dcdcdc);
+    border-radius: 4px;
     object-fit: cover;
-    background: var(--color-surface, #f8f8f8);
-    flex-shrink: 0;
-}
-
-#lastfm .meta {
-    min-width: 0;
-    flex: 1;
 }
 
 #lastfm .title {
-    font-family: Inter, sans-serif;
     font-weight: 600;
     text-decoration: none;
-    color: var(--color-heading, inherit);
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.3;
-}
-
-#lastfm .title:hover {
-    text-decoration: underline;
+    color: var(--color-primary);
 }
 
 #lastfm .artist {
-    margin: 0.25rem 0 0;
-    color: var(--color-text-dim, #666);
-    font-size: 0.95rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: Inter, sans-serif;
-    font-weight: 400;
-}
-
-#lastfm .time {
-    color: var(--color-text-dim, #999);
-    font-size: 0.95rem;
-    white-space: nowrap;
-    text-align: right;
-    flex-shrink: 0;
-    font-family: Inter, Roboto;
-}
-
-.page-date {
-    font-size: 0.9rem;
     color: var(--color-text-dim);
-    margin-bottom: 2rem;
+    font-size: 0.9rem;
 }
 
-.post-description {
-    font-size: 1.2rem;
-    color: var(--color-text);
-    margin-bottom: 2rem;
-}
-
-.post-metadata {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-}
-
-.post-tags {
-    margin-top: 1rem;
-}
-
-.tag-pill {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    margin-right: 0.5rem;
-    background: var(--inline-code-bg);
-    border-radius: 12px;
-    font-size: 0.8rem;
-    text-decoration: none;
-    color: var(--color-primary);
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
-}
-
-.tag-pill:hover,
-.tag-pill:focus {
-    background: var(--color-background-dim);
-    color: #fff;
-    transform: translateY(-1px);
-}
-
+/* Inline code */
 p > code,
 li > code,
-dd > code,
 td > code,
-h1 > code,
-h2 > code,
-h3 > code,
-h4 > code,
 a > code {
     padding: 0.15rem 0.5rem;
     border-radius: 6px;

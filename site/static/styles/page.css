@@ -1,3 +1,27 @@
+/* Collection Hero Styles */
+.collection-hero {
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
+}
+.collection-hero h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    margin-bottom: 1rem;
+    background: linear-gradient(
+        135deg,
+        var(--color-white) 0%,
+        var(--brand-color) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.collection-desc {
+    font-size: 1.2rem;
+    color: var(--color-text-dim);
+    max-width: 600px;
+    line-height: 1.6;
+}
+
 /* Header spacing */
 .site-header {
     padding: 0.75rem 0;

@@ -63,7 +63,6 @@ code {
 pre,
 code {
     max-width: 100%;
-    box-sizing: border-box;
 }
 
 /* Make fenced code blocks preserve whitespace, allow both X/Y scrolling and avoid vertical squish */
@@ -95,7 +94,6 @@ pre > code {
 
 /* Page container to make a readable docs layout */
 .container {
-    box-sizing: border-box;
     margin: 0 auto;
     /* a little more breathing room inside the page container */
     padding: 1rem;
@@ -226,13 +224,10 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
-    box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
-
     margin-top: 0.1rem;
     margin-bottom: 0.1rem;
-
     overflow: hidden;
     object-fit: cover;
     object-position: center center;
@@ -242,10 +237,8 @@ blockquote {
     margin: 1rem 0;
     padding: 0.75rem 1.2rem;
     background-color: var(--inline-code-bg);
-
     /* Constrain and wrap to avoid overflowing the page container */
     max-width: 100%;
-    box-sizing: border-box;
     overflow-wrap: anywhere;
     word-break: break-word;
     overflow-x: auto;
@@ -261,7 +254,6 @@ blockquote > * {
 blockquote pre,
 blockquote code {
     max-width: 100%;
-    box-sizing: border-box;
     white-space: pre-wrap;
     word-break: break-word;
     overflow-x: auto;
@@ -349,9 +341,7 @@ hr {
 pre {
     width: 100%;
     max-width: 100%;
-    box-sizing: border-box;
     position: relative;
-
     background: var(--inline-code-bg);
     border: 1px solid var(--color-border);
     border-radius: 10px;
@@ -376,7 +366,6 @@ pre code {
     overflow-x: auto;
     /* scroll inside the code area */
     -webkit-overflow-scrolling: touch;
-    box-sizing: border-box;
 }
 
 /* Copy button (square, vertically centered) */
@@ -456,7 +445,6 @@ iframe {
     display: block;
     margin-left: auto;
     margin-right: auto;
-
     border: none;
     color: var(--color-text);
     background-color: var(--color-background);
@@ -566,7 +554,6 @@ pre {
     margin: 0;
     padding-top: 1.25rem !important;
     /* don't let pre add extra margins outside the container */
-    box-sizing: border-box;
     overscroll-behavior: contain;
     touch-action: pan-x;
     -webkit-text-size-adjust: 100%;
@@ -578,7 +565,6 @@ pre .hljs,
 pre * {
     min-width: 0 !important;
     max-width: 100% !important;
-    box-sizing: border-box !important;
 }
 
 pre > code {
@@ -602,7 +588,6 @@ pre > code {
     display: block;
     text-indent: 0;
     white-space: pre;
-    box-sizing: border-box;
 }
 
 pre {
@@ -610,7 +595,6 @@ pre {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     max-width: 100%;
-    box-sizing: border-box;
     position: relative;
 }
 
@@ -618,7 +602,49 @@ pre > code {
     display: block;
     min-width: 100%;
     white-space: pre;
-    box-sizing: border-box;
+}
+
+.page-date {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    margin-bottom: 2rem;
+}
+
+.post-description {
+    font-size: 1.2rem;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+}
+
+.post-metadata {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.5rem;
+}
+
+.post-tags {
+    margin-top: 1rem;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    margin-right: 0.5rem;
+    background: var(--inline-code-bg);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: var(--color-primary);
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.tag-pill:hover,
+.tag-pill:focus {
+    background: var(--color-background-dim);
+    color: #fff;
+    transform: translateY(-1px);
 }
 
 p > code,

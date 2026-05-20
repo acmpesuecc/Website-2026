@@ -159,6 +159,31 @@ body.overview-mode .site-footer {
     display: none;
 }
 
+/* Scaling for overview mode via CSS transformations to ensure layout integrity */
+body.overview-mode .niri-landing {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    width: 100vw;
+    max-width: none;
+    height: 65vh;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) scale(0.85);
+}
+
+body.overview-mode .root-logo {
+    width: 320px;
+    min-width: 320px;
+    height: auto;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+body.overview-mode .niri-landing {
+    padding-top: 2rem;
+    justify-content: flex-start;
+}
+
 @media (max-width: 1024px) {
     body.overview-mode {
         padding: 1rem 0;
@@ -409,5 +434,11 @@ body.overview-mode .site-footer {
     body.overview-mode .niri-window::after {
         -webkit-clip-path: var(--notch-mobile);
         clip-path: var(--notch-mobile);
+    }
+
+    body.overview-mode .niri-landing {
+        width: 100vw;
+        height: 30vh;
+        transform: translate(-50%, -50%) scale(0.65);
     }
 }

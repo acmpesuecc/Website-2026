@@ -1,0 +1,76 @@
+/* ── BLOGS (horizontal strips) ── */
+.blogs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.blog-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-radius: 20px;
+    transition: transform 0.2s ease;
+}
+
+.blog-card:hover {
+    transform: translateX(4px);
+}
+
+.blog-card-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    background: rgba(0, 12, 35, 0.45);
+    backdrop-filter: blur(16px) saturate(180%);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.15, 1, 0.3, 1);
+}
+
+.blog-card:hover .blog-card-inner {
+    background: rgba(0, 170, 254, 0.08);
+    border-color: rgba(0, 170, 254, 0.4);
+    box-shadow:
+        0 16px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.blog-thumb img {
+    width: 60px !important;
+    height: 60px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    image-rendering: pixelated !important;
+    flex-shrink: 0 !important;
+}
+
+.blog-info h3 {
+    margin: 0 0 0.2rem 0;
+    font-size: 1rem;
+}
+
+.blog-info p {
+    margin: 0 0 0.3rem 0;
+    font-size: 0.85rem;
+    color: #c8c9cd;
+}
+
+.blog-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.blog-date {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-top: 0;
+}

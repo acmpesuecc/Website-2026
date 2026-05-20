@@ -1,0 +1,105 @@
+/* Search overlay and box - center to the page container */
+.search-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    /* subtle backdrop blur for focus */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+}
+
+.search-overlay.open {
+    display: flex;
+}
+
+/* Slightly smaller search box to match screenshot, centered with fixed positioning */
+.search-box {
+    background: #000c23;
+    color: var(--brand-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    width: calc(100% - 2rem);
+    max-width: 46rem;
+    /* match container */
+    box-shadow:
+        0 0 20px rgba(0, 170, 254, 0.2),
+        0 0 40px rgba(0, 170, 254, 0.1);
+    border: 1px solid rgba(0, 170, 254, 0.4);
+
+    /* center the dialog relative to the viewport */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+
+    /* keep the box from overflowing when keyboard opens or on very short viewports */
+    max-height: calc(100vh - 4rem);
+    overflow: auto;
+}
+
+/* prefer the modern dynamic viewport unit when available for mobile browsers */
+@supports (height: 100dvh) {
+    .search-box {
+        max-height: calc(100dvh - 4rem);
+    }
+}
+
+/* Input row: keep input and button aligned */
+.search-input-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.search-input-row input[type="text"] {
+    flex: 1 1 auto;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    background: rgba(0, 170, 254, 0.05);
+    color: #ffffff;
+}
+
+.search-input-row input[type="text"]:focus {
+    outline: none;
+    border-color: var(--brand-color);
+    box-shadow: 0 0 10px rgba(0, 170, 254, 0.2);
+}
+
+.search-input-row input[type="text"]::placeholder {
+    color: rgba(0, 170, 254, 0.5);
+}
+
+.search-box .close-search {
+    background: rgba(0, 170, 254, 0.1);
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    font-size: 1.1rem;
+    color: var(--brand-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.search-box .close-search:hover {
+    background: rgba(0, 170, 254, 0.2);
+    transform: scale(1.05);
+}
+
+.search-hint {
+    font-size: 0.9rem;
+    color: #8bb8d6;
+    margin: 1rem 0;
+}
+
+.search-results {
+    margin-top: 0.6rem;
+    max-height: 50vh;
+    overflow-y: auto;
+}

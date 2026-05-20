@@ -170,7 +170,9 @@ document.addEventListener("fx:config", (e) => {
     return;
   }
 
-  const fromRoot = elt.closest(".niri-window")?.id === "root-window";
+  const fromRoot =
+    elt.closest(".niri-window")?.id === "root-window" ||
+    elt.hasAttribute("fx-main-page");
 
   if (fromRoot) {
     e.detail.cfg.target = document.getElementById("niri-track-v");
@@ -297,7 +299,9 @@ document.addEventListener("fx:after", (e) => {
     content.setAttribute("tabindex", "-1");
     e.detail.cfg.newWinId = content.id;
 
-    const fromRoot = elt && elt.closest(".niri-window")?.id === "root-window";
+    const fromRoot =
+      (elt && elt.closest(".niri-window")?.id === "root-window") ||
+      (elt && elt.hasAttribute("fx-main-page"));
 
     if (fromRoot) {
       content.classList.add("w-full");

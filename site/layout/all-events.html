@@ -1,6 +1,13 @@
 {{ define "all-events"}}
 {{ $PageData := index .DeepDataMerge.Templates .PageURL }}
-{{ if eq $PageData nil }} {{ $PageData = .TemplateData }} {{ end }}
+{{ if eq (printf "%s" .PageURL) "collections/events.html" }}
+    {{ $TargetURL := "events/index.html" }}
+    {{ range $u, $data := .DeepDataMerge.Templates }}
+        {{ if eq (printf "%s" $data.CompleteURL) $TargetURL }}
+            {{ $PageData = $data }}
+        {{ end }}
+    {{ end }}
+{{ end }}
 {{ template "head" .}}
 {{template "niri-logic" .}}
     <main class="niri-vertical-track" id="niri-track-v">
@@ -15,6 +22,8 @@
                             {{ end }}
                         </div>
                     </header>
+
+
                     <article class="content">
                         <section class="events-grid">
                 {{range $key, $events := .DeepDataMerge.CollectionsMap}}
@@ -38,7 +47,7 @@
                                             {{ if $Post.Frontmatter.Tags }}
                                             <div class="card-tags">
                                                 {{ range $Post.Frontmatter.Tags }}
-                                                <span class="tag-label">{{ . }}</span>
+                                                <span class="tag-label" fx-action="/tags/{{ . }}.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend" onclick="event.preventDefault(); event.stopPropagation();">{{ . }}</span>
                                                 {{ end }}
                                             </div>
                                             {{ end }}
@@ -55,7 +64,7 @@
                 </div>
             </section>
         </div>
-        
+
     </main>
     {{template "footer" .}}
 </body>

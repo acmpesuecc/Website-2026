@@ -1,6 +1,13 @@
 {{ define "all-members"}}
 {{ $PageData := index .DeepDataMerge.Templates .PageURL }}
-{{ if eq $PageData nil }} {{ $PageData = .TemplateData }} {{ end }}
+{{ if eq (printf "%s" .PageURL) "collections/members.html" }}
+    {{ $TargetURL := "members/index.html" }}
+    {{ range $u, $data := .DeepDataMerge.Templates }}
+        {{ if eq (printf "%s" $data.CompleteURL) $TargetURL }}
+            {{ $PageData = $data }}
+        {{ end }}
+    {{ end }}
+{{ end }}
 {{ template "head" .}}
 {{template "niri-logic" .}}
     <main class="niri-vertical-track" id="niri-track-v">
@@ -12,9 +19,13 @@
                     <header class="collection-hero">
                         <div class="hero-content">
                             <h1>{{ $PageData.Frontmatter.Title }}</h1>
-                            <p class="collection-desc">Meet the team behind ACM PESUECC.</p>
+                            {{ if $PageData.Frontmatter.Description }}
+                            <p class="collection-desc">{{ $PageData.Frontmatter.Description }}</p>
+                            {{ end }}
                         </div>
                     </header>
+
+
 
                     {{ range $key, $members := .DeepDataMerge.CollectionsMap }}
                         {{ if eq $key "collections/members.html" }}
@@ -76,7 +87,7 @@
                 </div>
             </section>
         </div>
-        
+
     </main>
     {{template "footer" .}}
 </body>

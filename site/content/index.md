@@ -14,11 +14,11 @@ layout: page
   <nav class="root-nav glass-pill">
     <a href="/about.html" class="m-link" fx-action="/about.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">About</a>
     <div class="nav-separator"></div>
-    <a href="/members/index.html" class="m-link" fx-action="/members/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
+    <a href="/collections/members.html" class="m-link" fx-action="/collections/members.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Members</a>
     <div class="nav-separator"></div>
-    <a href="/blogs/index.html" class="m-link" fx-action="/blogs/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
+    <a href="/collections/blogs.html" class="m-link" fx-action="/collections/blogs.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Blogs</a>
     <div class="nav-separator"></div>
-    <a href="/events/index.html" class="m-link" fx-action="/events/index.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
+    <a href="/collections/events.html" class="m-link" fx-action="/collections/events.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Events</a>
     <div class="nav-separator"></div>
     <a href="/contact.html" class="m-link" fx-action="/contact.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend">Contact</a>
   </nav>

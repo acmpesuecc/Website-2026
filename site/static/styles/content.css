@@ -8,19 +8,31 @@ blockquote,
 td,
 th {
     font-family: var(--font-family-sans);
-    color: #cbd5e1; /* Lighter text for reading */
+    color: #cbd5e1;
 }
 
-/* Slightly reduce heading line-height so headings remain compact */
+/* Heading styles with PT Mono font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-family-mono);
+    font-weight: 600;
+    color: var(--color-primary);
+    line-height: 1.2;
+}
+
 h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-size: clamp(2rem, 6vw, 3.5rem);
     color: #ffffff;
-    font-family: "PT Mono";
+    margin: 2rem 0 1.5rem;
 }
 h2 {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
     color: #ffffff;
-    font-family: "PT Mono";
+    margin: 1.5rem 0 1rem;
 }
 h3,
 h4,
@@ -29,14 +41,16 @@ h6 {
     line-height: 1.25;
 }
 
-/* Global text wrapping for headings, paragraphs, lists, anchors and common containers */
+h3 {
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    margin: 1.5rem 0 0.75rem;
+}
+
+/* Global text wrapping */
 .container,
 .content,
 .site-main,
 .body,
-.posts,
-.tagged-posts,
-.all-tags,
 .post-list-element,
 h1,
 h2,
@@ -55,53 +69,18 @@ code {
     overflow-wrap: anywhere;
     word-wrap: break-word;
     word-break: break-word;
-    hyphens: none; /* Prevent splitting normal words with hyphens */
+    hyphens: none;
     white-space: normal;
 }
 
-/* Keep code blocks scrollable but constrained */
-pre,
-code {
-    max-width: 100%;
-}
-
-/* Make fenced code blocks preserve whitespace, allow both X/Y scrolling and avoid vertical squish */
-pre {
-    position: relative;
-    /* for the copy button */
-    white-space: pre;
-    /* do not wrap code lines */
-    display: block;
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 520px;
-    /* limit vertical size and enable scroll */
-    padding: 1.25rem 1.2rem;
-    margin: 0.9rem 0;
-    border-radius: 12px;
-    background-color: var(--inline-code-bg);
-    border: 1px solid rgba(2, 6, 23, 0.06);
-    -webkit-overflow-scrolling: touch;
-    /* smooth scrolling on mobile */
-    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
-}
-
-pre > code {
-    white-space: pre;
-    /* ensure code inside pre does not wrap */
-    display: block;
-}
-
-/* Page container to make a readable docs layout */
+/* Page container */
 .container {
     margin: 0 auto;
-    /* a little more breathing room inside the page container */
     padding: 1rem;
-    /* Use characters-based measure for optimal line length on articles */
     max-width: 65ch;
+    box-sizing: border-box;
 }
 
-/* Responsive container adjustments */
 @media (min-width: 900px) {
     .container {
         max-width: 48rem;
@@ -111,7 +90,7 @@ pre > code {
 
 @media (min-width: 1100px) {
     .container {
-        max-width: 64rem;
+        max-width: 58rem; /* Slightly narrower than previous to tighten layout */
         padding: 1.5rem;
     }
 }
@@ -130,45 +109,67 @@ pre > code {
     padding: 0;
 }
 
-figure {
-    margin: 0;
+/* Article components */
+.page-date {
+    font-size: 0.85rem;
+    color: var(--color-text-dim);
+    margin-bottom: 1.5rem;
 }
 
-figure > figcaption > * {
-    margin: 0;
+.post-header {
+    margin-bottom: 2rem;
 }
 
-/* Copy-link button (article pages) */
+.post-metadata {
+    margin: 1rem 0 2rem;
+    font-size: 0.85rem;
+    color: var(--color-text-dim);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.post-tags {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: var(--inline-code-bg);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: var(--color-primary);
+    transition: all 0.2s ease;
+}
+
+.tag-pill:hover {
+    background: var(--color-background-dim);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Copy button */
 .copy-link-btn {
-    position: static;
-    margin-top: 0.75rem;
-    top: 0;
-    right: 0;
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    padding: 0.5rem 0.85rem;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
     font-family: var(--font-family-sans);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    line-height: 1;
-    color: #00aafe;
+    color: var(--brand-color);
     background: rgba(0, 12, 35, 0.4);
     border: 1px solid rgba(0, 170, 254, 0.3);
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.15s ease,
-        color 0.2s ease;
-    white-space: nowrap;
-    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
 .copy-link-btn:hover {
@@ -177,72 +178,48 @@ figure > figcaption > * {
     transform: translateY(-1px);
 }
 
-.copy-link-btn:active {
-    transform: translateY(0);
-}
-
-.copy-link-btn:focus-visible {
-    outline: 2px solid #00aafe;
-    outline-offset: 2px;
-}
-
-.copy-link-btn .copy-link-icon,
-.copy-link-btn .copy-link-check {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-}
-
-.copy-link-btn .copy-link-check {
-    display: none;
-}
-
-.copy-link-btn.is-copied {
-    color: #4ade80;
-    border-color: rgba(74, 222, 128, 0.5);
-    background: rgba(74, 222, 128, 0.1);
-}
-
-.copy-link-btn.is-copied .copy-link-icon {
-    display: none;
-}
-.copy-link-btn.is-copied .copy-link-check {
-    display: inline-block;
-}
-
-@media (max-width: 700px) {
-    .copy-link-btn {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.7rem;
-    }
-    .copy-link-btn .copy-link-label {
-        display: none;
-    }
-}
-
-img {
-    max-width: 100%;
-    height: auto;
+/* Code and blockquotes */
+pre {
+    position: relative;
+    white-space: pre;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0.1rem;
-    margin-bottom: 0.1rem;
-    overflow: hidden;
-    object-fit: cover;
-    object-position: center center;
+    overflow-x: auto;
+    max-height: 520px;
+    padding: 1.25rem 1.2rem;
+    margin: 1.2rem 0;
+    border-radius: 12px;
+    background-color: var(--inline-code-bg);
+    border: 1px solid rgba(2, 6, 23, 0.06);
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+}
+
+pre > code {
+    white-space: pre;
+    display: block;
+    font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+p > code,
+li > code,
+td > code,
+a > code {
+    padding: 0.1rem 0.4rem;
+    border-radius: 6px;
+    font-family: JuliaMono, monospace;
+    color: var(--brand-color);
+    background-color: var(--inline-code-bg);
+    font-size: 0.95rem;
 }
 
 blockquote {
-    margin: 1rem 0;
+    margin: 1.5rem 0;
     padding: 0.75rem 1.2rem;
     background-color: var(--inline-code-bg);
-    /* Constrain and wrap to avoid overflowing the page container */
+    border-left: 4px solid var(--brand-color);
     max-width: 100%;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    overflow-x: auto;
-    /* allow narrow horizontal scroll inside the quote */
 }
 
 blockquote > * {
@@ -250,449 +227,31 @@ blockquote > * {
     color: var(--color-text);
 }
 
-/* Ensure any code or pre elements inside a blockquote do not push layout */
-blockquote pre,
-blockquote code {
+/* Media elements */
+img {
     max-width: 100%;
-    white-space: pre-wrap;
-    word-break: break-word;
-    overflow-x: auto;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: "PT Mono", sans-serif;
-    font-weight: 600;
-    color: var(--color-primary);
-    line-height: 1.2;
-}
-
-/* Improved heading scale for docs (reduced for tighter layout) */
-h1 {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    margin: 2.5rem 0 2rem; /* Increased top and bottom margin for better spacing */
-}
-
-h2 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin: 2.5rem 0 1.5rem; /* Increased bottom margin */
-}
-
-h3 {
-    font-size: clamp(1.25rem, 3vw, 1.5rem);
-    margin: 2rem 0 0.75rem;
-}
-
-/* Anchor link styling (the little '#') */
-.anchor {
-    color: var(--color-text-dim);
-    text-decoration: none;
-    margin-left: 0.4rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    vertical-align: middle;
-}
-
-.anchor:hover {
-    color: var(--color-primary-dim);
-}
-
-/* Table of Contents styling */
-h1#table-of-contents {
-    color: var(--color-primary);
-    font-weight: 700;
-}
-
-h1#table-of-contents + ul {
-    margin-top: 0.6rem;
-    margin-bottom: 1.2rem;
-    padding-left: 1.25rem;
-}
-
-h1#table-of-contents + ul li {
-    margin: 0.5rem 0;
-}
-
-h1#table-of-contents + ul a {
-    color: var(--color-primary-dim);
-    text-decoration: none;
-    border-bottom: none;
-}
-
-h1#table-of-contents + ul a:hover {
-    color: var(--color-primary);
-    text-decoration: underline;
-}
-
-/* Horizontal rule styling: lighter than borders, visible in dark mode */
-hr {
-    border: 0;
-    border-top: 1px solid var(--color-hr);
-    margin: 1.2rem 0;
-    height: 0;
-    background: transparent;
-}
-
-/* Code block: simplified, compact, and robust */
-pre {
-    width: 100%;
-    max-width: 100%;
-    position: relative;
-    background: var(--inline-code-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    padding: 1.25rem 1.2rem 0.6rem 0.9rem; /* Increased top padding */
-    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
-    overflow: hidden;
-}
-
-pre > code,
-pre code {
-    display: block;
-    margin: 0;
-    padding: 0;
-    /* rely on pre padding */
-    font-family:
-        ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
-        "Courier New", monospace;
-    font-size: 1.02rem;
-    line-height: 1.6;
-    white-space: pre;
-    /* preserve formatting by default */
-    overflow-x: auto;
-    /* scroll inside the code area */
-    -webkit-overflow-scrolling: touch;
-}
-
-/* Copy button (square, vertically centered) */
-p > code,
-li > code,
-dd > code,
-td > code,
-h1 > code,
-h2 > code,
-h3 > code,
-h4 > code,
-a > code {
-    padding: 0.15rem 0.5rem;
-    border-radius: 6px;
-}
-
-h1 > i,
-h1 > em,
-h2 > i,
-h2 > em,
-h3 > i,
-h3 > em,
-h4 > i,
-h4 > em,
-h5 > i,
-h5 > em,
-h6 > i,
-h6 > em {
-    font-family: InterItalic, sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    color: var(--color-primary);
-    line-height: 1.2;
-}
-
-a {
-    /* Make inline links slightly blue for better affordance */
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-
-    &:visited {
-        color: var(--color-primary-dim);
-        text-decoration: none;
-    }
-
-    &:hover {
-        color: var(--color-primary-dim);
-    }
-}
-
-.image-grid {
-    column-count: 2;
-    column-gap: 0.5rem;
-}
-
-.image-grid > * {
-    display: inline-block;
-    width: 100%;
-    break-inside: avoid;
-}
-
-.image-grid > * > img {
-    width: 100%;
     height: auto;
     display: block;
-    margin: 0;
-    border-radius: var(--style-border-radius);
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    margin: 1.5rem auto;
+    border-radius: 8px;
 }
 
 iframe {
     max-width: 100%;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin: 1rem auto;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
     border: none;
-    color: var(--color-text);
     background-color: var(--color-background);
-}
-
-/* Unified Copy Button (Liquid Glass style) */
-pre button[class*="copy"],
-pre .hljs-copy,
-pre .copy-button {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    z-index: 20;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: rgba(15, 25, 50, 0.7);
-    backdrop-filter: blur(12px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.15, 1, 0.3, 1);
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-pre button[class*="copy"]:hover,
-pre .hljs-copy:hover,
-pre .copy-button:hover {
-    background: rgba(0, 170, 254, 0.15);
-    border-color: rgba(0, 170, 254, 0.4);
-    color: #fff;
-    transform: scale(1.05);
-}
-
-/* Add SVG Icon */
-pre button[class*="copy"]::before,
-pre .hljs-copy::before,
-pre .copy-button::before {
-    content: "";
-    width: 16px;
-    height: 16px;
-    background-color: currentColor;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'%3E%3C/path%3E%3C/svg%3E")
-        no-repeat center;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'%3E%3C/path%3E%3C/svg%3E")
-        no-repeat center;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-}
-
-/* Hide any text inside the button */
-pre button[class*="copy"] {
-    font-size: 0 !important;
-    text-indent: -9999px;
-}
-
-/* Copied Alert */
-.hljs-copy-alert {
-    position: absolute;
-    top: 0.5rem;
-    right: 3rem;
-    background: rgba(10, 20, 40, 0.7);
-    backdrop-filter: blur(12px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    padding: 0.25rem 0.75rem;
-    border-radius: 8px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    pointer-events: none;
-    z-index: 30;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    animation: hljs-copy-fade 2s ease-in-out forwards;
-}
-
-@keyframes hljs-copy-fade {
-    0% {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    15% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    85% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-}
-
-/* Ensure code blocks are constrained to the page container and are touch-friendly. */
-pre {
-    width: 100%;
-    /* ensure pre never exceeds the page container; subtract a small margin for padding/copy button */
-    max-width: calc(100% - 2rem);
-    margin: 0;
-    padding-top: 1.25rem !important;
-    /* don't let pre add extra margins outside the container */
-    overscroll-behavior: contain;
-    touch-action: pan-x;
-    -webkit-text-size-adjust: 100%;
-}
-
-/* Make inner code cooperate with narrow containers and allow scrolling within */
-pre > code,
-pre .hljs,
-pre * {
-    min-width: 0 !important;
-    max-width: 100% !important;
-}
-
-pre > code {
-    overflow-wrap: normal;
-    white-space: pre;
-}
-
-pre a {
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    color: inherit;
-}
-
-@media (max-width: 700px) {
-    pre code {
-        padding-inline-end: 2.5rem;
-    }
-}
-
-pre > code {
-    display: block;
-    text-indent: 0;
-    white-space: pre;
-}
-
-pre {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    max-width: 100%;
-    position: relative;
-}
-
-pre > code {
-    display: block;
-    min-width: 100%;
-    white-space: pre;
-}
-
-.page-date {
-    font-size: 0.9rem;
-    color: var(--color-text-dim);
-    margin-bottom: 2rem;
-}
-
-.post-description {
-    font-size: 1.2rem;
-    color: var(--color-text);
-    margin-bottom: 2rem;
-}
-
-.post-metadata {
-    margin-bottom: 2.5rem;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 1.5rem;
-}
-
-.post-tags {
-    margin-top: 1rem;
-}
-
-.tag-pill {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    margin-right: 0.5rem;
-    background: var(--inline-code-bg);
-    border-radius: 12px;
-    font-size: 0.8rem;
-    text-decoration: none;
-    color: var(--color-primary);
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
-}
-
-.tag-pill:hover,
-.tag-pill:focus {
-    background: var(--color-background-dim);
-    color: #fff;
-    transform: translateY(-1px);
-}
-
-p > code,
-li > code,
-dd > code,
-td > code,
-h1 > code,
-h2 > code,
-h3 > code,
-h4 > code,
-a > code {
-    font-family: JuliaMono, monospace;
-    color: var(--brand-color);
-    background-color: var(--inline-code-bg);
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    box-decoration-break: clone;
-    padding: 0.1rem;
-    padding-inline: 0.4rem;
-    font-size: 1.05rem;
-}
-
-.video-container-1610 {
-    position: relative;
-    padding-bottom: 62.5%;
-    height: 0;
-    margin-bottom: 0.5rem;
-}
-
-.video-container-1610 iframe {
-    margin-bottom: 0.5rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
 }
 
 .video-container {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .video-container iframe {
-    margin-bottom: 0.5rem;
     position: absolute;
     top: 0;
     left: 0;
@@ -700,90 +259,36 @@ a > code {
     height: 100%;
 }
 
-/* Lastfm CSS */
+/* Lastfm */
 #lastfm {
     margin: 1rem 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
-}
-
-#lastfm .lastfm-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
 }
 
 #lastfm .lastfm-row {
     display: grid;
     grid-template-columns: 56px 1fr auto;
     align-items: center;
-    gap: 1.2rem;
-    padding: 0.45rem 0.45rem;
-    border-bottom: 1px solid var(--color-text-low, #e0e0e0);
-}
-
-#lastfm .lastfm-row.now-playing {
-    background-color: var(--inline-code-bg);
-    padding: 0.75rem;
-    padding-left: calc(0.75rem + 10px);
-    padding-right: calc(0.75rem + 10px);
-    border-bottom: none;
-    margin: 0 -10px 0.75rem -10px;
-}
-
-#lastfm .lastfm-row:last-child {
-    border-bottom: none;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-text-low);
 }
 
 #lastfm .cover {
     width: 56px;
     height: 56px;
-    border: 1px solid var(--color-text-low, #dcdcdc);
+    border-radius: 4px;
     object-fit: cover;
-    background: var(--color-surface, #f8f8f8);
-    flex-shrink: 0;
-}
-
-#lastfm .meta {
-    min-width: 0;
-    flex: 1;
 }
 
 #lastfm .title {
-    font-family: Inter, sans-serif;
     font-weight: 600;
     text-decoration: none;
-    color: var(--color-heading, inherit);
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.3;
-}
-
-#lastfm .title:hover {
-    text-decoration: underline;
+    color: var(--color-primary);
 }
 
 #lastfm .artist {
-    margin: 0.25rem 0 0;
-    color: var(--color-text-dim, #666);
-    font-size: 0.95rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: Inter, sans-serif;
-    font-weight: 400;
-}
-
-#lastfm .time {
-    color: var(--color-text-dim, #999);
-    font-size: 0.95rem;
-    white-space: nowrap;
-    text-align: right;
-    flex-shrink: 0;
-    font-family: Inter, Roboto;
+    color: var(--color-text-dim);
+    font-size: 0.9rem;
 }

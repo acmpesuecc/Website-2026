@@ -39,18 +39,18 @@
 
 .niri-window {
     flex: 0 0 calc(var(--app-width) * 0.5 - 2.25rem);
-    min-width: 0; /* Prevent flex blowout from large content */
+    min-width: 0;
     height: calc(var(--app-height) - 3rem);
-    overflow: visible !important; /* Allow the inner container and controls to breathe */
+    overflow: visible !important;
     scroll-snap-align: center;
     scroll-snap-stop: always;
     border-radius: 16px;
     box-sizing: border-box;
     position: relative;
     border: none !important;
-    background: transparent !important; /* Parent must be transparent */
+    background: transparent !important;
     outline: none !important;
-    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    padding: 0.5rem;
     transition: flex-basis 0.3s ease;
 }
 
@@ -63,8 +63,6 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(28, 44, 84, 0.8) transparent;
     background: transparent !important;
-
-    /* Hardware Notch: Clip the content container so it doesn't leak into the notch */
     -webkit-clip-path: var(--notch-desktop);
     clip-path: var(--notch-desktop);
 }
@@ -74,11 +72,10 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 12, 35, 0.6);
+    background: rgba(0, 12, 35, 0.65); /* Slightly darker for better contrast */
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-radius: inherit;
-    /* Inward shelf cutout: dips down and right */
     -webkit-clip-path: var(--notch-desktop);
     clip-path: var(--notch-desktop);
     z-index: -2;
@@ -91,15 +88,14 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    padding: 2px;
-    background: rgba(255, 255, 255, 0.05); /* Very faint default border */
+    padding: 1px; /* Thinner border */
+    background: rgba(255, 255, 255, 0.1);
     border-radius: inherit;
     -webkit-mask:
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
-    /* FOLLOW THE CHAMFER! */
     -webkit-clip-path: var(--notch-desktop);
     clip-path: var(--notch-desktop);
     transition:
@@ -110,40 +106,13 @@
 
 .niri-window:focus::after,
 .niri-window:focus-within::after {
-    background: #1c2c54;
-    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
-}
-
-.niri-window-inner::-webkit-scrollbar {
-    width: 8px; /* Slightly thicker */
-    height: 8px;
-}
-.niri-window-inner::-webkit-scrollbar-track {
-    background: transparent;
-}
-.niri-window-inner::-webkit-scrollbar-thumb {
-    background: rgba(28, 44, 84, 0.6); /* Dark blue theme */
-    border-radius: 10px;
-}
-.niri-window-inner::-webkit-scrollbar-thumb:hover {
-    background: #1c2c54;
-}
-
-.niri-window:focus,
-.niri-window:focus-within {
-    outline: none;
-    border-color: #1c2c54;
-    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
+    background: var(--brand-color);
+    box-shadow: 0 0 15px rgba(0, 170, 254, 0.3);
 }
 
 .niri-window.w-full {
     flex: 0 0 calc(var(--app-width) - 3rem);
     max-width: calc(var(--app-width) - 3rem);
-}
-
-#niri-track-h-root {
-    padding: 0;
-    gap: 0;
 }
 
 #root-window {
@@ -155,66 +124,36 @@
     background: transparent !important;
 }
 
-/* Root window: Remove hardware notch and clipping */
-#root-window,
-#win-direct,
 #root-window .niri-window-inner,
-#win-direct .niri-window-inner,
 #root-window::before,
-#win-direct::before,
-#root-window::after,
-#win-direct::after {
+#root-window::after {
     -webkit-clip-path: none !important;
     clip-path: none !important;
 }
 
-#root-window .niri-window-controls,
-#win-direct .niri-window-controls {
+#root-window .niri-window-controls {
     display: none !important;
-}
-
-/* #win-direct lives near #root-window for logical grouping */
-#win-direct {
-    flex: 0 0 var(--app-width);
-    max-width: var(--app-width);
-    height: var(--app-height);
-    margin: 0;
-    scroll-snap-align: none;
 }
 
 .niri-window-controls {
     position: absolute;
     top: 0;
     right: 0;
-    width: 92px; /* Standardized to match the desktop cutout start */
-    height: 40px; /* Match the cutout depth */
+    width: 92px;
+    height: 40px;
     z-index: 130;
-    background: rgba(10, 20, 40, 0.96); /* Darker, more opaque background */
-    backdrop-filter: none !important; /* Disable filter to fix Chrome clip-path artifacts */
-    -webkit-backdrop-filter: none !important;
+    background: rgba(10, 20, 40, 0.96);
     padding: 0 12px 0 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 10px;
-    /* Slant left edge: from 0 to 20px (72px horizontal top remains) */
+    gap: 8px;
     -webkit-clip-path: var(--notch-controls-desktop);
     clip-path: var(--notch-controls-desktop);
     border-top-right-radius: 16px;
     pointer-events: auto;
-    /* Force crisp edges in Chrome */
-    transform: translateZ(0);
-    backface-visibility: hidden;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    box-sizing: border-box;
-}
-
-/* Focused notch highlight - simplified */
-.niri-window:focus .niri-window-controls,
-.niri-window:focus-within .niri-window-controls {
-    border-color: rgba(0, 170, 254, 0.3);
-    box-shadow: 0 0 15px rgba(0, 170, 254, 0.2);
 }
 
 .niri-control-btn {
@@ -222,63 +161,41 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
-    padding: 6px;
+    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .niri-control-btn:hover {
     color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: scale(1.1) translateY(-1px);
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
 }
 
 .niri-close-btn:hover {
-    background: rgba(255, 59, 48, 0.2);
+    background: rgba(255, 59, 48, 0.3);
     color: #ff3b30;
-}
-
-/* Dim unfocused windows to emphasize the active one */
-.niri-horizontal-track:focus-within
-    .niri-window:not(:focus):not(:focus-within) {
-    opacity: 0.7;
-    filter: brightness(0.7);
 }
 
 @media (max-width: 1024px) {
     .niri-window {
-        flex-basis: calc(100% - 1.25rem); /* Wider windows on mobile */
-        max-width: calc(100vw - 1.25rem);
-        padding: 0.5rem;
-        height: calc(
-            var(--app-height) - 3rem
-        ); /* Shorter height to ensure top/bottom gap */
-        margin: 0 auto; /* Extra insurance for centering */
-        background: transparent !important;
-        border: none !important;
-        overflow: visible !important;
+        flex-basis: calc(100% - 1rem);
+        max-width: calc(100vw - 1rem);
+        height: calc(var(--app-height) - 2rem);
     }
 
-    .niri-window-inner {
-        -webkit-clip-path: var(--notch-mobile);
-        clip-path: var(--notch-mobile);
-    }
-
+    .niri-window-inner,
     .niri-window::before,
     .niri-window::after {
-        /* Compact 75px notch for mobile (close button only) */
         -webkit-clip-path: var(--notch-mobile);
         clip-path: var(--notch-mobile);
     }
 
     .niri-window-controls {
-        width: 77px !important; /* Perfect match for mobile cutout */
-        height: 40px !important;
-        padding: 0 10px 0 0 !important;
+        width: 77px !important;
         -webkit-clip-path: polygon(
             0 0,
             100% 0,
@@ -286,30 +203,5 @@
             20px 100%
         ) !important;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 20px 100%) !important;
-        pointer-events: auto !important; /* Enable close button in overview */
-        background: rgba(
-            10,
-            20,
-            40,
-            0.96
-        ) !important; /* Restore dark background */
-        backdrop-filter: none !important; /* Disable filter to fix Chrome artifacts */
-        -webkit-backdrop-filter: none !important;
-    }
-
-    .niri-minimize-btn {
-        display: none !important;
-    }
-
-    .niri-window-inner {
-        padding: 1.25rem;
-    }
-
-    .niri-horizontal-track {
-        padding: 1rem 0.625rem; /* Vertical padding for top gap */
-        gap: 0.625rem;
-        align-items: center;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
     }
 }

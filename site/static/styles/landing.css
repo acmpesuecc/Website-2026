@@ -1,8 +1,37 @@
 /* Landing Page / Root Window Styles */
 
 #root-window {
+    flex: 0 0 var(--app-width) !important;
+    max-width: var(--app-width) !important;
+    width: var(--app-width) !important;
+    height: var(--app-height) !important;
+    min-height: var(--app-height) !important;
+    border: none !important;
+    border-radius: 0 !important;
     background: transparent !important;
     position: relative;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Root window: Remove hardware notch and clipping and borders */
+#root-window .niri-window-inner,
+#root-window::before,
+#root-window::after {
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#niri-track-h-root {
+    padding: 0 !important;
+    gap: 0 !important;
 }
 
 /* Glowing Dot trail effect */

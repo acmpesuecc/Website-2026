@@ -523,9 +523,58 @@ nav a:visited,
     backdrop-filter: blur(8px);
 }
 
-#help-modal button:hover {
+#close-track-modal {
+    max-width: 600px;
+    text-align: center;
+}
+
+#close-track-modal .modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#help-modal button,
+#close-track-modal button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: var(--font-family-sans);
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    backdrop-filter: blur(8px);
+}
+
+#help-modal button:hover,
+#close-track-modal button:hover {
     background: rgba(0, 170, 254, 0.2);
     border-color: rgba(0, 170, 254, 0.4);
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+#btn-close-all {
+    background: rgba(255, 59, 48, 0.1) !important;
+    border-color: rgba(255, 59, 48, 0.2) !important;
+}
+
+#btn-close-all:hover {
+    background: rgba(255, 59, 48, 0.2) !important;
+    border-color: rgba(255, 59, 48, 0.4) !important;
+}
+
+.btn-cancel {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #a1a1aa !important;
+}
+
+.btn-cancel:hover {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }

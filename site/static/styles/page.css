@@ -480,9 +480,32 @@ nav a:visited,
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.fab-overview svg {
+.fab-help {
+    position: fixed;
+    bottom: 86px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(0, 170, 254, 0.6);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    color: #000c23;
+    border: 1px solid rgba(0, 170, 254, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.fab-overview svg,
+.fab-help svg {
     width: 24px;
     height: 24px;
     fill: none;
@@ -490,6 +513,14 @@ nav a:visited,
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+.fab-overview:hover,
+.fab-help:hover {
+    background: rgba(0, 170, 254, 0.85);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 170, 254, 0.4);
+    color: #000;
 }
 
 dialog {
@@ -511,50 +542,152 @@ dialog::backdrop {
 
 /* Help Modal */
 #help-modal {
-    border: 1px solid rgba(0, 170, 254, 0.4);
-    background: rgba(0, 12, 35, 0.6);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    color: var(--brand-color);
-    border-radius: 12px;
-    padding: 2rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(0, 170, 254, 0.35);
+    background: rgba(0, 12, 35, 0.7);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    color: #f1f5f9;
+    border-radius: 16px;
+    padding: 2.25rem;
+    width: calc(100% - 40px);
+    max-width: 520px;
+    box-sizing: border-box;
     box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 24px 64px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    margin: 0;
 }
 
 #help-modal::backdrop {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 3, 10, 0.6);
+    backdrop-filter: blur(6px);
 }
 
 #help-modal h2 {
     margin-top: 0;
-}
-#help-modal ul {
-    list-style: none;
-    padding: 0;
-}
-#help-modal li {
-    margin: 0.5rem 0;
-}
-#help-modal code {
-    background: rgba(0, 170, 254, 0.1);
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
+    margin-bottom: 1.25rem;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-#help-modal button {
-    background: rgba(255, 255, 255, 0.05);
+#help-modal .search-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+#help-modal #help-search-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     color: #fff;
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
-    cursor: pointer;
     font-family: var(--font-family-sans);
-    font-weight: 600;
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    backdrop-filter: blur(8px);
+}
+
+#help-modal #help-search-input:focus {
+    border-color: var(--brand-color);
+    background: rgba(0, 170, 254, 0.05);
+    box-shadow: 0 0 0 3px rgba(0, 170, 254, 0.25);
+}
+
+#help-modal .shortcuts-container {
+    max-height: 340px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-bottom: 1.5rem;
+}
+
+#help-modal .shortcuts-container::-webkit-scrollbar {
+    width: 6px;
+}
+#help-modal .shortcuts-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 3px;
+}
+#help-modal .shortcuts-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 170, 254, 0.3);
+    border-radius: 3px;
+}
+#help-modal .shortcuts-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 170, 254, 0.5);
+}
+
+#help-modal .shortcut-category-section {
+    margin-bottom: 1.5rem;
+}
+
+#help-modal .shortcut-category-section:last-child {
+    margin-bottom: 0.5rem;
+}
+
+#help-modal .shortcut-category-section h3 {
+    margin: 0 0 0.75rem 0;
+    color: var(--brand-color);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    opacity: 0.95;
+    border-bottom: 1px solid rgba(0, 170, 254, 0.15);
+    padding-bottom: 0.25rem;
+}
+
+#help-modal .shortcut-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#help-modal .shortcut-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    font-size: 0.92rem;
+}
+
+#help-modal .shortcut-item:last-child {
+    border-bottom: none;
+}
+
+#help-modal .shortcut-keys {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+#help-modal kbd {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+    font-family: var(--font-family-sans);
+    color: #fff;
+    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    min-width: 1.2rem;
+    text-align: center;
+}
+
+#help-modal .shortcut-desc {
+    color: #94a3b8;
+    font-weight: 500;
+    text-align: right;
+    padding-left: 1rem;
 }
 
 #close-track-modal {

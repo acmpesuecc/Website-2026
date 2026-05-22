@@ -30,14 +30,71 @@
 <dialog id="help-modal">
     <div class="help-content">
         <h2>Keyboard Shortcuts</h2>
-        <ul>
-            <li><code>Shift + Q</code>: Close current window</li>
-            <li><code>Shift + F</code>: Toggle full-width window</li>
-            <li><code>D</code>: Toggle overview mode</li>
-            <li><code>/</code>: Toggle this help menu</li>
-            <li><code>Esc</code>: Close menu/modal</li>
-        </ul>
-        <form method="dialog"><button>Close</button></form>
+        
+        <div class="search-wrapper">
+            <input type="text" id="help-search-input" placeholder="Search shortcuts..." autocomplete="off">
+        </div>
+
+        <div class="shortcuts-container">
+            <!-- Category: Window Management -->
+            <div class="shortcut-category-section" data-category="window">
+                <h3>Window Management</h3>
+                <ul class="shortcut-list">
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>Shift</kbd> + <kbd>Q</kbd></div>
+                        <span class="shortcut-desc">Close active window</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>Shift</kbd> + <kbd>F</kbd></div>
+                        <span class="shortcut-desc">Toggle window maximize</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>←</kbd> / <kbd>→</kbd></div>
+                        <span class="shortcut-desc">Focus adjacent windows</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Category: Navigation & Scrolling -->
+            <div class="shortcut-category-section" data-category="navigation">
+                <h3>Navigation &amp; Scrolling</h3>
+                <ul class="shortcut-list">
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>D</kbd></div>
+                        <span class="shortcut-desc">Toggle overview mode</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>↑</kbd> / <kbd>↓</kbd></div>
+                        <span class="shortcut-desc">Scroll tracks vertically (Overview mode)</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>Home</kbd> / <kbd>End</kbd></div>
+                        <span class="shortcut-desc">Scroll to start or end of tracks (Overview mode)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Category: Global Actions -->
+            <div class="shortcut-category-section" data-category="global">
+                <h3>Global Actions</h3>
+                <ul class="shortcut-list">
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>/</kbd></div>
+                        <span class="shortcut-desc">Toggle help menu</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>Shift</kbd> + <kbd>K</kbd></div>
+                        <span class="shortcut-desc">Open website search</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys"><kbd>Esc</kbd></div>
+                        <span class="shortcut-desc">Close current menu or modal</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <form method="dialog"><button class="btn-close-help">Close</button></form>
     </div>
 </dialog>
 
@@ -53,7 +110,138 @@
     </div>
 </dialog>
 
-<button class="fab-overview" aria-label="Toggle Overview Mode">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-</button>
+<div class="glass-fab-toolbar">
+    <button class="fab-btn fab-help" id="openHelp" aria-label="Toggle Help Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+    </button>
+    <div class="glass-separator"></div>
+    <button class="fab-btn fab-overview" aria-label="Toggle Overview Mode">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+    </button>
+</div>
+
+<script>
+(function() {
+    const helpModal = document.getElementById('help-modal');
+    const openHelpBtn = document.getElementById('openHelp');
+    const helpSearchInput = document.getElementById('help-search-input');
+    const categorySections = document.querySelectorAll('.shortcut-category-section');
+
+    function filterShortcuts(query) {
+        const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
+        categorySections.forEach(section => {
+            const items = section.querySelectorAll('.shortcut-item');
+            let visibleInSec = 0;
+
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const matchesAll = terms.every(term => text.includes(term));
+
+                if (matchesAll || terms.length === 0) {
+                    item.style.display = '';
+                    visibleInSec++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (visibleInSec > 0 || terms.length === 0) {
+                section.style.display = '';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+    }
+
+    if (openHelpBtn && helpModal) {
+        openHelpBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (helpModal.open) {
+                helpModal.close();
+            } else {
+                helpModal.showModal();
+                if (helpSearchInput) {
+                    helpSearchInput.value = '';
+                    filterShortcuts('');
+                    setTimeout(() => helpSearchInput.focus(), 50);
+                }
+            }
+        });
+    }
+
+    if (helpSearchInput) {
+        helpSearchInput.addEventListener('input', (e) => {
+            filterShortcuts(e.target.value);
+        });
+    }
+
+    if (helpModal) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'open') {
+                    if (helpModal.open) {
+                        if (helpSearchInput) {
+                            helpSearchInput.value = '';
+                            filterShortcuts('');
+                            setTimeout(() => helpSearchInput.focus(), 50);
+                        }
+                    }
+                }
+            });
+        });
+        observer.observe(helpModal, { attributes: true });
+
+        // Liquid Glass Spotlight & 3D Tilt Effect
+        helpModal.addEventListener('mousemove', (e) => {
+            const rect = helpModal.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            helpModal.style.setProperty('--mouse-x', `${x}px`);
+            helpModal.style.setProperty('--mouse-y', `${y}px`);
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const tiltX = -(y - centerY) / centerY * 3.5;
+            const tiltY = (x - centerX) / centerX * 3.5;
+
+            helpModal.style.setProperty('--tilt-x', `${tiltX}deg`);
+            helpModal.style.setProperty('--tilt-y', `${tiltY}deg`);
+        });
+
+        helpModal.addEventListener('mouseleave', () => {
+            helpModal.style.setProperty('--tilt-x', '0deg');
+            helpModal.style.setProperty('--tilt-y', '0deg');
+        });
+    }
+
+    const closeTrackModal = document.getElementById('close-track-modal');
+    if (closeTrackModal) {
+        // Liquid Glass Spotlight & 3D Tilt Effect
+        closeTrackModal.addEventListener('mousemove', (e) => {
+            const rect = closeTrackModal.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            closeTrackModal.style.setProperty('--mouse-x', `${x}px`);
+            closeTrackModal.style.setProperty('--mouse-y', `${y}px`);
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const tiltX = -(y - centerY) / centerY * 3.5;
+            const tiltY = (x - centerX) / centerX * 3.5;
+
+            closeTrackModal.style.setProperty('--tilt-x', `${tiltX}deg`);
+            closeTrackModal.style.setProperty('--tilt-y', `${tiltY}deg`);
+        });
+
+        closeTrackModal.addEventListener('mouseleave', () => {
+            closeTrackModal.style.setProperty('--tilt-x', '0deg');
+            closeTrackModal.style.setProperty('--tilt-y', '0deg');
+        });
+    }
+})();
+</script>
+{{template "search" .}}
 {{end}}

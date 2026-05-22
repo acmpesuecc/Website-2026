@@ -19,12 +19,28 @@
     const openBtn = document.getElementById('openSearch');
     const closeBtn = document.getElementById('closeSearch');
 
-    function show() { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); input.focus(); }
+    function show() {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      input.focus();
+      const helpModal = document.getElementById('help-modal');
+      if (helpModal && helpModal.open) {
+        helpModal.close();
+      }
+    }
     function hide() { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); input.value = ''; results.innerHTML = ''; }
 
     document.addEventListener('keydown', function (e) {
-      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); show(); }
-      if (e.key === 'Escape') { hide(); }
+      if (e.key === 'Escape') { hide(); return; }
+
+      const active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) {
+        return;
+      }
+      if ((e.key === 'k' || e.key === 'K' || e.code === 'KeyK') && e.shiftKey && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        show();
+      }
     });
 
     if (openBtn) openBtn.addEventListener('click', function () { show(); });

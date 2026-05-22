@@ -1,6 +1,10 @@
 {{define "niri-logic"}}
 <body class="site-body" 
     on-keydown="
+        let active = document.activeElement;
+        if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) {
+            return;
+        }
         if(evt.shiftKey && evt.key === 'Q') {
             let win = document.activeElement.closest('.niri-window') || document.querySelector('.niri-window:last-child');
             if (win) window.closeNiriWindow(win);

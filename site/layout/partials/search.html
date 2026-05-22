@@ -16,7 +16,7 @@
     const overlay = document.getElementById('searchOverlay');
     const input = document.getElementById('searchSiteInput');
     const results = document.getElementById('site_search_result');
-    const openBtn = document.getElementById('openSearch');
+    const openBtns = document.querySelectorAll('#openSearch, .fab-search, .search-btn');
     const closeBtn = document.getElementById('closeSearch');
 
     function show() {
@@ -43,7 +43,7 @@
       }
     });
 
-    if (openBtn) openBtn.addEventListener('click', function () { show(); });
+    openBtns.forEach(btn => btn.addEventListener('click', function () { show(); }));
     if (closeBtn) closeBtn.addEventListener('click', function () { hide(); });
     overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
 

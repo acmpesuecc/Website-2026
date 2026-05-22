@@ -422,6 +422,59 @@ nav a:visited,
     height: 1.6rem;
 }
 
+.footer-up-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 12, 35, 0.45);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(0, 170, 254, 0.25);
+    color: var(--brand-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    outline: none;
+    z-index: 10;
+}
+
+.footer-up-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    transition: transform 0.3s ease;
+}
+
+.footer-up-btn:hover {
+    background: rgba(0, 170, 254, 0.15);
+    color: #ffffff;
+    border-color: rgba(0, 170, 254, 0.45);
+    transform: translateY(-3px) scale(1.08);
+    box-shadow:
+        0 8px 20px rgba(0, 170, 254, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.footer-up-btn:hover svg {
+    transform: translateY(-2px);
+}
+
+.footer-up-btn:active {
+    transform: scale(0.95);
+}
+
+.footer-up-btn:focus-visible {
+    border-color: rgba(0, 170, 254, 0.8);
+    box-shadow: 0 0 0 3px rgba(0, 170, 254, 0.4);
+}
+
 @media (max-width: 600px) {
     .site-footer .container.footer-inner {
         flex-direction: column;
@@ -459,6 +512,11 @@ nav a:visited,
     .footer-icon-link svg {
         width: 2rem;
         height: 2rem;
+    }
+
+    .footer-up-btn {
+        order: 3;
+        margin-top: 0.8rem;
     }
 }
 

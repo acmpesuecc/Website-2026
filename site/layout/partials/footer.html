@@ -5,6 +5,11 @@
             <div class="credits">Rendered using <a href="https://github.com/anna-ssg/anna">anna</a> ❤️</div>
             <div class="copyright">&copy; <span id="site-year"></span> {{ .DeepDataMerge.LayoutConfig.SiteTitle }}</div>
         </div>
+        <button class="footer-up-btn" aria-label="Scroll to top">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+        </button>
         <div class="footer-left">
             <div class="reach-out">Reach out to us</div>
             <div class="footer-icons">
@@ -107,6 +112,10 @@
 </dialog>
 
 <div class="glass-fab-toolbar">
+    <button class="fab-btn fab-search" aria-label="Search (Shift+K)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </button>
+    <div class="glass-separator"></div>
     <button class="fab-btn fab-help" id="openHelp" aria-label="Toggle Help Menu">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
     </button>
@@ -268,6 +277,19 @@
             card.style.setProperty('--tilt-y', '0deg');
         }
     });
+
+    // Scroll to top functionality
+    const upBtn = document.querySelector('.footer-up-btn');
+    if (upBtn) {
+        upBtn.addEventListener('click', function () {
+            const inner = upBtn.closest('.niri-window-inner');
+            if (inner) {
+                inner.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
 })();
 </script>
 {{template "search" .}}

@@ -37,7 +37,7 @@
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform: translate(-50%, -50%) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     z-index: 1001;
 
     /* keep the box from overflowing when keyboard opens or on very short viewports */
@@ -52,7 +52,7 @@
 }
 
 .search-overlay.open .search-box {
-    animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* prefer the modern dynamic viewport unit when available for mobile browsers */

@@ -62,10 +62,10 @@
 @keyframes modalFadeIn {
     from {
         opacity: 0;
-        transform: translate(-50%, -48%) scale(0.96) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform: translate(-50%, -48%) scale(0.96) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
     to {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform: translate(-50%, -50%) scale(1) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
 }

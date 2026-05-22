@@ -1,9 +1,3 @@
-@keyframes float {
-    0%   { transform: translateY(calc(var(--hover-y, 0px) + 0px))   scale(var(--hover-scale, 1)); }
-    50%  { transform: translateY(calc(var(--hover-y, 0px) + -8px))  scale(var(--hover-scale, 1)); }
-    100% { transform: translateY(calc(var(--hover-y, 0px) + 0px))   scale(var(--hover-scale, 1)); }
-}
-
 /* ── Members Grid ── */
 .member-cards {
     display: grid;

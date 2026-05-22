@@ -77,6 +77,24 @@
     clip-path: var(--notch-desktop);
 }
 
+.niri-window-inner::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.niri-window-inner::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.niri-window-inner::-webkit-scrollbar-thumb {
+    background: rgba(28, 44, 84, 0.6);
+    border-radius: 10px;
+}
+
+.niri-window-inner::-webkit-scrollbar-thumb:hover {
+    background: #1c2c54;
+}
+
 /* Background pseudo-element (clipped) */
 .niri-window::before {
     content: "";
@@ -120,6 +138,13 @@
     box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
 }
 
+.niri-window:focus,
+.niri-window:focus-within {
+    outline: none;
+    border-color: #1c2c54;
+    box-shadow: 0 0 15px rgba(28, 44, 84, 0.4);
+}
+
 .niri-window.w-full {
     flex: 0 0 calc(var(--app-width) - 3rem);
     max-width: calc(var(--app-width) - 3rem);
@@ -143,6 +168,32 @@
 
 #root-window .niri-window-controls {
     display: none !important;
+}
+
+#win-direct,
+#win-direct .niri-window-inner,
+#win-direct::before,
+#win-direct::after {
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
+}
+
+#win-direct .niri-window-controls {
+    display: none !important;
+}
+
+#win-direct {
+    flex: 0 0 var(--app-width);
+    max-width: var(--app-width);
+    height: var(--app-height);
+    margin: 0;
+    scroll-snap-align: none;
+}
+
+.niri-window:focus .niri-window-controls,
+.niri-window:focus-within .niri-window-controls {
+    border-color: rgba(0, 170, 254, 0.3);
+    box-shadow: 0 0 15px rgba(0, 170, 254, 0.2);
 }
 
 .niri-window-controls {
@@ -207,6 +258,10 @@
         clip-path: var(--notch-mobile);
     }
 
+    .niri-window-inner {
+        padding: 1.25rem;
+    }
+
     .niri-window-controls {
         width: 77px !important;
         padding: 0 10px 0 0 !important;
@@ -217,5 +272,17 @@
             20px 100%
         ) !important;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 20px 100%) !important;
+    }
+
+    .niri-minimize-btn {
+        display: none !important;
+    }
+
+    .niri-horizontal-track {
+        padding: 1rem 0.625rem;
+        gap: 0.625rem;
+        align-items: center;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
     }
 }

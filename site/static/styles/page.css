@@ -66,6 +66,15 @@
     gap: 1rem;
 }
 
+.footer-inner {
+    font-size: 0.95rem;
+    color: var(--color-text-dim);
+}
+
+.site-footer--separated {
+    border-top: 1px solid var(--color-border);
+}
+
 @media (max-width: 900px) {
     .header-inner {
         display: flex;
@@ -334,9 +343,16 @@ nav a:visited,
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 1.5rem;
     max-width: 100%;
     padding: 0 2rem;
+}
+
+.site-footer .container.footer-inner a,
+.site-footer .container.footer-inner * {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .footer-right {
@@ -473,6 +489,23 @@ nav a:visited,
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
+}
+
+dialog {
+    background: rgba(10, 20, 40, 0.6);
+    backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    color: #fff;
+    padding: 2.5rem;
+    box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
 }
 
 /* Help Modal */

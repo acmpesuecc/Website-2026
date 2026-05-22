@@ -462,65 +462,82 @@ nav a:visited,
     }
 }
 
-.fab-overview {
+/* iOS 26 Liquid Glass Toolbar for FAB actions */
+.glass-fab-toolbar {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: rgba(0, 170, 254, 0.6);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    color: #000c23;
-    border: 1px solid rgba(0, 170, 254, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    z-index: 2000;
+    bottom: 24px;
+    right: 24px;
+    padding: 6px;
+    border-radius: 32px;
+    background: rgba(0, 12, 35, 0.55);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid rgba(0, 170, 254, 0.25);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
+    z-index: 2000;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.fab-help {
-    position: fixed;
-    bottom: 86px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
+.glass-fab-toolbar:hover {
+    border-color: rgba(0, 170, 254, 0.45);
+    box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 0 0 1px rgba(0, 170, 254, 0.1),
+        0 0 24px rgba(0, 170, 254, 0.1);
+}
+
+.fab-btn {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: rgba(0, 170, 254, 0.6);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    color: #000c23;
-    border: 1px solid rgba(0, 170, 254, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: transparent;
+    border: none;
+    color: var(--brand-color);
     cursor: pointer;
-    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.fab-overview svg,
-.fab-help svg {
-    width: 24px;
-    height: 24px;
+.fab-btn svg {
+    width: 22px;
+    height: 22px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2;
+    stroke-width: 2.2;
     stroke-linecap: round;
     stroke-linejoin: round;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.fab-overview:hover,
-.fab-help:hover {
-    background: rgba(0, 170, 254, 0.85);
-    transform: scale(1.08) translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 170, 254, 0.4);
-    color: #000;
+.fab-btn:hover {
+    background: rgba(0, 170, 254, 0.15);
+    color: #fff;
+    transform: scale(1.08);
+}
+
+.fab-btn:hover svg {
+    transform: scale(1.05);
+}
+
+.fab-btn:active {
+    transform: scale(0.92);
+    background: rgba(0, 170, 254, 0.25);
+}
+
+.glass-separator {
+    width: 32px;
+    height: 1px;
+    background: rgba(0, 170, 254, 0.15);
 }
 
 dialog {
@@ -545,21 +562,32 @@ dialog::backdrop {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgba(0, 170, 254, 0.35);
-    background: rgba(0, 12, 35, 0.7);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    transform: translate(-50%, -50%) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.12) 0%, transparent 60%), rgba(0, 12, 35, 0.75);
+    backdrop-filter: blur(32px) saturate(190%);
+    -webkit-backdrop-filter: blur(32px) saturate(190%);
     color: #f1f5f9;
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 2.25rem;
     width: calc(100% - 40px);
     max-width: 520px;
     box-sizing: border-box;
     box-shadow:
-        0 24px 64px rgba(0, 0, 0, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 28px 72px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
     margin: 0;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: 
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#help-modal[open] {
+    animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 #help-modal::backdrop {
@@ -651,9 +679,16 @@ dialog::backdrop {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.6rem 0;
+    padding: 0.6rem 0.75rem;
+    margin: 0 -0.75rem;
+    border-radius: 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     font-size: 0.92rem;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#help-modal .shortcut-item:hover {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 #help-modal .shortcut-item:last-child {
@@ -669,9 +704,9 @@ dialog::backdrop {
 }
 
 #help-modal kbd {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.25);
     border-radius: 6px;
     padding: 0.2rem 0.5rem;
     font-size: 0.8rem;
@@ -681,6 +716,15 @@ dialog::backdrop {
     display: inline-block;
     min-width: 1.2rem;
     text-align: center;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#help-modal .shortcut-item:hover kbd {
+    background: rgba(0, 170, 254, 0.15);
+    border-color: rgba(0, 170, 254, 0.3);
+    border-bottom-color: rgba(0, 170, 254, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 170, 254, 0.2);
 }
 
 #help-modal .shortcut-desc {
@@ -688,6 +732,40 @@ dialog::backdrop {
     font-weight: 500;
     text-align: right;
     padding-left: 1rem;
+    transition: color 0.25s ease;
+}
+
+#help-modal .shortcut-item:hover .shortcut-desc {
+    color: #fff;
+}
+
+#help-modal form[method="dialog"] {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+/* Desktop enhancement for help modal: wider layout, multi-column grid, no scrollbar */
+@media (min-width: 768px) {
+    #help-modal {
+        max-width: 900px;
+        width: 90%;
+        padding: 2.5rem;
+    }
+
+    #help-modal .shortcuts-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        max-height: none;
+        overflow-y: visible;
+        padding-right: 0;
+        align-items: start;
+    }
+
+    #help-modal .shortcut-category-section {
+        margin-bottom: 0;
+    }
 }
 
 #close-track-modal {

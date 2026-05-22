@@ -165,17 +165,20 @@
     text-align: center;
     text-decoration: none;
     color: inherit;
-    transition:
-        transform 0.2s,
-        background 0.2s;
-    background: rgba(255, 255, 255, 0.03);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.1) 0%, transparent 60%), rgba(255, 255, 255, 0.03);
     padding: 1.5rem;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transform-style: preserve-3d;
+    transform: translateY(0) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition:
+        border-color 0.2s,
+        background 0.2s,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .member-card-compact:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-4px) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.15) 0%, transparent 60%), rgba(255, 255, 255, 0.08);
     border-color: rgba(0, 170, 254, 0.3);
 }
 .member-thumb {

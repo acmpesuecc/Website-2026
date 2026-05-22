@@ -16,30 +16,43 @@
     display: flex;
 }
 
-/* Slightly smaller search box to match screenshot, centered with fixed positioning */
+/* Slightly smaller search box with iOS 26 Liquid Glass dynamic background and 3D perspective */
 .search-box {
-    background: #000c23;
-    color: var(--brand-color);
-    padding: 1.5rem;
-    border-radius: 12px;
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.12) 0%, transparent 60%), rgba(0, 12, 35, 0.75);
+    backdrop-filter: blur(32px) saturate(190%);
+    -webkit-backdrop-filter: blur(32px) saturate(190%);
+    color: #f1f5f9;
+    padding: 2.25rem;
+    border-radius: 20px;
     width: calc(100% - 2rem);
     max-width: 46rem;
     /* match container */
     box-shadow:
-        0 0 20px rgba(0, 170, 254, 0.2),
-        0 0 40px rgba(0, 170, 254, 0.1);
-    border: 1px solid rgba(0, 170, 254, 0.4);
+        0 28px 72px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
 
     /* center the dialog relative to the viewport */
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     z-index: 1001;
 
     /* keep the box from overflowing when keyboard opens or on very short viewports */
     max-height: calc(100vh - 4rem);
     overflow: auto;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.search-overlay.open .search-box {
+    animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* prefer the modern dynamic viewport unit when available for mobile browsers */
@@ -58,38 +71,45 @@
 
 .search-input-row input[type="text"] {
     flex: 1 1 auto;
-    padding: 0.8rem 1rem;
-    border: 1px solid rgba(0, 170, 254, 0.3);
-    border-radius: 8px;
-    font-size: 1.1rem;
-    background: rgba(0, 170, 254, 0.05);
-    color: #ffffff;
+    padding: 0.8rem 1.2rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-family: var(--font-family-sans);
+    font-size: 0.95rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .search-input-row input[type="text"]:focus {
-    outline: none;
     border-color: var(--brand-color);
-    box-shadow: 0 0 10px rgba(0, 170, 254, 0.2);
+    background: rgba(0, 170, 254, 0.05);
+    box-shadow: 0 0 0 3px rgba(0, 170, 254, 0.25);
 }
 
 .search-input-row input[type="text"]::placeholder {
-    color: rgba(0, 170, 254, 0.5);
+    color: rgba(255, 255, 255, 0.35);
 }
 
 .search-box .close-search {
-    background: rgba(0, 170, 254, 0.1);
-    border: 1px solid rgba(0, 170, 254, 0.3);
-    border-radius: 8px;
-    padding: 0.4rem 0.6rem;
-    font-size: 1.1rem;
-    color: var(--brand-color);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    backdrop-filter: blur(8px);
 }
 
 .search-box .close-search:hover {
     background: rgba(0, 170, 254, 0.2);
-    transform: scale(1.05);
+    border-color: rgba(0, 170, 254, 0.4);
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .search-hint {
@@ -102,4 +122,28 @@
     margin-top: 0.6rem;
     max-height: 50vh;
     overflow-y: auto;
+}
+
+.search-results a.search-link {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    margin-bottom: 0.25rem;
+    border: 1px solid transparent;
+}
+
+.search-results a.search-link:hover {
+    background: rgba(0, 170, 254, 0.1);
+    border-color: rgba(0, 170, 254, 0.25);
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.search-results br {
+    display: none;
 }

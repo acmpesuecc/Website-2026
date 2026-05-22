@@ -103,4 +103,6 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-top: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
 }

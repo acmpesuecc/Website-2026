@@ -71,17 +71,40 @@
     flex: 1;
 }
 
+.blog-meta-left {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.blog-author {
+    font-weight: 500;
+    color: #8bb8d6;
+    font-size: 0.8rem;
+}
+
+.meta-dot {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.8rem;
+}
+
 .blog-date {
     font-size: 0.75rem;
     color: var(--color-text);
-    margin-top: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .card-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
     margin-top: auto;
+    width: 100%;
 }
 
 .card-tags {

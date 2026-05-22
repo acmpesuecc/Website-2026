@@ -5,71 +5,107 @@
 
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{$PageData.Frontmatter.Title}}</title>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{$PageData.Frontmatter.Title}}</title>
+        <!-- Modular site stylesheets -->
+        <link rel="stylesheet" href="/static/styles/base.css" />
+        <link rel="stylesheet" href="/static/styles/content.css" />
+        <link rel="stylesheet" href="/static/styles/page.css" />
+        <link rel="stylesheet" href="/static/styles/niri-core.css" />
+        <link rel="stylesheet" href="/static/styles/niri-overview.css" />
+        <link rel="stylesheet" href="/static/styles/landing.css" />
+        <link rel="stylesheet" href="/static/styles/blog.css" />
+        <link rel="stylesheet" href="/static/styles/events.css" />
+        <link rel="stylesheet" href="/static/styles/members.css" />
+        <!--<link rel="stylesheet" href="/static/styles/search.css" />-->
 
-    <!-- Main site stylesheet -->
-    <link rel="stylesheet" href="/static/styles/main.css" />
-    <link rel="stylesheet" href="/static/styles/grid-cards.css" />
-    <link rel="stylesheet" href="/static/styles/footer.css" />
-    <link rel="stylesheet" href="/static/styles/callouts.css" />
+        <link rel="stylesheet" href="/static/styles/grid-cards.css" />
+        <link rel="stylesheet" href="/static/styles/callouts.css" />
+        <!--<link rel="stylesheet" href="/static/styles/animations.css" />-->
 
-    <!-- Favicons -->
-    <link rel="icon" href="/static/images/anna.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/anna.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/anna.png" />
-    <link rel="apple-touch-icon" href="/static/images/anna.png" />
-    <meta name="theme-color" content="#ffffff" />
+        <!-- Favicons -->
+        <link rel="icon" href="/static/images/anna.png" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/static/images/anna.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/static/images/anna.png"
+        />
+        <link rel="apple-touch-icon" href="/static/images/anna.png" />
+        <meta name="theme-color" content="#ffffff" />
 
-    <!-- Highlight.js theme (dark variant) -->
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" />
+        <!-- Highlight.js theme (dark variant) -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css"
+        />
 
-    <!-- External Scripts (highlight.js + copy plugin) -->
-    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
-    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+        <!-- External Scripts (highlight.js + copy plugin) -->
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+        <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
 
-    <!-- Hypermedia Scripts -->
-    <script src="/static/scripts/fixi.js"></script>
-    <script src="/static/scripts/moxi.js"></script>
-    <script src="/static/scripts/paxi.js"></script>
+        <!-- Hypermedia Scripts -->
+        <script src="/static/scripts/fixi.js"></script>
+        <script src="/static/scripts/moxi.js"></script>
+        <script src="/static/scripts/paxi.js"></script>
 
-    <link rel="alternate" type="application/atom+xml" title="feed" href="/feed.xml" />
+        <link
+            rel="alternate"
+            type="application/atom+xml"
+            title="feed"
+            href="/feed.xml"
+        />
 
-    <!-- Scripts filled in from plugins -->
-    {{ if $PageData.LiveReload }}
-    <script>
-        const eventSource = new EventSource("http://localhost:8000/events");
-        eventSource.onmessage = function (event) {
-            location.reload();
-        };
-    </script>
-    {{ end }} {{range $PageData.Frontmatter.JSFiles}}
-    {{ if eq . "graph.js" }}
-    <script src="https://d3js.org/d3.v7.min.js" defer></script>
-    {{ end }}
-    <script src="/static/scripts/{{.}}" defer></script>
-    {{end}} {{range .DeepDataMerge.LayoutConfig.SiteScripts}}
-    <script src="/static/scripts/{{.}}" defer></script>
-    {{end}}
+        <!-- Scripts filled in from plugins -->
+        {{ if $PageData.LiveReload }}
+        <script>
+            const eventSource = new EventSource("http://localhost:8000/events");
+            eventSource.onmessage = function (event) {
+                location.reload();
+            };
+        </script>
+        {{ end }} {{range $PageData.Frontmatter.JSFiles}} {{ if eq . "graph.js"
+        }}
+        <script src="https://d3js.org/d3.v7.min.js" defer></script>
+        {{ end }}
+        <script src="/static/scripts/{{.}}" defer></script>
+        {{end}} {{range .DeepDataMerge.LayoutConfig.SiteScripts}}
+        <script src="/static/scripts/{{.}}" defer></script>
+        {{end}}
 
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="{{ $PageData.Frontmatter.Title }}" />
-    <meta property="og:description" content="{{ $PageData.Frontmatter.Description }}" />
-    <meta property="og:image" content="{{ $PageData.Frontmatter.PreviewImage }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="{{ $PageData.Frontmatter.Title }}" />
+        <meta
+            property="og:description"
+            content="{{ $PageData.Frontmatter.Description }}"
+        />
+        <meta
+            property="og:image"
+            content="{{ $PageData.Frontmatter.PreviewImage }}"
+        />
 
-    <meta name="description" content="{{ $PageData.Frontmatter.Description }}" />
+        <meta
+            name="description"
+            content="{{ $PageData.Frontmatter.Description }}"
+        />
 
-    <script defer>
-        if (typeof hljs !== 'undefined') {
-            hljs.highlightAll();
-            if (typeof CopyButtonPlugin !== 'undefined') {
-                hljs.addPlugin(new CopyButtonPlugin());
+        <script defer>
+            if (typeof hljs !== "undefined") {
+                hljs.highlightAll();
+                if (typeof CopyButtonPlugin !== "undefined") {
+                    hljs.addPlugin(new CopyButtonPlugin());
+                }
             }
-        }
-    </script>
-</head>
-{{end}}
+        </script>
+    </head>
+    {{end}}
+</html>

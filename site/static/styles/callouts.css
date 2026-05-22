@@ -50,11 +50,6 @@
   --callout-color: var(--callout-default);
 }
 
-  /* Body text contrast on dark bg */
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.95rem;
-}
-
 /* ── Per-type colour mappings ─────────────────────── */
 .callout[data-callout]                              { --callout-color: var(--callout-default); }
 .callout[data-callout^=note], .callout[data-callout^=info]   { --callout-color: var(--callout-note); }

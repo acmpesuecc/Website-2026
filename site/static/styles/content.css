@@ -375,6 +375,24 @@ pre button[class*="copy"] {
     }
 }
 
+/* highlight.js syntax blocks */
+pre .hljs,
+pre * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+pre .hljs,
+pre code.hljs,
+code.hljs {
+    background: transparent !important;
+}
+
+pre code.hljs {
+    padding: 0 !important;
+}
+
 /* Misc elements */
 img {
     max-width: 100%;
@@ -569,13 +587,6 @@ nav > .navigations > .header-element-author {
     font-family: Inter;
     font-size: 1.1rem;
     font-weight: 500;
-}
-
-pre .hljs,
-pre * {
-    min-width: 0 !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
 }
 
 pre a {

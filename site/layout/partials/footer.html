@@ -240,7 +240,7 @@
 
     // Global Card 3D Tilt and Spotlight Delegation
     document.addEventListener('mousemove', (e) => {
-        const card = e.target.closest('.member-card, .member-card-compact, .dir-card, .blog-card-inner, .event-card-inner, .root-nav.glass-pill');
+        const card = e.target.closest('.member-card, .member-card-compact, .dir-card, .blog-card-inner, .event-card-inner, .root-nav.glass-pill, .root-logo');
         if (!card) return;
 
         const rect = card.getBoundingClientRect();
@@ -260,7 +260,7 @@
     });
 
     document.addEventListener('mouseout', (e) => {
-        const card = e.target.closest('.member-card, .member-card-compact, .dir-card, .blog-card-inner, .event-card-inner, .root-nav.glass-pill');
+        const card = e.target.closest('.member-card, .member-card-compact, .dir-card, .blog-card-inner, .event-card-inner, .root-nav.glass-pill, .root-logo');
         if (!card) return;
 
         if (!e.relatedTarget || !card.contains(e.relatedTarget)) {

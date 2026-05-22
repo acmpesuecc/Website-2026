@@ -111,11 +111,16 @@ body.overview-mode #root-dots {
     margin-bottom: 1.5rem;
     opacity: 1;
     filter: drop-shadow(0 0 30px rgba(0, 170, 254, 0.2));
-    transition: all 0.25s ease;
+    transform-style: preserve-3d;
+    transform: translateY(0) scale(1) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: 
+        filter 0.3s ease,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .root-logo:hover {
-    transform: translateY(-2px) scale(1.01);
+    transform: translateY(-4px) scale(1.02) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    filter: drop-shadow(0 15px 45px rgba(0, 170, 254, 0.45));
 }
 
 .root-eyebrow {

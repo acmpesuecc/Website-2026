@@ -44,9 +44,11 @@
         link.setAttribute('fx-main-page', '');
         link.style.display = 'none';
         document.body.appendChild(link);
+        link.addEventListener('fx:end', () => {
+          link.remove();
+        });
         setTimeout(() => {
           link.click();
-          link.remove();
         }, 0);
         return;
       }
@@ -67,9 +69,11 @@
             link.setAttribute('fx-action', targetPath);
             link.style.display = 'none';
             track.appendChild(link);
+            link.addEventListener('fx:end', () => {
+              link.remove();
+            });
             setTimeout(() => {
               link.click();
-              link.remove();
             }, 0);
           }
         }
@@ -86,9 +90,11 @@
                 link.setAttribute('fx-action', targetPath);
                 link.style.display = 'none';
                 track.appendChild(link);
+                link.addEventListener('fx:end', () => {
+                  link.remove();
+                });
                 setTimeout(() => {
                   link.click();
-                  link.remove();
                 }, 0);
               }
             }
@@ -106,9 +112,11 @@
           link.setAttribute('fx-main-page', '');
           link.style.display = 'none';
           document.body.appendChild(link);
+          link.addEventListener('fx:end', () => {
+            link.remove();
+          });
           setTimeout(() => {
             link.click();
-            link.remove();
           }, 0);
         }
       }

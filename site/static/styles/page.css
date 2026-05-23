@@ -572,9 +572,54 @@ nav a:visited,
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 0;
     z-index: 2000;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition:
+        transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+        bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glass-fab-toolbar.footer-visible {
+    bottom: calc(
+        var(--footer-offset, 100px) + 24px
+    ); /* Shift up dynamically when footer is visible */
+}
+
+.glass-fab-toolbar .fab-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+    transition:
+        max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Expand on hover or focus for desktop, or when active class is added for mobile */
+@media (hover: hover) and (pointer: fine) {
+    .glass-fab-toolbar:hover .fab-actions,
+    .glass-fab-toolbar:focus-within .fab-actions {
+        max-height: 300px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        padding-bottom: 6px;
+    }
+}
+
+.glass-fab-toolbar.is-active .fab-actions {
+    max-height: 300px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    padding-bottom: 6px;
 }
 
 .glass-fab-toolbar:hover {
@@ -654,9 +699,16 @@ dialog::backdrop {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform: translate(-50%, -50%) perspective(1000px)
+        rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     border: 1px solid rgba(0, 170, 254, 0.3);
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.12) 0%, transparent 60%), rgba(0, 12, 35, 0.75);
+    background:
+        radial-gradient(
+            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(0, 170, 254, 0.12) 0%,
+            transparent 60%
+        ),
+        rgba(0, 12, 35, 0.75);
     backdrop-filter: blur(32px) saturate(190%);
     -webkit-backdrop-filter: blur(32px) saturate(190%);
     color: #f1f5f9;
@@ -672,7 +724,7 @@ dialog::backdrop {
     margin: 0;
     transform-style: preserve-3d;
     perspective: 1000px;
-    transition: 
+    transition:
         border-color 0.3s ease,
         box-shadow 0.3s ease,
         transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
@@ -864,9 +916,16 @@ dialog::backdrop {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform: translate(-50%, -50%) perspective(1000px)
+        rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     border: 1px solid rgba(0, 170, 254, 0.3);
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.12) 0%, transparent 60%), rgba(0, 12, 35, 0.75);
+    background:
+        radial-gradient(
+            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(0, 170, 254, 0.12) 0%,
+            transparent 60%
+        ),
+        rgba(0, 12, 35, 0.75);
     backdrop-filter: blur(32px) saturate(190%);
     -webkit-backdrop-filter: blur(32px) saturate(190%);
     color: #f1f5f9;

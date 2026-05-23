@@ -827,6 +827,8 @@ hr {
     border-radius: 999px;
     gap: 8px;
     font-weight: 600;
+    white-space: nowrap;
+    min-height: 44px;
 }
 
 /* iOS 26 Liquid Glass Theme for disabled state */

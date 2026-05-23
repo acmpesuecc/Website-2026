@@ -811,6 +811,21 @@ hr {
     font-weight: 600;
 }
 
+/* iOS 26 Liquid Glass Theme for disabled state */
+.apply-btn[aria-disabled="true"] {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: rgba(0, 12, 35, 0.55);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid rgba(0, 170, 254, 0.25);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
+    opacity: 0.6;
+}
+
 @media (max-width: 600px) {
     .cta-row {
         flex-direction: column;

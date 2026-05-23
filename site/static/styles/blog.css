@@ -69,6 +69,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-width: 0;
 }
 
 .blog-meta-left {
@@ -131,4 +132,30 @@
 .tag-label:hover {
     background: rgba(0, 170, 254, 0.25);
     border-color: rgba(0, 170, 254, 0.4);
+}
+
+@media (max-width: 600px) {
+    .blog-card-inner {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .blog-meta-left {
+        flex-wrap: wrap;
+        white-space: normal;
+    }
+
+    .blog-date {
+        white-space: normal;
+    }
+
+    .card-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .card-tags {
+        justify-content: flex-start;
+    }
 }

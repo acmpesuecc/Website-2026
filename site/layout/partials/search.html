@@ -77,7 +77,24 @@
       clearTimeout(timeout); timeout = setTimeout(() => {
         const q = input.value.trim().toLowerCase(); if (!q) { results.innerHTML = ''; return }
         fetch('/static/index.json').then(r => r.json()).then(data => {
-          results.innerHTML = ''; let found = false; for (key in data) { const title = data[key]['Frontmatter']['Title'] || ''; if (title.toLowerCase().includes(q)) { found = true; const a = document.createElement('a'); a.textContent = title; a.href = '/' + data[key]['CompleteURL']; a.className = 'search-link'; results.appendChild(a); results.appendChild(document.createElement('br')); } }
+          results.innerHTML = '';
+          let found = false;
+          for (key in data) {
+            const title = data[key]['Frontmatter']['Title'] || '';
+            if (title.toLowerCase().includes(q)) {
+              found = true;
+              const a = document.createElement('a');
+              a.textContent = title;
+              const path = '/' + data[key]['CompleteURL'];
+              a.href = path;
+              a.setAttribute('fx-action', path);
+              a.setAttribute('fx-main-page', '');
+              a.className = 'search-link';
+              a.addEventListener('click', function () { hide(); });
+              results.appendChild(a);
+              results.appendChild(document.createElement('br'));
+            }
+          }
           if (!found) results.textContent = 'No results';
         }).catch(err => { console.error(err); results.textContent = 'Search unavailable' })
       }, 180)

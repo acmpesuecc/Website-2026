@@ -246,7 +246,7 @@
 </dialog>
 
 <div class="glass-fab-toolbar" id="glass-fab-toolbar">
-    <div class="fab-actions">
+    <div class="fab-actions" id="fab-actions" aria-hidden="true">
         <button class="fab-btn fab-search" aria-label="Search (Shift+K)">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -296,6 +296,8 @@
         class="fab-btn fab-main-toggle"
         id="fab-main-toggle"
         aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="fab-actions"
     >
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -513,21 +515,48 @@
         // --- Glass FAB Toolbar Logic ---
         const fabToolbar = document.getElementById("glass-fab-toolbar");
         const fabMainToggle = document.getElementById("fab-main-toggle");
+        const fabActions = document.getElementById("fab-actions");
         const siteFooter = document.querySelector(".site-footer");
 
-        if (fabToolbar && fabMainToggle) {
+        if (fabToolbar && fabMainToggle && fabActions) {
+            const toggleMenu = (active) => {
+                fabToolbar.classList.toggle("is-active", active);
+                fabMainToggle.setAttribute("aria-expanded", active);
+                fabActions.setAttribute("aria-hidden", !active);
+            };
+
             // Toggle expanded state on mobile
             fabMainToggle.addEventListener("click", (e) => {
                 e.stopPropagation();
-                fabToolbar.classList.toggle("is-active");
+                const isExpanded =
+                    fabMainToggle.getAttribute("aria-expanded") === "true";
+                toggleMenu(!isExpanded);
             });
 
             // Close when clicking outside
             document.addEventListener("click", (e) => {
                 if (!fabToolbar.contains(e.target)) {
-                    fabToolbar.classList.remove("is-active");
+                    toggleMenu(false);
                 }
             });
+
+            // Sync ARIA state on hover/focus (desktop)
+            const syncDesktopState = () => {
+                const isHovered = fabToolbar.matches(":hover");
+                const hasFocus = fabToolbar.matches(":focus-within");
+                const shouldBeOpen = isHovered || hasFocus;
+
+                // Only sync if not manually toggled via click (is-active class)
+                if (!fabToolbar.classList.contains("is-active")) {
+                    fabMainToggle.setAttribute("aria-expanded", shouldBeOpen);
+                    fabActions.setAttribute("aria-hidden", !shouldBeOpen);
+                }
+            };
+
+            fabToolbar.addEventListener("mouseenter", syncDesktopState);
+            fabToolbar.addEventListener("mouseleave", syncDesktopState);
+            fabToolbar.addEventListener("focusin", syncDesktopState);
+            fabToolbar.addEventListener("focusout", syncDesktopState);
         }
 
         // Shift FAB Toolbar when footer is visible

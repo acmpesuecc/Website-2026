@@ -421,9 +421,8 @@ nav a:visited,
 }
 
 .footer-up-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
     background: rgba(0, 12, 35, 0.45);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -433,6 +432,11 @@ nav a:visited,
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.3),
@@ -442,10 +446,10 @@ nav a:visited,
 }
 
 .footer-up-btn svg {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     stroke: currentColor;
-    stroke-width: 2.5;
+    stroke-width: 2;
     fill: none;
     transition: transform 0.3s ease;
 }
@@ -454,18 +458,18 @@ nav a:visited,
     background: rgba(0, 170, 254, 0.15);
     color: #ffffff;
     border-color: rgba(0, 170, 254, 0.45);
-    transform: translateY(-3px) scale(1.08);
+    transform: translateY(-2px) scale(1.04);
     box-shadow:
         0 8px 20px rgba(0, 170, 254, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .footer-up-btn:hover svg {
-    transform: translateY(-2px);
+    transform: scale(1.1);
 }
 
 .footer-up-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.97);
 }
 
 .footer-up-btn:focus-visible {

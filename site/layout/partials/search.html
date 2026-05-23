@@ -16,27 +16,190 @@
     const overlay = document.getElementById('searchOverlay');
     const input = document.getElementById('searchSiteInput');
     const results = document.getElementById('site_search_result');
-    const openBtn = document.getElementById('openSearch');
+    const openBtns = document.querySelectorAll('#openSearch, .fab-search, .search-btn');
     const closeBtn = document.getElementById('closeSearch');
 
-    function show() { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); input.focus(); }
+    function getParentCollectionURL(path) {
+      if (path.startsWith('/blogs/') && path !== '/blogs/index.html' && path !== '/collections/blogs.html') {
+        return '/collections/blogs.html';
+      }
+      if (path.startsWith('/events/') && path !== '/events/index.html' && path !== '/collections/events.html') {
+        return '/collections/events.html';
+      }
+      if (path.startsWith('/members/') && path !== '/members/index.html' && path !== '/collections/members.html') {
+        return '/collections/members.html';
+      }
+      if (path.startsWith('/announcements/') && path !== '/announcements/index.html' && path !== '/collections/announcements.html') {
+        return '/collections/announcements.html';
+      }
+      return null;
+    }
+
+    function openPageFromSearch(targetPath) {
+      const parentURL = getParentCollectionURL(targetPath);
+      if (!parentURL) {
+        // Top-level page: open directly as a new window/track
+        const link = document.createElement('a');
+        link.setAttribute('fx-action', targetPath);
+        link.setAttribute('fx-main-page', '');
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.addEventListener('fx:end', () => {
+          link.remove();
+        });
+        setTimeout(() => {
+          link.click();
+        }, 0);
+        return;
+      }
+
+      const parentWin = document.querySelector('.niri-window[data-url="' + parentURL + '"]');
+      if (parentWin) {
+        const track = parentWin.closest('.niri-horizontal-track');
+        if (track) {
+          const subWin = track.querySelector('.niri-window[data-url="' + targetPath + '"]');
+          if (subWin) {
+            document.body.classList.remove("overview-mode");
+            subWin.focus({ preventScroll: true });
+            setTimeout(() => {
+              subWin.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            }, 50);
+          } else {
+            const link = document.createElement('a');
+            link.setAttribute('fx-action', targetPath);
+            link.style.display = 'none';
+            track.appendChild(link);
+            link.addEventListener('fx:end', () => {
+              link.remove();
+            });
+            setTimeout(() => {
+              link.click();
+            }, 0);
+          }
+        }
+      } else {
+        // Parent window not open. Listen for fx:end, then open subpage
+        const onEnd = function (e) {
+          if (e.detail.cfg.action === parentURL) {
+            document.removeEventListener('fx:end', onEnd);
+            const newParentWin = document.querySelector('.niri-window[data-url="' + parentURL + '"]');
+            if (newParentWin) {
+              const track = newParentWin.closest('.niri-horizontal-track');
+              if (track) {
+                const link = document.createElement('a');
+                link.setAttribute('fx-action', targetPath);
+                link.style.display = 'none';
+                track.appendChild(link);
+                link.addEventListener('fx:end', () => {
+                  link.remove();
+                });
+                setTimeout(() => {
+                  link.click();
+                }, 0);
+              }
+            }
+          }
+        };
+        document.addEventListener('fx:end', onEnd);
+
+        // Open parent track
+        const navLink = document.querySelector('.site-header a[fx-action="' + parentURL + '"]');
+        if (navLink) {
+          navLink.click();
+        } else {
+          const link = document.createElement('a');
+          link.setAttribute('fx-action', parentURL);
+          link.setAttribute('fx-main-page', '');
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.addEventListener('fx:end', () => {
+            link.remove();
+          });
+          setTimeout(() => {
+            link.click();
+          }, 0);
+        }
+      }
+    }
+
+    function show() {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      input.focus();
+      const helpModal = document.getElementById('help-modal');
+      if (helpModal && helpModal.open) {
+        helpModal.close();
+      }
+    }
     function hide() { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); input.value = ''; results.innerHTML = ''; }
 
     document.addEventListener('keydown', function (e) {
-      if ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)) { e.preventDefault(); show(); }
-      if (e.key === 'Escape') { hide(); }
+      if (e.key === 'Escape') { hide(); return; }
+
+      const active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable)) {
+        return;
+      }
+      if ((e.key === 'k' || e.key === 'K' || e.code === 'KeyK') && e.shiftKey && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        show();
+      }
     });
 
-    if (openBtn) openBtn.addEventListener('click', function () { show(); });
+    openBtns.forEach(btn => btn.addEventListener('click', function () { show(); }));
     if (closeBtn) closeBtn.addEventListener('click', function () { hide(); });
     overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
+
+    const searchBox = document.querySelector('.search-box');
+    if (searchBox) {
+      searchBox.addEventListener('mousemove', (e) => {
+        const rect = searchBox.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        searchBox.style.setProperty('--mouse-x', `${x}px`);
+        searchBox.style.setProperty('--mouse-y', `${y}px`);
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const tiltX = -(y - centerY) / centerY * 3.5;
+        const tiltY = (x - centerX) / centerX * 3.5;
+
+        searchBox.style.setProperty('--tilt-x', `${tiltX}deg`);
+        searchBox.style.setProperty('--tilt-y', `${tiltY}deg`);
+      });
+
+      searchBox.addEventListener('mouseleave', () => {
+        searchBox.style.setProperty('--tilt-x', '0deg');
+        searchBox.style.setProperty('--tilt-y', '0deg');
+      });
+    }
 
     // search logic (debounced simple implementation)
     let timeout; input.addEventListener('input', function () {
       clearTimeout(timeout); timeout = setTimeout(() => {
         const q = input.value.trim().toLowerCase(); if (!q) { results.innerHTML = ''; return }
         fetch('/static/index.json').then(r => r.json()).then(data => {
-          results.innerHTML = ''; let found = false; for (key in data) { const title = data[key]['Frontmatter']['Title'] || ''; if (title.toLowerCase().includes(q)) { found = true; const a = document.createElement('a'); a.textContent = title; a.href = '/' + data[key]['CompleteURL']; a.className = 'search-link'; results.appendChild(a); results.appendChild(document.createElement('br')); } }
+          results.innerHTML = '';
+          let found = false;
+          for (key in data) {
+            const title = data[key]['Frontmatter']['Title'] || '';
+            if (title.toLowerCase().includes(q)) {
+              found = true;
+              const a = document.createElement('a');
+              a.textContent = title;
+              const path = '/' + data[key]['CompleteURL'];
+              a.href = path;
+              a.className = 'search-link';
+              a.addEventListener('click', function (e) {
+                e.preventDefault();
+                hide();
+                openPageFromSearch(path);
+              });
+              results.appendChild(a);
+              results.appendChild(document.createElement('br'));
+            }
+          }
           if (!found) results.textContent = 'No results';
         }).catch(err => { console.error(err); results.textContent = 'Search unavailable' })
       }, 180)

@@ -111,11 +111,16 @@ body.overview-mode #root-dots {
     margin-bottom: 1.5rem;
     opacity: 1;
     filter: drop-shadow(0 0 30px rgba(0, 170, 254, 0.2));
-    transition: all 0.25s ease;
+    transform-style: preserve-3d;
+    transform: translateY(0) scale(1) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: 
+        filter 0.3s ease,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .root-logo:hover {
-    transform: translateY(-2px) scale(1.01);
+    transform: translateY(-4px) scale(1.02) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    filter: drop-shadow(0 15px 45px rgba(0, 170, 254, 0.45));
 }
 
 .root-eyebrow {
@@ -146,7 +151,7 @@ body.overview-mode #root-dots {
     flex-wrap: nowrap;
     align-items: stretch;
     justify-content: center;
-    background: rgba(10, 20, 40, 0.5);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.08) 0%, transparent 60%), rgba(0, 12, 35, 0.55);
     backdrop-filter: blur(28px) saturate(190%);
     -webkit-backdrop-filter: blur(28px) saturate(190%);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -158,19 +163,25 @@ body.overview-mode #root-dots {
         inset 0 -1px 0 rgba(0, 0, 0, 0.2);
     overflow: hidden;
     isolation: isolate;
-    transform: translateZ(0);
+    transform-style: preserve-3d;
+    transform: translateY(0) scale(1) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     box-sizing: border-box;
     margin-top: 3rem;
     width: min(95%, 900px);
-    transition: all 0.4s cubic-bezier(0.15, 1, 0.3, 1);
+    transition: 
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .root-nav.glass-pill:hover {
-    transform: translateY(-2px) scale(1.005);
-    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px) scale(1.01) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    border-color: rgba(0, 170, 254, 0.4);
     box-shadow:
         0 30px 60px rgba(0, 0, 0, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.15) 0%, transparent 60%), rgba(0, 12, 35, 0.55);
 }
 
 .nav-separator {

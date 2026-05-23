@@ -43,7 +43,13 @@
                                     <h3>{{$Post.Frontmatter.Title}}</h3>
                                     <p>{{$Post.Frontmatter.Description}}</p>
                                     <div class="card-meta">
-                                        <span class="blog-date">{{$Post.Frontmatter.Date}}</span>
+                                        <div class="blog-meta-left">
+                                            {{ if $Post.Frontmatter.Authors }}
+                                            <span class="blog-author">by {{ range $i, $a := $Post.Frontmatter.Authors }}{{ if $i }}, {{ end }}{{ $a }}{{ end }}</span>
+                                            <span class="meta-dot">•</span>
+                                            {{ end }}
+                                            <span class="blog-date">{{$Post.Frontmatter.Date}}</span>
+                                        </div>
                                         {{ if $Post.Frontmatter.Tags }}
                                         <div class="card-tags">
                                             {{ range $Post.Frontmatter.Tags }}

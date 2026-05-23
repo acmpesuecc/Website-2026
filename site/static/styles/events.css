@@ -19,7 +19,7 @@
     flex-direction: column;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
-    background: rgba(0, 12, 35, 0.5);
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.1) 0%, transparent 60%), rgba(0, 12, 35, 0.5);
     backdrop-filter: blur(20px) saturate(200%);
     box-shadow:
         0 16px 40px rgba(0, 0, 0, 0.4),
@@ -27,14 +27,21 @@
         inset 0 -1px 0 rgba(0, 0, 0, 0.2);
     overflow: hidden;
     height: 100%;
-    transition: all 0.5s cubic-bezier(0.15, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    transform: translateY(0) scale(1) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: 
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .event-card:hover .event-card-inner {
     box-shadow:
         0 32px 60px rgba(0, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-8px) scale(1.02) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 170, 254, 0.15) 0%, transparent 60%), rgba(0, 12, 35, 0.5);
     border-color: rgba(0, 170, 254, 0.4);
 }
 
@@ -96,4 +103,6 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-top: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
 }

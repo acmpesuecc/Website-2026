@@ -14,17 +14,11 @@ echo "$TARGETS" | jq -r 'keys[]' | while read name; do
     fi
 
     echo "Restoring $name..."
-    KEY=$(echo "$TARGETS" | jq -r ".\"$name\".key")
-
-    # Download the cache
-    gh cache download "$KEY" --repo "$REPO" || {
-        echo "Warning: Failed to download cache $KEY for $name, skipping..."
-        continue
-    }
+    RUN_ID=$(echo "$TARGETS" | jq -r ".\"$name\".run_id")
 
     if [ "$name" == "main_site" ]; then
-        cp -r main_site/* final_site/
+        gh run download "$RUN_ID" -n "main_site" -D final_site --repo "$REPO"
     else
-        cp -r "$name" final_site/
+        gh run download "$RUN_ID" -n "$name" -D "final_site/$name" --repo "$REPO"
     fi
 done

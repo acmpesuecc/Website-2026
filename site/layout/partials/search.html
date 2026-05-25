@@ -19,20 +19,45 @@
     const openBtns = document.querySelectorAll('#openSearch, .fab-search, .search-btn');
     const closeBtn = document.getElementById('closeSearch');
 
+    function getBasePath() {
+      const parts = window.location.pathname.split('/');
+      if (parts[1] === 'Website-2026') {
+        if (parts[2] && /^PR\d+$/.test(parts[2])) {
+          return '/Website-2026/' + parts[2];
+        }
+        return '/Website-2026';
+      }
+      return '';
+    }
+
     function getParentCollectionURL(path) {
-      if (path.startsWith('/blogs/') && path !== '/blogs/index.html' && path !== '/collections/blogs.html') {
-        return '/collections/blogs.html';
+      const basePath = getBasePath();
+      let relativePath = path;
+      if (basePath && path.startsWith(basePath)) {
+        relativePath = path.substring(basePath.length);
       }
-      if (path.startsWith('/events/') && path !== '/events/index.html' && path !== '/collections/events.html') {
-        return '/collections/events.html';
+
+      if (relativePath.startsWith('/blogs/') && relativePath !== '/blogs/index.html' && relativePath !== '/collections/blogs.html') {
+        return basePath + '/collections/blogs.html';
       }
-      if (path.startsWith('/members/') && path !== '/members/index.html' && path !== '/collections/members.html') {
-        return '/collections/members.html';
+      if (relativePath.startsWith('/events/') && relativePath !== '/events/index.html' && relativePath !== '/collections/events.html') {
+        return basePath + '/collections/events.html';
       }
-      if (path.startsWith('/announcements/') && path !== '/announcements/index.html' && path !== '/collections/announcements.html') {
-        return '/collections/announcements.html';
+      if (relativePath.startsWith('/members/') && relativePath !== '/members/index.html' && relativePath !== '/collections/members.html') {
+        return basePath + '/collections/members.html';
+      }
+      if (relativePath.startsWith('/announcements/') && relativePath !== '/announcements/index.html' && relativePath !== '/collections/announcements.html') {
+        return basePath + '/collections/announcements.html';
       }
       return null;
+    }
+
+    function clickLink(l) {
+      if (l.__fixi) {
+        l.click();
+      } else {
+        setTimeout(() => clickLink(l), 5);
+      }
     }
 
     function openPageFromSearch(targetPath) {
@@ -47,9 +72,7 @@
         link.addEventListener('fx:end', () => {
           link.remove();
         });
-        setTimeout(() => {
-          link.click();
-        }, 0);
+        clickLink(link);
         return;
       }
 
@@ -72,9 +95,7 @@
             link.addEventListener('fx:end', () => {
               link.remove();
             });
-            setTimeout(() => {
-              link.click();
-            }, 0);
+            clickLink(link);
           }
         }
       } else {
@@ -93,9 +114,7 @@
                 link.addEventListener('fx:end', () => {
                   link.remove();
                 });
-                setTimeout(() => {
-                  link.click();
-                }, 0);
+                clickLink(link);
               }
             }
           }
@@ -115,9 +134,7 @@
           link.addEventListener('fx:end', () => {
             link.remove();
           });
-          setTimeout(() => {
-            link.click();
-          }, 0);
+          clickLink(link);
         }
       }
     }
@@ -179,7 +196,7 @@
     let timeout; input.addEventListener('input', function () {
       clearTimeout(timeout); timeout = setTimeout(() => {
         const q = input.value.trim().toLowerCase(); if (!q) { results.innerHTML = ''; return }
-        fetch('/static/index.json').then(r => r.json()).then(data => {
+        fetch(getBasePath() + '/static/index.json').then(r => r.json()).then(data => {
           results.innerHTML = '';
           let found = false;
           for (key in data) {
@@ -188,7 +205,7 @@
               found = true;
               const a = document.createElement('a');
               a.textContent = title;
-              const path = '/' + data[key]['CompleteURL'];
+              const path = getBasePath() + '/' + data[key]['CompleteURL'];
               a.href = path;
               a.className = 'search-link';
               a.addEventListener('click', function (e) {

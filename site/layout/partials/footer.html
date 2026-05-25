@@ -528,8 +528,7 @@
             // Toggle expanded state on mobile
             fabMainToggle.addEventListener("click", (e) => {
                 e.stopPropagation();
-                const isExpanded =
-                    fabMainToggle.getAttribute("aria-expanded") === "true";
+                const isExpanded = fabToolbar.classList.contains("is-active");
                 toggleMenu(!isExpanded);
             });
 
@@ -542,6 +541,9 @@
 
             // Sync ARIA state on hover/focus (desktop)
             const syncDesktopState = () => {
+                if (window.matchMedia && !window.matchMedia("(hover: hover)").matches) {
+                    return;
+                }
                 const isHovered = fabToolbar.matches(":hover");
                 const hasFocus = fabToolbar.matches(":focus-within");
                 const shouldBeOpen = isHovered || hasFocus;

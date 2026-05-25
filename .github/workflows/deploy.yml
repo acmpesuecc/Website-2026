@@ -174,10 +174,26 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
+      - name: Read Diagnostics
+        id: read-diag
+        if: always()
+        run: |
+          echo "DIAG_CONTENT<<EOF" >> $GITHUB_OUTPUT
+          cat diagnostics.log >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Comment on PR
         if: github.event_name == 'pull_request' && github.event.action != 'closed'
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             🚀 Preview ready at https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/PR${{ github.event.number }}/
+
+            <details>
+            <summary>🔍 Preview Deployment Diagnostics</summary>
+
+            ```
+            ${{ steps.read-diag.outputs.DIAG_CONTENT }}
+            ```
+            </details>
           comment_tag: preview-link

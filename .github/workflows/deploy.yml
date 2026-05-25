@@ -97,6 +97,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Download all build artifacts
+        id: get-artifacts
         uses: actions/github-script@v7
         with:
           script: |
@@ -158,7 +159,6 @@ jobs:
               log(`ERROR: ${err.message}\n${err.stack}`);
               throw err;
             }
-          id: get-artifacts
 
       - name: Restore and Merge
         run: |

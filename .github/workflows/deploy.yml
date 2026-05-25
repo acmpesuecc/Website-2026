@@ -145,14 +145,25 @@ jobs:
 
       - name: Restore and Merge
         run: |
+          echo "Targets output from get-artifacts:" > diagnostics.log
+          echo '${{ steps.get-artifacts.outputs.result }}' >> diagnostics.log
+          echo "======================================" >> diagnostics.log
           chmod +x ./ci/merge_previews.sh
           ./ci/merge_previews.sh \
             '${{ steps.get-artifacts.outputs.result }}' \
             "${{ github.event.action }}" \
             "${{ github.event.number }}" \
-            "${{ github.repository }}"
+            "${{ github.repository }}" 2>&1 | tee -a diagnostics.log
         env:
           GH_TOKEN: ${{ github.token }}
+
+      - name: Upload Diagnostics Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-diagnostics
+          path: diagnostics.log
+          retention-days: 1
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

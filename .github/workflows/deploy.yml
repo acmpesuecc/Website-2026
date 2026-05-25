@@ -90,6 +90,9 @@ jobs:
       - name: Checkout site repo
         uses: actions/checkout@v4
 
+      - name: Initialize Diagnostics Log
+        run: echo "=== Deployment Diagnostics Log ===" > diagnostics.log
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -97,57 +100,70 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const repo = context.repo;
+            const fs = require('fs');
+            const log = (msg) => {
+              core.info(msg);
+              fs.appendFileSync('diagnostics.log', msg + '\n');
+            };
 
-            // 1. Get all active artifacts
-            const response = await github.rest.actions.listArtifactsForRepo({
-              owner: repo.owner,
-              repo: repo.repo,
-              per_page: 100
-            });
-            const artifacts = response.data.artifacts;
-            
-            core.info(`Fetched ${artifacts.length} artifacts:`);
-            for (const a of artifacts) {
-              core.info(`- Name: ${a.name}, RunID: ${a.workflow_run.id}, CreatedAt: ${a.created_at}, Expired: ${a.expired}`);
-            }
+            log('Starting get-artifacts script...');
+            try {
+              const repo = context.repo;
 
-            // 2. Get all open PRs
-            const openPRs = await github.rest.pulls.list({
-              owner: repo.owner,
-              repo: repo.repo,
-              state: 'open'
-            });
-            const openPRNumbers = new Set(openPRs.data.map(pr => pr.number));
-            core.info(`Open PR numbers: ${Array.from(openPRNumbers).join(', ')}`);
+              // 1. Get all active artifacts
+              log(`Listing artifacts for ${repo.owner}/${repo.repo}...`);
+              const response = await github.rest.actions.listArtifactsForRepo({
+                owner: repo.owner,
+                repo: repo.repo,
+                per_page: 100
+              });
+              const artifacts = response.data.artifacts;
+              
+              log(`Fetched ${artifacts.length} artifacts:`);
+              for (const a of artifacts) {
+                log(`- Name: ${a.name}, RunID: ${a.workflow_run.id}, CreatedAt: ${a.created_at}, Expired: ${a.expired}`);
+              }
 
-            const targets = {};
-            for (const artifact of artifacts) {
-              if (artifact.expired) continue;
+              // 2. Get all open PRs
+              log('Listing open pull requests...');
+              const openPRs = await github.rest.pulls.list({
+                owner: repo.owner,
+                repo: repo.repo,
+                state: 'open'
+              });
+              const openPRNumbers = new Set(openPRs.data.map(pr => pr.number));
+              log(`Open PR numbers: ${Array.from(openPRNumbers).join(', ')}`);
 
-              const name = artifact.name; // main_site or PRxx
+              const targets = {};
+              for (const artifact of artifacts) {
+                if (artifact.expired) continue;
 
-              if (name === 'main_site' || (name.startsWith('PR') && openPRNumbers.has(parseInt(name.substring(2))))) {
-                const currentTarget = targets[name];
-                if (!currentTarget || new Date(artifact.created_at) > new Date(currentTarget.created_at)) {
-                  targets[name] = {
-                    run_id: artifact.workflow_run.id,
-                    name: artifact.name,
-                    created_at: artifact.created_at
-                  };
+                const name = artifact.name; // main_site or PRxx
+
+                if (name === 'main_site' || (name.startsWith('PR') && openPRNumbers.has(parseInt(name.substring(2))))) {
+                  const currentTarget = targets[name];
+                  if (!currentTarget || new Date(artifact.created_at) > new Date(currentTarget.created_at)) {
+                    targets[name] = {
+                      run_id: artifact.workflow_run.id,
+                      name: artifact.name,
+                      created_at: artifact.created_at
+                    };
+                  }
                 }
               }
-            }
 
-            core.info(`Found active targets: ${JSON.stringify(targets, null, 2)}`);
-            return targets;
+              log(`Found active targets: ${JSON.stringify(targets, null, 2)}`);
+              return targets;
+            } catch (err) {
+              log(`ERROR: ${err.message}\n${err.stack}`);
+              throw err;
+            }
           id: get-artifacts
 
       - name: Restore and Merge
         run: |
-          echo "Targets output from get-artifacts:" > diagnostics.log
-          echo '${{ steps.get-artifacts.outputs.result }}' >> diagnostics.log
-          echo "======================================" >> diagnostics.log
+          echo "=== Restore and Merge Step ===" >> diagnostics.log
+          echo "Targets input: '${{ steps.get-artifacts.outputs.result }}'" >> diagnostics.log
           chmod +x ./ci/merge_previews.sh
           ./ci/merge_previews.sh \
             '${{ steps.get-artifacts.outputs.result }}' \

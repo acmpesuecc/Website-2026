@@ -57,14 +57,15 @@ jobs:
       - name: Build patched anna binary
         working-directory: /tmp/anna
         run: |
-          if [ ! -f ./anna ]; then
+          if [ ! -f ./anna ] || [ ! -x ./anna ]; then
             go mod tidy
             go build -o ./anna .
           fi
+          chmod +x ./anna
           echo "/tmp/anna" >> $GITHUB_PATH
 
       - name: Build Site
-        run: anna
+        run: /tmp/anna/anna
 
       - name: Prepare build directory
         id: prep
@@ -105,6 +106,11 @@ jobs:
               per_page: 100
             });
             const artifacts = response.data.artifacts;
+            
+            core.info(`Fetched ${artifacts.length} artifacts:`);
+            for (const a of artifacts) {
+              core.info(`- Name: ${a.name}, RunID: ${a.workflow_run.id}, CreatedAt: ${a.created_at}, Expired: ${a.expired}`);
+            }
 
             // 2. Get all open PRs
             const openPRs = await github.rest.pulls.list({
@@ -113,6 +119,7 @@ jobs:
               state: 'open'
             });
             const openPRNumbers = new Set(openPRs.data.map(pr => pr.number));
+            core.info(`Open PR numbers: ${Array.from(openPRNumbers).join(', ')}`);
 
             const targets = {};
             for (const artifact of artifacts) {
@@ -121,16 +128,18 @@ jobs:
               const name = artifact.name; // main_site or PRxx
 
               if (name === 'main_site' || (name.startsWith('PR') && openPRNumbers.has(parseInt(name.substring(2))))) {
-                if (!targets[name] || new Date(artifact.created_at) > new Date(targets[name].created_at)) {
+                const currentTarget = targets[name];
+                if (!currentTarget || new Date(artifact.created_at) > new Date(currentTarget.created_at)) {
                   targets[name] = {
                     run_id: artifact.workflow_run.id,
-                    name: artifact.name
+                    name: artifact.name,
+                    created_at: artifact.created_at
                   };
                 }
               }
             }
 
-            core.info(`Found active targets: ${Object.keys(targets).join(', ')}`);
+            core.info(`Found active targets: ${JSON.stringify(targets, null, 2)}`);
             return targets;
           id: get-artifacts
 

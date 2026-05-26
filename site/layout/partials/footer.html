@@ -175,15 +175,46 @@
                 <h3>Navigation &amp; Scrolling</h3>
                 <ul class="shortcut-list">
                     <li class="shortcut-item">
+                        <div class="shortcut-keys">
+                            <kbd>Shift</kbd> + <kbd>←</kbd> / <kbd>→</kbd>
+                        </div>
+                        <span class="shortcut-desc"
+                            >Move focus to left/right window</span
+                        >
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys">
+                            <kbd>Shift</kbd> + <kbd>↑</kbd> / <kbd>↓</kbd>
+                        </div>
+                        <span class="shortcut-desc"
+                            >Move focus to window above/below</span
+                        >
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Category: Overview Mode -->
+            <div class="shortcut-category-section" data-category="overview">
+                <h3>Overview Mode</h3>
+                <ul class="shortcut-list">
+                    <li class="shortcut-item">
                         <div class="shortcut-keys"><kbd>D</kbd></div>
                         <span class="shortcut-desc">Toggle overview mode</span>
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys">
+                            <kbd>←</kbd> / <kbd>→</kbd>
+                        </div>
+                        <span class="shortcut-desc"
+                            >Scroll tracks horizontally</span
+                        >
                     </li>
                     <li class="shortcut-item">
                         <div class="shortcut-keys">
                             <kbd>↑</kbd> / <kbd>↓</kbd>
                         </div>
                         <span class="shortcut-desc"
-                            >Scroll tracks vertically (Overview mode)</span
+                            >Scroll tracks vertically</span
                         >
                     </li>
                     <li class="shortcut-item">
@@ -191,8 +222,30 @@
                             <kbd>Home</kbd> / <kbd>End</kbd>
                         </div>
                         <span class="shortcut-desc"
-                            >Scroll to start or end of tracks (Overview
-                            mode)</span
+                            >Scroll to start or end of tracks</span
+                        >
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Category: Mobile Actions -->
+            <div class="shortcut-category-section" data-category="mobile">
+                <h3>Mobile Navigation</h3>
+                <ul class="shortcut-list">
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys">
+                            Double-Tap <kbd>Menu</kbd> (FAB)
+                        </div>
+                        <span class="shortcut-desc"
+                            >Jump to landing page</span
+                        >
+                    </li>
+                    <li class="shortcut-item">
+                        <div class="shortcut-keys">
+                            Tap <kbd>▲</kbd> (FAB)
+                        </div>
+                        <span class="shortcut-desc"
+                            >Scroll back to landing page</span
                         >
                     </li>
                 </ul>
@@ -247,6 +300,21 @@
 
 <div class="glass-fab-toolbar" id="glass-fab-toolbar">
     <div class="fab-actions" id="fab-actions" aria-hidden="true">
+        <button class="fab-btn fab-scroll-top" id="fab-scroll-top" aria-label="Jump to Landing Page">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+        </button>
+        <div class="glass-separator"></div>
         <button class="fab-btn fab-search" aria-label="Search (Shift+K)">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -525,8 +593,52 @@
                 fabActions.setAttribute("aria-hidden", !active);
             };
 
-            // Toggle expanded state on mobile
+            // Handle Scroll to Top button click
+            const scrollTopBtn = document.getElementById("fab-scroll-top");
+            if (scrollTopBtn) {
+                scrollTopBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const rootWin = document.getElementById("root-window");
+                    if (rootWin) {
+                        document.body.classList.remove("overview-mode");
+                        rootWin.focus({ preventScroll: true });
+                        setTimeout(() => {
+                            rootWin.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center",
+                                inline: "center",
+                            });
+                        }, 50);
+                    }
+                    toggleMenu(false); // Close menu
+                });
+            }
+
+            // Toggle expanded state on mobile & handle double-tap shortcut
+            let lastClick = 0;
             fabMainToggle.addEventListener("click", (e) => {
+                const now = Date.now();
+                if (now - lastClick < 300) {
+                    // Double tap/click detected!
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const rootWin = document.getElementById("root-window");
+                    if (rootWin) {
+                        document.body.classList.remove("overview-mode");
+                        rootWin.focus({ preventScroll: true });
+                        setTimeout(() => {
+                            rootWin.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center",
+                                inline: "center",
+                            });
+                        }, 50);
+                    }
+                    toggleMenu(false); // Close menu
+                    return;
+                }
+                lastClick = now;
+
                 e.stopPropagation();
                 const isExpanded = fabToolbar.classList.contains("is-active");
                 toggleMenu(!isExpanded);

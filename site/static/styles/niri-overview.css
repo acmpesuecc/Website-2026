@@ -1,14 +1,14 @@
+/* Unified Grid-Based Overview Mode (iOS 26 Style) */
 body.overview-mode {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 5rem 0;
+    padding: 3rem 0;
     overflow: auto;
     min-height: 100vh;
     box-sizing: border-box;
     background: rgba(0, 8, 24, 0.3);
     backdrop-filter: blur(20px) saturate(180%);
-    scroll-snap-type: y mandatory;
 }
 
 body.overview-mode::before {
@@ -28,72 +28,101 @@ body.overview-mode::before {
 }
 
 body.overview-mode .niri-vertical-track {
-    zoom: 0.55;
-    transform: none;
-    overflow: visible;
-    height: auto;
-    gap: 5rem;
-}
-
-body.overview-mode .niri-horizontal-track {
-    overflow-x: auto;
-    overflow-y: hidden;
-    min-height: var(--app-height);
-    height: var(--app-height);
-    margin-bottom: 3rem;
-    scrollbar-width: none;
-    position: relative;
-    padding: 5rem 2.5rem 2.5rem 2.5rem;
+    zoom: 1; /* Reset old desktop zoom */
+    gap: 2rem;
+    padding: 1.5rem;
+    padding-bottom: 5rem;
+    width: 100%;
+    max-width: 1200px; /* Center and restrict width on desktop */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     box-sizing: border-box;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.01)
-    );
-    border-radius: 48px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-        0 20px 40px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    align-items: start;
+    height: auto;
+    overflow: visible;
 }
 
-body.overview-mode .niri-horizontal-track::-webkit-scrollbar {
-    display: none;
+/* Horizontal tracks representing page/group sections */
+body.overview-mode .niri-horizontal-track:not(:first-child) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: 68px 0 20px 0; /* Padding-top accommodates heading below divider */
+    box-sizing: border-box;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid rgba(0, 170, 254, 0.38); /* Top horizontal divider line */
+    align-content: start;
+    overflow: visible;
+    grid-column: 1 / -1; /* Span the entire row */
+    position: relative;
 }
 
-body.overview-mode .niri-horizontal-track[data-group-name]::before {
+/* Heading for horizontal tracks representing page/group sections */
+body.overview-mode
+    .niri-horizontal-track[data-group-name]:not(:first-child)::before {
     content: attr(data-group-name);
     position: absolute;
-    top: -2.5rem;
-    left: 1.5rem;
+    top: 16px;
+    left: 0;
     font-family: var(--font-family-sans);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #a3c4ec;
-    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    opacity: 0.95;
+    pointer-events: none;
 }
 
+body.overview-mode .niri-horizontal-track:first-child {
+    grid-column: 1 / -1; /* Landing page window spans full grid width */
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    border: none;
+}
+
+/* Normal windows shape */
 body.overview-mode .niri-window {
-    cursor: pointer;
-    height: calc(var(--app-height) - 3rem);
-    flex: 0 0
-        var(--overview-window-basis, calc(var(--app-width) * 0.45 - 2.25rem));
-    border-radius: 32px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    aspect-ratio: 3 / 4; /* Tall and narrow viewport ratio */
+    height: auto !important;
+    min-height: 240px;
+    margin: 0;
+    border-radius: 20px;
+    background: transparent !important;
     border: none !important;
-    background: transparent;
+    position: relative;
     transition:
         transform 0.5s cubic-bezier(0.15, 1, 0.3, 1),
         box-shadow 0.3s ease;
     overflow: visible;
-
-    /* Hardware Notch: Parent clipping removed to restore button visibility */
-    -webkit-clip-path: none;
+    contain: layout paint;
+    transform: translateZ(0); /* Hardware accelerate for sharper rendering */
+    z-index: 1;
     clip-path: none;
 }
 
-/* Ensure controls are clickable even in overview */
+/* Maximized windows: match their wider desktop aspect ratio in overview */
+body.overview-mode .niri-window.w-full {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10; /* Wider landscape viewport ratio */
+}
+
 body.overview-mode .niri-window .niri-window-controls {
     pointer-events: auto !important;
 }
@@ -136,22 +165,44 @@ body.overview-mode .niri-window::after {
     clip-path: var(--notch-desktop);
 }
 
-body.overview-mode .niri-window:hover {
-    transform: scale(1.04) translateY(-8px);
-    box-shadow:
-        0 50px 100px rgba(0, 0, 0, 0.7),
-        inset 0 1px 2px rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.3);
+/* Windows inside group tracks are slightly more compact */
+body.overview-mode
+    .niri-horizontal-track:not(:first-child)
+    .niri-window {
+    aspect-ratio: 3 / 4;
+    height: auto;
+    min-height: 180px;
+    border-radius: 14px;
 }
 
-/* Preserve full-width windows opened from root (class added in niri-engine.js). */
-body.overview-mode .niri-window.w-full {
-    flex: 0 0 var(--app-width);
+/* Maximized windows inside group tracks span 2 columns */
+body.overview-mode
+    .niri-horizontal-track:not(:first-child)
+    .niri-window.w-full {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
 }
 
 body.overview-mode #root-window {
-    flex: 0 0 var(--app-width);
-    height: var(--app-height);
+    aspect-ratio: 16 / 10 !important;
+    min-height: 0 !important;
+    max-height: 300px;
+    width: 100%;
+    max-width: 480px; /* Reduced width to prevent comical sizing on desktop */
+    border-radius: 20px;
+    border: 1px solid rgba(0, 170, 254, 0.4);
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+body.overview-mode #root-window .site-main,
+body.overview-mode #root-window .content,
+body.overview-mode #root-window .body {
+    display: contents;
 }
 
 body.overview-mode .niri-window > * {
@@ -162,286 +213,232 @@ body.overview-mode .site-footer {
     display: none;
 }
 
-/* Scaling for overview mode via CSS transformations to ensure layout integrity */
-body.overview-mode .niri-landing {
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    width: 100vw;
-    max-width: none;
-    height: 65vh;
-    margin: 0 !important;
-    transform: translate(-50%, -50%) scale(0.85);
+body.overview-mode .niri-window-inner {
+    overflow: hidden !important;
 }
 
-body.overview-mode .root-logo {
-    width: 320px;
-    min-width: 320px;
+/* Scaling inside window thumbnail previews (skip root-window) */
+body.overview-mode
+    .niri-window:not(#root-window)
+    > *:not(.niri-window-controls) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(0.48);
+    transform-origin: left top;
+    width: 208%;
+    height: 208%;
+    margin-left: 0;
+    z-index: 1;
+}
+
+/* Group track window scaling */
+body.overview-mode
+    .niri-horizontal-track:not(:first-child)
+    .niri-window
+    > *:not(.niri-window-controls) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(0.35);
+    transform-origin: left top;
+    width: 285%;
+    height: 285%;
+    margin-left: 0;
+    z-index: 1;
+}
+
+/* Scaling for landing/root content via transformations */
+body.overview-mode .niri-landing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0 !important;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+body.overview-mode #root-window .root-logo {
+    width: 72px;
     height: auto;
     margin-bottom: 0.5rem;
     display: block;
 }
 
-body.overview-mode .niri-landing {
-    padding-top: 2rem;
-    justify-content: flex-start;
+body.overview-mode #root-window .root-eyebrow {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+    opacity: 0.8;
 }
 
-@media (max-width: 1024px) {
+body.overview-mode #root-window .root-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.35rem;
+    line-height: 1.2;
+}
+
+body.overview-mode #root-window .root-tagline {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+body.overview-mode #root-window .root-nav.glass-pill {
+    margin-top: 1rem;
+    width: 90%;
+    border-radius: 12px;
+}
+
+body.overview-mode #root-window .root-nav .m-link {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+body.overview-mode #root-window .nav-separator {
+    height: 8px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    align-self: center;
+}
+
+body.overview-mode .niri-window:hover,
+body.overview-mode .niri-window:focus-within {
+    transform: translateY(-8px) scale(1.03);
+    z-index: 10;
+    box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(0, 170, 254, 0.3);
+}
+
+/* Mobile responsive scaling overrides */
+@media (max-width: 768px) {
     body.overview-mode {
         padding: 1rem 0;
-        align-items: flex-start;
     }
 
     body.overview-mode .niri-vertical-track {
-        zoom: 1; /* Reset desktop zoom */
         gap: 1rem;
         padding: 1rem;
         padding-bottom: 4rem;
-        width: 100%;
-        display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        box-sizing: border-box;
-        align-items: start;
     }
 
-    /* Track with MULTIPLE windows (Tab Group) */
     body.overview-mode
-        .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        .niri-horizontal-track:not(:first-child) {
         gap: 8px;
-        width: 100%;
-        height: auto;
-        min-height: auto;
-        margin-bottom: 0.5rem;
-        padding: 60px 12px 12px 12px; /* Increased top padding for heading */
-        box-sizing: border-box;
-        background: rgba(190, 200, 255, 0.15); /* Tab group background */
-        border-radius: 24px;
-        border: 1px solid rgba(190, 200, 255, 0.3);
-        align-content: start;
-        overflow: visible;
-        grid-column: 1 / -1; /* Span the entire row! */
-        position: relative;
-    }
-
-    /* Track with ONLY ONE window */
-    body.overview-mode
-        .niri-horizontal-track:not(:has(> .niri-window:nth-of-type(2))) {
-        display: block;
-        width: 100%;
-        height: auto;
-        min-height: auto;
-        margin-bottom: 0.5rem;
-        padding: 0;
-        background: transparent;
+        padding: 56px 0 12px 0; /* Clear container padding box */
         border-radius: 0;
         border: none;
-        overflow: visible;
-        position: relative;
+        border-top: 1px solid rgba(0, 170, 254, 0.38);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    /* Heading for multi-window tracks only */
     body.overview-mode
-        .niri-horizontal-track[data-group-name]:has(
-            > .niri-window:nth-of-type(2)
-        )::before {
-        content: attr(data-group-name);
-        position: absolute;
-        top: 16px;
-        left: 18px;
-        font-family: var(--font-family-sans);
+        .niri-horizontal-track[data-group-name]:not(:first-child)::before {
+        top: 12px;
+        left: 0;
         font-size: 1.1rem;
-        font-weight: 700;
-        color: #a3c4ec;
-        display: flex;
-        align-items: center;
-        opacity: 1;
-        pointer-events: none;
-    }
-
-    body.overview-mode .niri-horizontal-track:first-child {
-        grid-column: 1 / -1; /* Main page spans both columns */
     }
 
     body.overview-mode .niri-window {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
+        border-radius: 14px;
+        min-height: 200px;
         aspect-ratio: 3 / 4;
-        height: auto !important;
-        min-height: 240px;
-        margin: 0;
-        border-radius: 16px;
-        background: transparent !important;
-        border: none !important;
-        position: relative;
-        transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-        overflow: visible;
-        clip-path: none;
+    }
+    
+    body.overview-mode .niri-window.w-full {
+        grid-column: span 2;
+        aspect-ratio: 16 / 10;
     }
 
     body.overview-mode .niri-window::before {
-        background: rgba(20, 30, 60, 0.5);
-        backdrop-filter: blur(12px) saturate(180%);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-        /* Standardized 90px notch geometry */
-        -webkit-clip-path: var(--notch-desktop);
-        clip-path: var(--notch-desktop);
+        -webkit-clip-path: var(--notch-mobile);
+        clip-path: var(--notch-mobile);
     }
 
     body.overview-mode .niri-window::after {
-        /* Sync focus ring with standardized notch geometry */
-        -webkit-clip-path: var(--notch-desktop);
-        clip-path: var(--notch-desktop);
+        -webkit-clip-path: var(--notch-mobile);
+        clip-path: var(--notch-mobile);
     }
 
-    /* Window inside Tab Group is much smaller */
     body.overview-mode
-        .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
+        .niri-horizontal-track:not(:first-child)
         .niri-window {
-        aspect-ratio: 3 / 4;
-        height: auto;
-        min-height: 180px;
-        border-radius: 12px;
+        min-height: 150px;
+        border-radius: 10px;
     }
 
     body.overview-mode #root-window {
-        aspect-ratio: 4 / 3;
-        height: auto;
-        min-height: 240px;
-        width: 100%;
-        max-width: 100%; /* Prevent grid blowout */
-        border-radius: 16px;
-        border: 1px solid rgba(0, 170, 254, 0.4);
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
+        aspect-ratio: 4 / 3 !important;
+        min-height: 0 !important;
+        max-height: 240px;
+        border-radius: 14px;
+        max-width: 100%;
     }
 
-    body.overview-mode #root-window .site-main,
-    body.overview-mode #root-window .content,
-    body.overview-mode #root-window .body {
-        display: contents;
+    body.overview-mode
+        .niri-window:not(#root-window)
+        > *:not(.niri-window-controls) {
+        transform: scale(0.5);
+        width: 200%;
+        height: 200%;
     }
 
-    body.overview-mode .niri-root-window {
-        max-width: 100%; /* Prevent flex child from forcing parent growth */
-        height: auto;
-        padding: 0 1rem 1rem 1rem;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
+    body.overview-mode
+        .niri-horizontal-track:not(:first-child)
+        .niri-window
+        > *:not(.niri-window-controls) {
+        transform: scale(0.35);
+        width: 285%;
+        height: 285%;
     }
 
-    body.overview-mode .root-logo {
+    body.overview-mode .niri-landing {
+        transform: translate(-50%, -50%);
+        padding: 0 1rem;
+    }
+
+    body.overview-mode #root-window .root-logo {
         width: 64px;
         height: 64px;
-        margin-bottom: 0.75rem;
-        object-fit: contain;
-    }
-
-    body.overview-mode .root-title {
-        font-size: 2rem;
         margin-bottom: 0.5rem;
     }
 
-    body.overview-mode .root-tagline {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+    body.overview-mode #root-window .root-eyebrow {
+        font-size: 0.65rem;
     }
 
-    body.overview-mode .root-nav {
+    body.overview-mode #root-window .root-title {
+        font-size: 1.5rem;
+    }
+
+    body.overview-mode #root-window .root-tagline {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+    }
+
+    body.overview-mode #root-window .root-nav {
         gap: 1rem;
     }
 
-    body.overview-mode .root-nav a {
+    body.overview-mode #root-window .root-nav a {
         font-size: 0.8rem;
     }
 
     body.overview-mode .niri-window:hover,
     body.overview-mode .niri-window:focus-within {
         transform: translateY(-4px) scale(1.02);
-        z-index: 10;
-        border-color: #1c2c54;
-        box-shadow:
-            0 8px 24px rgba(0, 0, 0, 0.6),
-            0 0 12px rgba(28, 44, 84, 0.4);
-    }
-
-    /* Default content scaling (skip root-window which has its own logic) */
-    body.overview-mode
-        .niri-window:not(#root-window)
-        > *:not(.niri-window-controls) {
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: scale(0.42);
-        transform-origin: left top;
-        width: 238%;
-        height: 238%;
-        margin-left: 0;
-        z-index: 1;
-    }
-
-    /* Even smaller scaling for windows in a Tab Group */
-    body.overview-mode
-        .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
-        .niri-window
-        > *:not(.niri-window-controls) {
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: scale(0.3);
-        transform-origin: left top;
-        width: 333%;
-        height: 333%;
-        margin-left: 0;
-        z-index: 1;
-    }
-
-    body.overview-mode .niri-window {
-        border: none !important;
-        background: transparent;
-        box-shadow: none;
-        transition:
-            transform 0.5s cubic-bezier(0.15, 1, 0.3, 1),
-            box-shadow 0.3s ease;
-        /* Remove clip-path so controls aren't hidden */
-        clip-path: none;
-        overflow: visible; /* Allow shadows and controls to breathe */
-        contain: layout paint;
-        transform: translateZ(0); /* Hardware accelerate for sharper clipping */
-        z-index: 1;
-    }
-
-    body.overview-mode .niri-window::before {
-        background: rgba(20, 30, 60, 0.4);
-        backdrop-filter: blur(16px) saturate(180%);
-        box-shadow:
-            0 30px 60px rgba(0, 0, 0, 0.5),
-            inset 0 -1px 1px rgba(0, 0, 0, 0.3);
-        /* Inward shelf cutout for overview mode */
-        -webkit-clip-path: var(--notch-mobile);
-        clip-path: var(--notch-mobile);
-    }
-
-    body.overview-mode .niri-window::after {
-        -webkit-clip-path: var(--notch-mobile);
-        clip-path: var(--notch-mobile);
-    }
-
-    body.overview-mode .niri-landing {
-        width: 100vw;
-        height: 30vh;
-        transform: translate(-50%, -50%) scale(0.65);
     }
 }

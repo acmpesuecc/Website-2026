@@ -877,4 +877,87 @@ function overviewKeyBlocker(e) {
   }
 }
 
+function niriShortcutsHandler(e) {
+  // If editing an input, textarea, or contenteditable, skip
+  const active = document.activeElement;
+  if (
+    active &&
+    (active.tagName === "INPUT" ||
+      active.tagName === "TEXTAREA" ||
+      active.isContentEditable)
+  ) {
+    return;
+  }
+
+  // We are only interested in Shift + Arrow keys
+  const arrowKeys = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
+  if (!e.shiftKey || !arrowKeys.has(e.key)) return;
+
+  // Find current window
+  let currentWin = active ? active.closest(".niri-window") : null;
+  if (!currentWin) {
+    currentWin = document.querySelector(".niri-window");
+  }
+  if (!currentWin) return;
+
+  // Prevent default arrow key scrolling/selection
+  e.preventDefault();
+  e.stopPropagation();
+
+  const focusWindow = (target) => {
+    if (target && target.classList.contains("niri-window")) {
+      target.focus({ preventScroll: true });
+      setTimeout(() => {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }, 50);
+    }
+  };
+
+  if (e.key === "ArrowRight") {
+    let nextWin = currentWin.nextElementSibling;
+    if (nextWin && nextWin.classList.contains("niri-window")) {
+      focusWindow(nextWin);
+    }
+  } else if (e.key === "ArrowLeft") {
+    let prevWin = currentWin.previousElementSibling;
+    if (prevWin && prevWin.classList.contains("niri-window")) {
+      focusWindow(prevWin);
+    }
+  } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    const currentTrack = currentWin.closest(".niri-horizontal-track");
+    if (currentTrack) {
+      const nextTrack = e.key === "ArrowDown"
+        ? currentTrack.nextElementSibling
+        : currentTrack.previousElementSibling;
+
+      if (nextTrack && nextTrack.classList.contains("niri-horizontal-track")) {
+        const currentRect = currentWin.getBoundingClientRect();
+        const currentCenterX = currentRect.left + currentRect.width / 2;
+        const targetWindows = nextTrack.querySelectorAll(".niri-window");
+        
+        let closestWin = null;
+        let minDistance = Infinity;
+        targetWindows.forEach((win) => {
+          const rect = win.getBoundingClientRect();
+          const winCenterX = rect.left + rect.width / 2;
+          const dist = Math.abs(currentCenterX - winCenterX);
+          if (dist < minDistance) {
+            minDistance = dist;
+            closestWin = win;
+          }
+        });
+
+        if (closestWin) {
+          focusWindow(closestWin);
+        }
+      }
+    }
+  }
+}
+
 document.addEventListener("keydown", overviewKeyBlocker, { capture: true });
+document.addEventListener("keydown", niriShortcutsHandler);

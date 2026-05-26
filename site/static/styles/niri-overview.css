@@ -233,9 +233,9 @@ body.overview-mode .niri-window-inner {
     overflow: hidden !important;
 }
 
-/* Scaling inside normal half-width window thumbnail previews (skip root-window) */
+/* Scaling inside window thumbnail previews (skip root-window) */
 body.overview-mode
-    .niri-window:not(.w-full):not(#root-window)
+    .niri-window:not(#root-window)
     > *:not(.niri-window-controls) {
     position: absolute;
     top: 0;
@@ -248,25 +248,10 @@ body.overview-mode
     z-index: 1;
 }
 
-/* Scaling inside maximized full-width window thumbnail previews */
-body.overview-mode
-    .niri-window.w-full:not(#root-window)
-    > *:not(.niri-window-controls) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: scale(0.45);
-    transform-origin: left top;
-    width: 222%;
-    height: 222%;
-    margin-left: 0;
-    z-index: 1;
-}
-
-/* Tab Group half-width window scaling */
+/* Tab Group window scaling */
 body.overview-mode
     .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
-    .niri-window:not(.w-full)
+    .niri-window
     > *:not(.niri-window-controls) {
     position: absolute;
     top: 0;
@@ -275,22 +260,6 @@ body.overview-mode
     transform-origin: left top;
     width: 556%;
     height: 556%;
-    margin-left: 0;
-    z-index: 1;
-}
-
-/* Tab Group maximized window scaling */
-body.overview-mode
-    .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
-    .niri-window.w-full
-    > *:not(.niri-window-controls) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: scale(0.36);
-    transform-origin: left top;
-    width: 278%;
-    height: 278%;
     margin-left: 0;
     z-index: 1;
 }
@@ -437,7 +406,7 @@ body.overview-mode .niri-window:focus-within {
     }
 
     body.overview-mode
-        .niri-window:not(.w-full):not(#root-window)
+        .niri-window:not(#root-window)
         > *:not(.niri-window-controls) {
         transform: scale(0.42);
         width: 238%;
@@ -445,29 +414,12 @@ body.overview-mode .niri-window:focus-within {
     }
 
     body.overview-mode
-        .niri-window.w-full:not(#root-window)
-        > *:not(.niri-window-controls) {
-        transform: scale(0.6);
-        width: 167%;
-        height: 167%;
-    }
-
-    body.overview-mode
         .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
-        .niri-window:not(.w-full)
+        .niri-window
         > *:not(.niri-window-controls) {
         transform: scale(0.3);
         width: 333%;
         height: 333%;
-    }
-
-    body.overview-mode
-        .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
-        .niri-window.w-full
-        > *:not(.niri-window-controls) {
-        transform: scale(0.5);
-        width: 200%;
-        height: 200%;
     }
 
     body.overview-mode .niri-landing {

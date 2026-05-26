@@ -181,7 +181,7 @@ body.overview-mode
 }
 
 body.overview-mode #root-window {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 10 !important;
     height: auto;
     min-height: auto;
     width: 100%;
@@ -378,7 +378,7 @@ body.overview-mode .niri-window:focus-within {
     }
 
     body.overview-mode #root-window {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 4 / 3 !important;
         min-height: 200px;
         border-radius: 14px;
         max-width: 100%;

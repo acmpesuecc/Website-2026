@@ -91,6 +91,7 @@ body.overview-mode .niri-horizontal-track:first-child {
     width: 100%;
     height: auto;
     min-height: auto;
+    border: none;
 }
 
 /* Normal windows shape */

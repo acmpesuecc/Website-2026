@@ -59,7 +59,7 @@ body.overview-mode
     background: transparent;
     border-radius: 0;
     border: none;
-    border-top: 1px solid rgba(0, 170, 254, 0.15); /* Top horizontal divider line */
+    border-top: 1px solid rgba(0, 170, 254, 0.38); /* Top horizontal divider line */
     align-content: start;
     overflow: visible;
     grid-column: 1 / -1; /* Span the entire row */
@@ -103,7 +103,7 @@ body.overview-mode
 
 body.overview-mode .niri-horizontal-track:first-child {
     grid-column: 1 / -1; /* Landing page window spans full grid width */
-    border-bottom: 1px solid rgba(0, 170, 254, 0.15); /* Separator line under landing page */
+    border-bottom: 1px solid rgba(0, 170, 254, 0.38); /* Separator line under landing page */
     padding-bottom: 2rem;
     margin-bottom: 2rem;
     display: flex;
@@ -388,7 +388,7 @@ body.overview-mode .niri-window:focus-within {
         padding: 48px 0 12px 0; /* Clear container padding box */
         border-radius: 0;
         border: none;
-        border-top: 1px solid rgba(0, 170, 254, 0.15);
+        border-top: 1px solid rgba(0, 170, 254, 0.38);
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 

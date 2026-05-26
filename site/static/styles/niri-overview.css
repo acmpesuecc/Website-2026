@@ -89,6 +89,9 @@ body.overview-mode .niri-horizontal-track:first-child {
     margin-bottom: 2rem;
     display: flex;
     justify-content: center;
+    width: 100%;
+    height: auto;
+    min-height: auto;
 }
 
 /* Normal windows shape */

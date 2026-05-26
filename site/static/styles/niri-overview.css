@@ -315,44 +315,49 @@ body.overview-mode .niri-landing {
 }
 
 body.overview-mode #root-window .root-logo {
-    width: 96px;
+    width: 72px;
     height: auto;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     display: block;
 }
 
 body.overview-mode #root-window .root-eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
     opacity: 0.8;
 }
 
 body.overview-mode #root-window .root-title {
-    font-size: 2.25rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.35rem;
     line-height: 1.2;
 }
 
 body.overview-mode #root-window .root-tagline {
-    font-size: 0.95rem;
-    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
     line-height: 1.4;
 }
 
-body.overview-mode #root-window .root-nav {
-    gap: 1rem;
+body.overview-mode #root-window .root-nav.glass-pill {
+    margin-top: 1rem;
+    width: 90%;
+    border-radius: 12px;
 }
 
-body.overview-mode #root-window .root-nav a {
-    font-size: 0.85rem;
+body.overview-mode #root-window .root-nav .m-link {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
 }
 
 body.overview-mode #root-window .nav-separator {
-    height: 12px;
+    height: 8px;
     width: 1px;
     background: rgba(255, 255, 255, 0.2);
+    align-self: center;
 }
 
 body.overview-mode .niri-window:hover,

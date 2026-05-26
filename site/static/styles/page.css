@@ -576,7 +576,10 @@ nav a:visited,
     z-index: 2000;
     transition:
         transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+        width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+        padding 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+        border-radius 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .glass-fab-toolbar.footer-visible {
@@ -675,6 +678,42 @@ nav a:visited,
     width: 32px;
     height: 1px;
     background: rgba(0, 170, 254, 0.15);
+}
+
+@media (max-width: 600px) {
+    .glass-fab-toolbar.is-active {
+        border-radius: 20px;
+        padding: 8px;
+        width: 104px; /* Matches 2 * 48px buttons + 8px gap */
+    }
+
+    .glass-fab-toolbar.is-active .fab-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 48px);
+        gap: 8px;
+        max-height: 104px; /* 2 rows of 48px + 8px gap */
+        padding-bottom: 8px;
+        width: 104px;
+    }
+
+    .glass-fab-toolbar.is-active .fab-actions .glass-separator {
+        display: none;
+    }
+
+    .glass-fab-toolbar.is-active #fab-main-toggle {
+        align-self: stretch;
+        width: auto;
+        height: 40px;
+        border-radius: 12px;
+        margin-top: 4px;
+        background: rgba(0, 170, 254, 0.1);
+        border: 1px solid rgba(0, 170, 254, 0.15);
+    }
+
+    .glass-fab-toolbar.is-active #fab-main-toggle:hover {
+        background: rgba(0, 170, 254, 0.2);
+        border-color: rgba(0, 170, 254, 0.3);
+    }
 }
 
 dialog {

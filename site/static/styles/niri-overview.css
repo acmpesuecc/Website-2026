@@ -214,6 +214,10 @@ body.overview-mode .site-footer {
     display: none;
 }
 
+body.overview-mode .niri-window-inner {
+    overflow: hidden !important;
+}
+
 /* Scaling inside window thumbnail previews (skip root-window) */
 body.overview-mode
     .niri-window:not(#root-window)
@@ -221,10 +225,10 @@ body.overview-mode
     position: absolute;
     top: 0;
     left: 0;
-    transform: scale(0.42);
+    transform: scale(0.22);
     transform-origin: left top;
-    width: 238%;
-    height: 238%;
+    width: 455%;
+    height: 455%;
     margin-left: 0;
     z-index: 1;
 }
@@ -237,10 +241,10 @@ body.overview-mode
     position: absolute;
     top: 0;
     left: 0;
-    transform: scale(0.3);
+    transform: scale(0.18);
     transform-origin: left top;
-    width: 333%;
-    height: 333%;
+    width: 556%;
+    height: 556%;
     margin-left: 0;
     z-index: 1;
 }

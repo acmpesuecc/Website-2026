@@ -29,7 +29,7 @@ body.overview-mode::before {
 
 body.overview-mode .niri-vertical-track {
     zoom: 1; /* Reset old desktop zoom */
-    gap: 1.5rem;
+    gap: 2rem;
     padding: 1.5rem;
     padding-bottom: 5rem;
     width: 100%;
@@ -53,11 +53,13 @@ body.overview-mode
     height: auto;
     min-height: auto;
     margin-bottom: 1rem;
-    padding: 64px 20px 20px 20px; /* Top padding for group title */
+    margin-top: 1rem;
+    padding: 56px 0 20px 0; /* Padding-top accommodates heading below divider */
     box-sizing: border-box;
-    background: rgba(190, 200, 255, 0.12); /* Tab group background */
-    border-radius: 28px;
-    border: 1px solid rgba(190, 200, 255, 0.25);
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid rgba(0, 170, 254, 0.15); /* Top horizontal divider line */
     align-content: start;
     overflow: visible;
     grid-column: 1 / -1; /* Span the entire row */
@@ -87,8 +89,8 @@ body.overview-mode
     )::before {
     content: attr(data-group-name);
     position: absolute;
-    top: 20px;
-    left: 24px;
+    top: 16px;
+    left: 0;
     font-family: var(--font-family-sans);
     font-size: 1.25rem;
     font-weight: 700;
@@ -101,6 +103,11 @@ body.overview-mode
 
 body.overview-mode .niri-horizontal-track:first-child {
     grid-column: 1 / -1; /* Landing page window spans full grid width */
+    border-bottom: 1px solid rgba(0, 170, 254, 0.15); /* Separator line under landing page */
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
 }
 
 body.overview-mode .niri-window {
@@ -178,14 +185,14 @@ body.overview-mode
 }
 
 body.overview-mode #root-window {
-    aspect-ratio: 16 / 6;
+    aspect-ratio: 16 / 10;
     height: auto;
-    min-height: 200px;
+    min-height: auto;
     width: 100%;
-    max-width: 100%;
+    max-width: 480px; /* Reduced width to prevent comical sizing on desktop */
     border-radius: 20px;
     border: 1px solid rgba(0, 170, 254, 0.4);
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     overflow: hidden;
     display: flex;
@@ -288,8 +295,10 @@ body.overview-mode .niri-window:focus-within {
     body.overview-mode
         .niri-horizontal-track:has(> .niri-window:nth-of-type(2)) {
         gap: 8px;
-        padding: 60px 12px 12px 12px;
-        border-radius: 20px;
+        padding: 48px 0 12px 0; /* Clear container padding box */
+        border-radius: 0;
+        border: none;
+        border-top: 1px solid rgba(0, 170, 254, 0.15);
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -297,8 +306,8 @@ body.overview-mode .niri-window:focus-within {
         .niri-horizontal-track[data-group-name]:has(
             > .niri-window:nth-of-type(2)
         )::before {
-        top: 16px;
-        left: 18px;
+        top: 12px;
+        left: 0;
         font-size: 1.1rem;
     }
 
@@ -328,6 +337,7 @@ body.overview-mode .niri-window:focus-within {
         aspect-ratio: 4 / 3;
         min-height: 200px;
         border-radius: 14px;
+        max-width: 100%;
     }
 
     body.overview-mode .niri-landing {

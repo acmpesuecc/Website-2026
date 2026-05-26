@@ -110,11 +110,12 @@ body.overview-mode .niri-horizontal-track:first-child {
     justify-content: center;
 }
 
+/* Normal windows shape */
 body.overview-mode .niri-window {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 3 / 4; /* Tall and narrow viewport ratio */
     height: auto !important;
     min-height: 240px;
     margin: 0;
@@ -130,6 +131,12 @@ body.overview-mode .niri-window {
     transform: translateZ(0); /* Hardware accelerate for sharper rendering */
     z-index: 1;
     clip-path: none;
+}
+
+/* Maximized windows: match their wider desktop aspect ratio in overview */
+body.overview-mode .niri-window.w-full {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10; /* Wider landscape viewport ratio */
 }
 
 body.overview-mode .niri-window .niri-window-controls {
@@ -184,6 +191,14 @@ body.overview-mode
     border-radius: 14px;
 }
 
+/* Maximized windows inside Tab Group span 2 columns */
+body.overview-mode
+    .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
+    .niri-window.w-full {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
+}
+
 body.overview-mode #root-window {
     aspect-ratio: 16 / 10;
     height: auto;
@@ -218,9 +233,9 @@ body.overview-mode .niri-window-inner {
     overflow: hidden !important;
 }
 
-/* Scaling inside window thumbnail previews (skip root-window) */
+/* Scaling inside normal half-width window thumbnail previews (skip root-window) */
 body.overview-mode
-    .niri-window:not(#root-window)
+    .niri-window:not(.w-full):not(#root-window)
     > *:not(.niri-window-controls) {
     position: absolute;
     top: 0;
@@ -233,10 +248,25 @@ body.overview-mode
     z-index: 1;
 }
 
-/* Tab Group window scaling */
+/* Scaling inside maximized full-width window thumbnail previews */
+body.overview-mode
+    .niri-window.w-full:not(#root-window)
+    > *:not(.niri-window-controls) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(0.45);
+    transform-origin: left top;
+    width: 222%;
+    height: 222%;
+    margin-left: 0;
+    z-index: 1;
+}
+
+/* Tab Group half-width window scaling */
 body.overview-mode
     .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
-    .niri-window
+    .niri-window:not(.w-full)
     > *:not(.niri-window-controls) {
     position: absolute;
     top: 0;
@@ -245,6 +275,22 @@ body.overview-mode
     transform-origin: left top;
     width: 556%;
     height: 556%;
+    margin-left: 0;
+    z-index: 1;
+}
+
+/* Tab Group maximized window scaling */
+body.overview-mode
+    .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
+    .niri-window.w-full
+    > *:not(.niri-window-controls) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(0.36);
+    transform-origin: left top;
+    width: 278%;
+    height: 278%;
     margin-left: 0;
     z-index: 1;
 }
@@ -258,20 +304,55 @@ body.overview-mode .niri-landing {
     max-width: none;
     height: auto;
     margin: 0 !important;
-    transform: translate(-50%, -50%) scale(0.85);
+    transform: translate(-50%, -50%);
     transform-origin: center center;
-    padding: 0;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-body.overview-mode .root-logo {
-    width: 160px;
+body.overview-mode #root-window .root-logo {
+    width: 96px;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     display: block;
+}
+
+body.overview-mode #root-window .root-eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+
+body.overview-mode #root-window .root-title {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+body.overview-mode #root-window .root-tagline {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+}
+
+body.overview-mode #root-window .root-nav {
+    gap: 1rem;
+}
+
+body.overview-mode #root-window .root-nav a {
+    font-size: 0.85rem;
+}
+
+body.overview-mode #root-window .nav-separator {
+    height: 12px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 body.overview-mode .niri-window:hover,
@@ -318,6 +399,12 @@ body.overview-mode .niri-window:focus-within {
     body.overview-mode .niri-window {
         border-radius: 14px;
         min-height: 200px;
+        aspect-ratio: 3 / 4;
+    }
+    
+    body.overview-mode .niri-window.w-full {
+        grid-column: span 2;
+        aspect-ratio: 16 / 10;
     }
 
     body.overview-mode .niri-window::before {
@@ -344,30 +431,69 @@ body.overview-mode .niri-window:focus-within {
         max-width: 100%;
     }
 
-    body.overview-mode .niri-landing {
-        transform: translate(-50%, -50%) scale(0.65);
+    body.overview-mode
+        .niri-window:not(.w-full):not(#root-window)
+        > *:not(.niri-window-controls) {
+        transform: scale(0.42);
+        width: 238%;
+        height: 238%;
     }
 
-    body.overview-mode .root-logo {
+    body.overview-mode
+        .niri-window.w-full:not(#root-window)
+        > *:not(.niri-window-controls) {
+        transform: scale(0.6);
+        width: 167%;
+        height: 167%;
+    }
+
+    body.overview-mode
+        .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
+        .niri-window:not(.w-full)
+        > *:not(.niri-window-controls) {
+        transform: scale(0.3);
+        width: 333%;
+        height: 333%;
+    }
+
+    body.overview-mode
+        .niri-horizontal-track:has(> .niri-window:nth-of-type(2))
+        .niri-window.w-full
+        > *:not(.niri-window-controls) {
+        transform: scale(0.5);
+        width: 200%;
+        height: 200%;
+    }
+
+    body.overview-mode .niri-landing {
+        transform: translate(-50%, -50%);
+        padding: 0 1rem;
+    }
+
+    body.overview-mode #root-window .root-logo {
         width: 64px;
         height: 64px;
+        margin-bottom: 0.5rem;
+    }
+
+    body.overview-mode #root-window .root-eyebrow {
+        font-size: 0.65rem;
+    }
+
+    body.overview-mode #root-window .root-title {
+        font-size: 1.5rem;
+    }
+
+    body.overview-mode #root-window .root-tagline {
+        font-size: 0.8rem;
         margin-bottom: 0.75rem;
     }
 
-    body.overview-mode .root-title {
-        font-size: 2rem;
-    }
-
-    body.overview-mode .root-tagline {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-    }
-
-    body.overview-mode .root-nav {
+    body.overview-mode #root-window .root-nav {
         gap: 1rem;
     }
 
-    body.overview-mode .root-nav a {
+    body.overview-mode #root-window .root-nav a {
         font-size: 0.8rem;
     }
 

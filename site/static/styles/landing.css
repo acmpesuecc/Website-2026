@@ -1,6 +1,6 @@
 /* Landing Page / Root Window Styles */
 
-body:not(.overview-mode) #root-window {
+#root-window {
     max-width: 100% !important;
     width: 100% !important;
     min-height: calc(100vh - 90px);
@@ -12,25 +12,6 @@ body:not(.overview-mode) #root-window {
     padding: 70px 0 0 0 !important; /* Top padding is header height */
     margin: 0;
     box-sizing: border-box;
-}
-
-/* Root window: Remove hardware notch and clipping and borders */
-body:not(.overview-mode) #root-window .niri-window-inner,
-body:not(.overview-mode) #root-window::before,
-body:not(.overview-mode) #root-window::after {
-    -webkit-clip-path: none;
-    clip-path: none;
-    border: none;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    padding: 0;
-    margin: 0;
-}
-
-body:not(.overview-mode) #niri-track-h-root {
-    padding: 0;
-    gap: 0;
 }
 
 /* Glowing Dot trail effect */
@@ -64,11 +45,6 @@ body:not(.overview-mode) #niri-track-h-root {
     );
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
-}
-
-body.overview-mode #root-dots {
-    opacity: 0 !important;
-    visibility: hidden;
 }
 
 /* Center everything in normal view */

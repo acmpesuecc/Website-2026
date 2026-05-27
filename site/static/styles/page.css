@@ -457,167 +457,6 @@ nav a:visited,
 
 }
 
-/* iOS 26 Liquid Glass Toolbar for FAB actions */
-.glass-fab-toolbar {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    padding: 6px;
-    border-radius: 32px;
-    background: rgba(0, 12, 35, 0.55);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border: 1px solid rgba(0, 170, 254, 0.25);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    z-index: 2000;
-    transition:
-        transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        padding 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        border-radius 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.glass-fab-toolbar.footer-visible {
-    bottom: calc(
-        var(--footer-offset, 100px) + 24px
-    ); /* Shift up dynamically when footer is visible */
-}
-
-.glass-fab-toolbar .fab-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    overflow: hidden;
-    transition:
-        max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Expand on hover or focus for desktop, or when active class is added for mobile */
-@media (hover: hover) and (pointer: fine) {
-    .glass-fab-toolbar:hover .fab-actions,
-    .glass-fab-toolbar:focus-within .fab-actions {
-        max-height: 300px;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        padding-bottom: 6px;
-    }
-}
-
-.glass-fab-toolbar.is-active .fab-actions {
-    max-height: 300px;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    padding-bottom: 6px;
-}
-
-.glass-fab-toolbar:hover {
-    border-color: rgba(0, 170, 254, 0.45);
-    box-shadow:
-        0 16px 48px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 0 0 1px rgba(0, 170, 254, 0.1),
-        0 0 24px rgba(0, 170, 254, 0.1);
-}
-
-.fab-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: transparent;
-    border: none;
-    color: var(--brand-color);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fab-btn svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.fab-btn:hover {
-    background: rgba(0, 170, 254, 0.15);
-    color: #fff;
-    transform: scale(1.08);
-}
-
-.fab-btn:hover svg {
-    transform: scale(1.05);
-}
-
-.fab-btn:active {
-    transform: scale(0.92);
-    background: rgba(0, 170, 254, 0.25);
-}
-
-.glass-separator {
-    width: 32px;
-    height: 1px;
-    background: rgba(0, 170, 254, 0.15);
-}
-
-@media (max-width: 600px) {
-    .glass-fab-toolbar.is-active {
-        border-radius: 20px;
-        padding: 8px;
-        width: 104px; /* Matches 2 * 48px buttons + 8px gap */
-    }
-
-    .glass-fab-toolbar.is-active .fab-actions {
-        display: grid;
-        grid-template-columns: repeat(2, 48px);
-        gap: 8px;
-        max-height: 104px; /* 2 rows of 48px + 8px gap */
-        padding-bottom: 8px;
-        width: 104px;
-    }
-
-    .glass-fab-toolbar.is-active .fab-actions .glass-separator {
-        display: none;
-    }
-
-    .glass-fab-toolbar.is-active #fab-main-toggle {
-        align-self: stretch;
-        width: auto;
-        height: 40px;
-        border-radius: 12px;
-        margin-top: 4px;
-        background: rgba(0, 170, 254, 0.1);
-        border: 1px solid rgba(0, 170, 254, 0.15);
-    }
-
-    .glass-fab-toolbar.is-active #fab-main-toggle:hover {
-        background: rgba(0, 170, 254, 0.2);
-        border-color: rgba(0, 170, 254, 0.3);
-    }
-}
 
 dialog {
     background: rgba(10, 20, 40, 0.6);
@@ -854,56 +693,7 @@ dialog::backdrop {
     }
 }
 
-#close-track-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) perspective(1000px)
-        rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-    border: 1px solid rgba(0, 170, 254, 0.3);
-    background:
-        radial-gradient(
-            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-            rgba(0, 170, 254, 0.12) 0%,
-            transparent 60%
-        ),
-        rgba(0, 12, 35, 0.75);
-    backdrop-filter: blur(32px) saturate(190%);
-    -webkit-backdrop-filter: blur(32px) saturate(190%);
-    color: #f1f5f9;
-    border-radius: 20px;
-    padding: 2.25rem;
-    width: calc(100% - 40px);
-    max-width: 520px;
-    box-sizing: border-box;
-    box-shadow:
-        0 28px 72px rgba(0, 0, 0, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
-    margin: 0;
-    text-align: center;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-#close-track-modal[open] {
-    animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#close-track-modal .modal-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-#help-modal button,
-#close-track-modal button {
+#help-modal button {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
@@ -916,34 +706,11 @@ dialog::backdrop {
     backdrop-filter: blur(8px);
 }
 
-#help-modal button:hover,
-#close-track-modal button:hover {
+#help-modal button:hover {
     background: rgba(0, 170, 254, 0.2);
     border-color: rgba(0, 170, 254, 0.4);
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-#btn-close-all {
-    background: rgba(255, 59, 48, 0.12) !important;
-    border-color: rgba(255, 59, 48, 0.3) !important;
-}
-
-#btn-close-all:hover {
-    background: rgba(255, 59, 48, 0.25) !important;
-    border-color: rgba(255, 59, 48, 0.5) !important;
-    box-shadow: 0 8px 20px rgba(255, 59, 48, 0.15);
-}
-
-.btn-cancel {
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    color: #a1a1aa !important;
-}
-
-.btn-cancel:hover {
-    border-color: rgba(255, 255, 255, 0.4) !important;
-    color: #fff !important;
-    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Header padding for standard site page content and active link styles */

@@ -619,6 +619,24 @@ pre a {
     margin-bottom: 1rem;
 }
 
+.post-header h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem) !important;
+    line-height: 1.1 !important;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+    background: linear-gradient(
+        135deg,
+        var(--color-white) 0%,
+        var(--brand-color) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
 .tag-pill:focus {
     background: var(--color-background-dim);
     color: #fff;

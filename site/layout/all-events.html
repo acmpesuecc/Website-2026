@@ -11,7 +11,7 @@
 {{ template "head" .}}
 <body class="site-body">
     {{template "header" .}}
-    <main class="container site-main" role="main">
+    <main class="container container-grid site-main" role="main">
         <header class="collection-hero">
             <div class="hero-content">
                 <h1>{{ $PageData.Frontmatter.Title }}</h1>
@@ -27,17 +27,17 @@
         {{if eq $key "collections/events.html"}}
             {{range $Post := $events}}
                 {{if ne $Post.Frontmatter.Title "anna"}}
-                <a class="event-card" href="/{{$Post.CompleteURL}}">
+                <div class="event-card" onclick="if (!event.target.closest('a')) window.location.href = '/{{$Post.CompleteURL}}';">
                     <div class="event-card-inner">
-                        <div class="event-thumb">
+                        <a class="event-thumb" href="/{{$Post.CompleteURL}}">
                             {{ if $Post.Frontmatter.PreviewImage }}
                                 <img src="{{$Post.Frontmatter.PreviewImage}}" alt="pixel art"/>
                             {{ else }}
                                 <img src="/static/images/placeholder.png" alt="placeholder"/>
                             {{ end }}
-                        </div>
+                        </a>
                         <div class="event-info">
-                            <h3>{{$Post.Frontmatter.Title}}</h3>
+                            <h3><a class="event-title-link" href="/{{$Post.CompleteURL}}">{{$Post.Frontmatter.Title}}</a></h3>
                             <p>{{$Post.Frontmatter.Description}}</p>
                             <div class="card-meta">
                                 <span class="event-date">{{$Post.Frontmatter.Date}}</span>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
                 {{end}}
             {{end}}
         {{end}}

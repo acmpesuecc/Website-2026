@@ -1015,3 +1015,28 @@ dialog::backdrop {
         display: none !important;
     }
 }
+
+/* Wide layout container for grid elements */
+.container-grid {
+    max-width: 1000px !important;
+    width: 100% !important;
+}
+
+/* Event and Blog Card title link styles */
+.event-title-link,
+.blog-title-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.event-title-link:hover,
+.blog-title-link:hover {
+    color: var(--brand-color) !important;
+}
+
+/* Ensure pointer cursor on non-anchor card triggers */
+.event-card,
+.blog-card {
+    cursor: pointer;
+}

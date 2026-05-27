@@ -27,7 +27,7 @@
         {{if eq $key "collections/events.html"}}
             {{range $Post := $events}}
                 {{if ne $Post.Frontmatter.Title "anna"}}
-                <div class="event-card" onclick="if (!event.target.closest('a')) window.location.href = '/{{$Post.CompleteURL}}';">
+                <div class="event-card" data-url="/{{$Post.CompleteURL}}" onclick="if (!event.target.closest('a')) window.location.href = this.dataset.url;">
                     <div class="event-card-inner">
                         <a class="event-thumb" href="/{{$Post.CompleteURL}}">
                             {{ if $Post.Frontmatter.PreviewImage }}

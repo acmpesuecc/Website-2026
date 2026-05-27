@@ -122,6 +122,7 @@ pre > code {
     margin: 0 auto;
     padding: 1rem;
     max-width: 65ch;
+    width: 100%;
 }
 
 @media (min-width: 900px) {
@@ -190,6 +191,7 @@ figure > figcaption > * {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 

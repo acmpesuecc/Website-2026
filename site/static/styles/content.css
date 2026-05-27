@@ -116,6 +116,22 @@ pre > code {
     display: block;
 }
 
+/* Cohesive page title gradients across the site */
+.collection-hero h1,
+.text-page-title,
+.post-header h1,
+.profile-intro h1 {
+    background: linear-gradient(
+        135deg,
+        var(--color-white) 0%,
+        var(--brand-color) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
 /* Page container */
 .container {
     box-sizing: border-box;
@@ -626,15 +642,6 @@ pre a {
     letter-spacing: -0.05em;
     margin-top: 0 !important;
     margin-bottom: 1rem !important;
-    background: linear-gradient(
-        135deg,
-        var(--color-white) 0%,
-        var(--brand-color) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
 }
 
 .tag-pill:focus {
@@ -777,15 +784,6 @@ hr {
     margin-bottom: 40px !important;
     color: var(--color-white);
     border: none !important;
-    background: linear-gradient(
-        135deg,
-        var(--color-white) 0%,
-        var(--brand-color) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
 }
 
 .text-page-title .accent {

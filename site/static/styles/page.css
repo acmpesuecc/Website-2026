@@ -30,8 +30,10 @@
     position: fixed;
     top: 1rem;
     left: 50%;
-    transform: translateX(-50%);
-    width: min(95%, 1000px);
+    transform: translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-origin: center top;
+    transform-style: preserve-3d;
+    width: min(95%, 900px);
     box-sizing: border-box;
     padding: 0.75rem 1.5rem;
     margin: 0;
@@ -58,7 +60,7 @@
         border-color 0.3s ease,
         background 0.3s ease,
         box-shadow 0.3s ease,
-        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        transform 0.18s cubic-bezier(0.25, 1, 0.5, 1);
     overflow: visible;
     isolation: isolate;
 }
@@ -842,7 +844,7 @@ dialog::backdrop {
 
 /* Wide layout container for grid elements */
 .container-grid {
-    max-width: 1000px !important;
+    max-width: 900px !important;
     width: 100% !important;
 }
 

@@ -11,7 +11,7 @@
 {{ template "head" .}}
 <body class="site-body">
     {{template "header" .}}
-    <main class="container site-main" role="main">
+    <main class="container container-grid site-main" role="main">
         <header class="collection-hero">
             <div class="hero-content">
                 <h1>{{ $PageData.Frontmatter.Title }}</h1>
@@ -27,17 +27,17 @@
                 {{if eq $key "collections/announcements.html"}}
                     {{range $Post := $posts}}
                         {{if ne $Post.Frontmatter.Title "anna"}}
-            <a class="blog-card" href="/{{$Post.CompleteURL}}">
+            <div class="blog-card" onclick="if (!event.target.closest('a')) window.location.href = '/{{$Post.CompleteURL}}';" style="cursor: pointer;">
                 <div class="blog-card-inner">
-                    <div class="blog-thumb">
+                    <a class="blog-thumb" href="/{{$Post.CompleteURL}}">
                         {{ if $Post.Frontmatter.PreviewImage }}
                             <img src="{{$Post.Frontmatter.PreviewImage}}" alt="Announcement thumbnail"/>
                         {{ else }}
                             <img src="/static/images/carbon.png" alt="Announcement thumbnail"/>
                         {{ end }}
-                    </div>
+                    </a>
                     <div class="blog-info">
-                        <h3>{{$Post.Frontmatter.Title}}</h3>
+                        <h3><a class="blog-title-link" href="/{{$Post.CompleteURL}}">{{$Post.Frontmatter.Title}}</a></h3>
                         <p>{{$Post.Frontmatter.Description}}</p>
                         <div class="card-meta">
                             <div class="blog-meta-left">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
                         {{end}}
                     {{end}}
                 {{end}}

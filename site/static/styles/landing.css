@@ -3,7 +3,7 @@
 body:not(.overview-mode) #root-window {
     max-width: 100% !important;
     width: 100% !important;
-    min-height: 100vh;
+    min-height: calc(100vh - 90px);
     border: none;
     border-radius: 0;
     background: transparent;

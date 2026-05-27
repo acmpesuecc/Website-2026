@@ -17,6 +17,7 @@ if [[ "$EVENT_NAME" == "pull_request" ]]; then
     find build_output -type f -name "*.html" -exec sed -i "s|fetch('/|fetch('$BASE_PATH/|g" {} +
     find build_output -type f -name "*.html" -exec sed -i "s|a.href = '/|a.href = '$BASE_PATH/|g" {} +
     find build_output -type f -name "*.html" -exec sed -i "s|fx-action=\"/|fx-action=\"$BASE_PATH/|g" {} +
+    find build_output -type f -name "*.html" -exec sed -i "s|data-url=\"/|data-url=\"$BASE_PATH/|g" {} +
 
     mv build_output "PR$PR_NUMBER"
     echo "path=PR$PR_NUMBER" >> $GITHUB_OUTPUT
@@ -30,6 +31,7 @@ else
     find build_output -type f -name "*.html" -exec sed -i "s|fetch('/|fetch('$BASE_PATH/|g" {} +
     find build_output -type f -name "*.html" -exec sed -i "s|a.href = '/|a.href = '$BASE_PATH/|g" {} +
     find build_output -type f -name "*.html" -exec sed -i "s|fx-action=\"/|fx-action=\"$BASE_PATH/|g" {} +
+    find build_output -type f -name "*.html" -exec sed -i "s|data-url=\"/|data-url=\"$BASE_PATH/|g" {} +
 
     mv build_output main_site
     echo "path=main_site" >> $GITHUB_OUTPUT

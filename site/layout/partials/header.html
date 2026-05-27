@@ -12,7 +12,8 @@
         <nav id="mobile-nav" class="site-nav" aria-label="Main navigation">
             {{range $index_no, $map := .DeepDataMerge.LayoutConfig.Navbar}}
             {{range $key, $value := $map}}
-            <a class="navitem" href="/{{ $value }}" fx-action="/{{ $value }}" fx-target="#niri-track" fx-swap="beforeend">{{ $key }}</a>
+            <a class="navitem m-link" href="/{{ $value }}">{{ $key }}</a>
+            <div class="nav-separator"></div>
             {{end}}
             {{end}}
         </nav>
@@ -26,4 +27,78 @@
     </div>
 </header>
 
+<script>
+    (function() {
+        const hamburger = document.getElementById('hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.body.classList.toggle('nav-open');
+                const isOpen = document.body.classList.contains('nav-open');
+                hamburger.setAttribute('aria-expanded', isOpen);
+            });
+        }
+        
+        document.addEventListener('click', (e) => {
+            if (document.body.classList.contains('nav-open')) {
+                const nav = document.getElementById('mobile-nav');
+                if (nav && !nav.contains(e.target) && e.target !== hamburger) {
+                    document.body.classList.remove('nav-open');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        const header = document.querySelector('.site-header');
+        if (header) {
+            header.addEventListener('mousemove', (e) => {
+                if (window.innerWidth <= 900 || document.body.classList.contains('nav-open')) {
+                    header.style.setProperty('--tilt-x', '0deg');
+                    header.style.setProperty('--tilt-y', '0deg');
+                    return;
+                }
+                const rect = header.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Spotlight position
+                header.style.setProperty('--header-mouse-x', `${x}px`);
+                header.style.setProperty('--header-mouse-y', `${y}px`);
+
+                // 3D tilt — gentle, max ±3deg
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const tiltX = (-(y - cy) / cy) * 3;
+                const tiltY = ((x - cx) / cx) * 3;
+                header.style.setProperty('--tilt-x', `${tiltX}deg`);
+                header.style.setProperty('--tilt-y', `${tiltY}deg`);
+            });
+
+            header.addEventListener('mouseleave', () => {
+                header.style.setProperty('--tilt-x', '0deg');
+                header.style.setProperty('--tilt-y', '0deg');
+            });
+        }
+
+        const currentPath = window.location.pathname;
+        const navItems = document.querySelectorAll('.site-nav .navitem');
+        navItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href) {
+                const cleanPath = currentPath.replace(/\/$/, "");
+                const cleanHref = href.replace(/\/$/, "");
+                let isMatch = cleanPath === cleanHref || cleanPath.endsWith(cleanHref);
+                if (!isMatch) {
+                    if (cleanHref.endsWith("/collections/blogs.html") && cleanPath.includes("/blogs/")) isMatch = true;
+                    else if (cleanHref.endsWith("/collections/members.html") && cleanPath.includes("/members/")) isMatch = true;
+                    else if (cleanHref.endsWith("/collections/events.html") && cleanPath.includes("/events/")) isMatch = true;
+                    else if (cleanHref.endsWith("/collections/announcements.html") && cleanPath.includes("/announcements/")) isMatch = true;
+                }
+                if (isMatch) {
+                    item.classList.add('active');
+                }
+            }
+        });
+    })();
+</script>
 {{end}}

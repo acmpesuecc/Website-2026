@@ -116,12 +116,29 @@ pre > code {
     display: block;
 }
 
+/* Cohesive page title gradients across the site */
+.collection-hero h1,
+.text-page-title,
+.post-header h1,
+.profile-intro h1 {
+    background: linear-gradient(
+        135deg,
+        var(--color-white) 0%,
+        var(--brand-color) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
 /* Page container */
 .container {
     box-sizing: border-box;
     margin: 0 auto;
     padding: 1rem;
     max-width: 65ch;
+    width: 100%;
 }
 
 @media (min-width: 900px) {
@@ -133,7 +150,7 @@ pre > code {
 
 @media (min-width: 1100px) {
     .container {
-        max-width: 64rem;
+        max-width: 56.25rem;
         padding: 1.5rem;
     }
 }
@@ -190,6 +207,7 @@ figure > figcaption > * {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
 }
 
@@ -617,6 +635,15 @@ pre a {
     margin-bottom: 1rem;
 }
 
+.post-header h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem) !important;
+    line-height: 1.1 !important;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+}
+
 .tag-pill:focus {
     background: var(--color-background-dim);
     color: #fff;
@@ -742,14 +769,14 @@ hr {
     margin-top: 0;
 }
 
-.manifesto-wrapper {
+.text-page-wrapper {
     margin: 10vh auto;
-    max-width: 800px;
+    max-width: 900px;
     text-align: left;
     padding: 0 20px;
 }
 
-.manifesto-title {
+.text-page-title {
     font-size: clamp(2.5rem, 7vw, 4rem) !important;
     line-height: 1 !important;
     font-weight: 800;
@@ -759,21 +786,72 @@ hr {
     border: none !important;
 }
 
-.manifesto-title .accent {
+.text-page-title .accent {
     color: #2563eb;
     font-style: italic;
 }
 
-.manifesto-body p {
+.text-page-body p {
     font-size: 1.25rem;
     line-height: 1.6;
     color: var(--brand-color);
-    max-width: 600px;
+    max-width: 800px;
     margin-bottom: 60px;
     opacity: 0.9;
 }
 
-.manifesto-footer {
+.text-page-body h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem) !important;
+    font-weight: 800;
+    margin: 3rem 0 1.5rem !important;
+    color: var(--color-white);
+}
+
+.about-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.about-event-item {
+    background: rgba(0, 12, 35, 0.4);
+    border: 1px solid rgba(0, 170, 254, 0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+}
+
+.about-event-item:hover {
+    border-color: rgba(0, 170, 254, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 170, 254, 0.1);
+}
+
+.about-event-title {
+    font-family: "PT Mono", monospace;
+    font-weight: 700;
+    color: var(--color-white);
+    background: rgba(0, 170, 254, 0.15);
+    border: 1px solid rgba(0, 170, 254, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.about-event-desc {
+    margin: 0 !important;
+    font-size: 1.1rem !important;
+    line-height: 1.5 !important;
+    color: var(--color-text-dim) !important;
+}
+
+.text-page-footer {
     border-top: 1px solid #eee;
     padding-top: 30px;
 }
@@ -860,11 +938,11 @@ hr {
 }
 
 @media (prefers-color-scheme: dark) {
-    .manifesto-footer {
+    .text-page-footer {
         border-top-color: #333;
     }
 
-    .manifesto-title .accent {
+    .text-page-title .accent {
         color: #60a5fa;
     }
 

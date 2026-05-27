@@ -7,14 +7,6 @@
 .collection-hero h1 {
     font-size: clamp(2.5rem, 8vw, 4rem);
     margin-bottom: 1rem;
-    background: linear-gradient(
-        135deg,
-        var(--color-white) 0%,
-        var(--brand-color) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 .collection-desc {
     font-size: 1.2rem;
@@ -23,43 +15,63 @@
     line-height: 1.6;
 }
 
-/* Header spacing */
-.site-header {
-    padding: 0.75rem 0;
-    position: relative;
-    /* allow absolute mobile nav to position relative to header */
-    z-index: 20;
-    width: 100%;
-}
-
+/* ============================================================
+   Floating Glass Pill Header
+   ============================================================ */
 .site-header {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%) perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-origin: center top;
+    transform-style: preserve-3d;
+    width: min(95%, 900px);
+    box-sizing: border-box;
+    padding: 0.75rem 1.5rem;
     margin: 0;
     z-index: 2000;
-    border-bottom: 1px solid rgba(0, 170, 254, 0.2);
-    background: rgba(0, 12, 35, 0.4);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    height: 70px;
+    height: auto;
+    border: 1px solid rgba(0, 170, 254, 0.25);
+    border-radius: 24px;
+    background:
+        radial-gradient(
+            circle at var(--header-mouse-x, 50%) var(--header-mouse-y, 50%),
+            rgba(0, 170, 254, 0.12) 0%,
+            transparent 60%
+        ),
+        rgba(0, 12, 35, 0.62);
+    backdrop-filter: blur(32px) saturate(190%);
+    -webkit-backdrop-filter: blur(32px) saturate(190%);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 170, 254, 0.1);
     display: flex;
     align-items: center;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    transition:
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: visible;
+    isolation: isolate;
 }
 
 .site-header .container {
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 0 2rem;
+    padding: 0;
 }
 
-.header-inner,
+.header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+}
+
 .footer-inner {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -77,11 +89,19 @@
 }
 
 @media (max-width: 900px) {
+    .site-header {
+        top: 0.6rem;
+        width: min(96%, 700px);
+        border-radius: 18px;
+        padding: 0.6rem 1.1rem;
+    }
+
     .header-inner {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        padding: 0;
     }
 
     .header-inner .site-nav {
@@ -103,8 +123,8 @@
 }
 
 .brand-logo {
-    width: 48px !important;
-    height: 48px !important;
+    width: 34px !important;
+    height: 34px !important;
     object-fit: contain !important;
     display: block !important;
     margin: 0 !important;
@@ -149,8 +169,8 @@
 
 @media (max-width: 768px) {
     .brand-logo {
-        width: 40px !important;
-        height: 40px !important;
+        width: 30px !important;
+        height: 30px !important;
     }
 }
 
@@ -167,109 +187,116 @@ nav {
     border-bottom: none;
 }
 
-/* Underline-only 'diff' style for nav links */
+/* ============================================================
+   Nav Links — clean text inside the glass pill, no inner pill
+   ============================================================ */
 nav a,
 .site-nav .navitem {
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 6px;
-    text-decoration-thickness: 2px;
-    text-decoration-color: transparent;
-    margin: 0 1rem;
-    display: flex;
+    color: rgba(163, 196, 236, 0.85);
+    text-decoration: none !important;
+    margin: 0;
+    padding: 0.5rem 0.85rem !important;
+    display: inline-flex;
     align-items: center;
-    height: 100%;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.015em;
+    justify-content: center;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
     background: transparent;
     border: none;
-    padding: 0;
     border-radius: 0;
-    /* prevent individual nav links from wrapping to the next line */
-    white-space: nowrap;
-    transition:
-        color 0.15s,
-        text-decoration-color 0.15s,
-        transform 0.12s;
+    position: relative;
+    box-sizing: border-box;
+    transition: color 0.2s ease;
+}
+
+/* Accent underline on hover */
+nav a::after,
+.site-nav .navitem::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--brand-color);
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: width 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 nav a:hover,
 .site-nav .navitem:hover {
-    color: var(--color-primary-dim);
-    text-decoration-color: var(--color-primary);
-    transform: translateY(-1px);
+    color: #ffffff;
 }
 
-/* Ensure visited/nav-open/mobile keep usable nav underlines */
+nav a:hover::after,
+.site-nav .navitem:hover::after {
+    width: calc(100% - 1.4rem);
+}
+
 nav a:visited,
 .site-nav .navitem:visited {
-    /* don't inherit the global visited rule that removes underline */
-    text-decoration: underline;
-    text-decoration-color: transparent;
     color: inherit;
 }
 
+/* ============================================================
+   Mobile Nav Dropdown
+   ============================================================ */
 @media (max-width: 900px) {
-    /* Mobile: keep nav collapsed by default; reveal in-flow on `nav-open` */
     .site-nav {
         display: flex;
         flex-direction: column;
-        width: 100%;
         position: absolute;
-        top: 100%;
+        top: calc(100% + 0.75rem);
         left: 0;
         right: 0;
         max-height: 0;
         overflow: hidden;
-        padding: 0 0;
+        padding: 0;
         transition:
-            max-height 0.28s ease,
-            padding 0.18s ease;
-        border-top: none;
-        background: var(--color-surface);
-        /* remove top bar */
+            max-height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+            padding 0.2s ease,
+            opacity 0.2s ease;
+        opacity: 0;
+        border-radius: 18px;
+        background: transparent;
     }
 
     .site-nav a,
     .site-nav .navitem {
-        display: block;
-        padding: 0.35rem 1rem;
-        margin: 0;
-        text-decoration: underline;
-        text-underline-offset: 4px;
-        text-decoration-thickness: 1.2px;
-        text-decoration-color: #fff;
-        border-bottom: 1px solid rgba(189, 216, 230, 0.1);
-        font-weight: 600;
-        font-size: 0.95rem;
+        display: flex;
+        width: 100%;
+        padding: 0.85rem 1.5rem !important;
+        margin: 0 !important;
+        font-size: 1rem;
+        border-radius: 0 !important;
+        border-bottom: 1px solid rgba(0, 170, 254, 0.08);
     }
 
-    .site-nav a:last-child,
-    .site-nav .navitem:last-child {
+    .site-nav .navitem:last-of-type {
         border-bottom: none;
     }
 
-    .site-nav a:hover,
-    .site-nav .navitem:hover {
-        text-decoration-color: var(--color-primary);
-        transform: none;
-        color: var(--color-primary-dim);
-        background: rgba(0, 170, 254, 0.05);
+    /* After-underline hidden on mobile — uses border-bottom row instead */
+    .site-nav a::after,
+    .site-nav .navitem::after {
+        display: none;
     }
 
-    /* Reveal the nav in-flow when hamburger is toggled */
     body.nav-open .site-nav {
         max-height: 500px;
-        /* large enough for typical menus */
-        padding: 0;
-        background: rgba(0, 12, 35, 0.6);
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        border-top: 1px solid rgba(0, 170, 254, 0.1);
+        opacity: 1;
+        padding: 0.5rem 0 !important;
+        background: rgba(0, 12, 35, 0.92);
+        backdrop-filter: blur(32px) saturate(190%);
+        -webkit-backdrop-filter: blur(32px) saturate(190%);
+        border: 1px solid rgba(0, 170, 254, 0.22);
+        border-radius: 18px !important;
         box-shadow:
-            0 4px 12px rgba(0, 0, 0, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            0 16px 48px rgba(0, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 }
 
@@ -340,8 +367,8 @@ nav a:visited,
 }
 
 .site-footer .container.footer-inner {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     max-width: 100%;
     padding: 0 2rem;
@@ -420,93 +447,6 @@ nav a:visited,
     height: 1.6rem;
 }
 
-.footer-split-pill {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 24px;
-    background: rgba(0, 12, 35, 0.45);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(0, 170, 254, 0.25);
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    z-index: 10;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.footer-split-pill:hover {
-    border-color: rgba(0, 170, 254, 0.45);
-    box-shadow:
-        0 8px 20px rgba(0, 170, 254, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.split-pill-btn {
-    background: transparent;
-    border: none;
-    color: var(--brand-color);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    outline: none;
-}
-
-.split-pill-btn svg {
-    width: 16px;
-    height: 16px;
-    stroke: currentColor;
-    stroke-width: 2;
-    fill: none;
-    transition: transform 0.3s ease;
-}
-
-.split-pill-left {
-    padding-left: 1.2rem;
-    padding-right: 0.8rem;
-    gap: 0.5rem;
-}
-
-.split-pill-right {
-    padding-left: 0.8rem;
-    padding-right: 1.2rem;
-}
-
-.split-pill-divider {
-    width: 1px;
-    height: 18px;
-    background: rgba(0, 170, 254, 0.25);
-}
-
-.split-pill-btn:hover {
-    background: rgba(0, 170, 254, 0.15);
-    color: #ffffff;
-}
-
-.split-pill-left:hover svg {
-    transform: translateY(-2px);
-}
-
-.split-pill-right:hover svg {
-    transform: scale(1.1);
-}
-
-.split-pill-btn:active {
-    background: rgba(0, 170, 254, 0.25);
-}
-
-.split-pill-btn:focus-visible {
-    background: rgba(0, 170, 254, 0.25);
-}
 
 @media (max-width: 600px) {
     .site-footer .container.footer-inner {
@@ -548,173 +488,8 @@ nav a:visited,
         height: 2rem;
     }
 
-    .footer-split-pill {
-        order: 3;
-        margin-top: 0.8rem;
-    }
 }
 
-/* iOS 26 Liquid Glass Toolbar for FAB actions */
-.glass-fab-toolbar {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    padding: 6px;
-    border-radius: 32px;
-    background: rgba(0, 12, 35, 0.55);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border: 1px solid rgba(0, 170, 254, 0.25);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    z-index: 2000;
-    transition:
-        transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        bottom 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        padding 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-        border-radius 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.glass-fab-toolbar.footer-visible {
-    bottom: calc(
-        var(--footer-offset, 100px) + 24px
-    ); /* Shift up dynamically when footer is visible */
-}
-
-.glass-fab-toolbar .fab-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    overflow: hidden;
-    transition:
-        max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Expand on hover or focus for desktop, or when active class is added for mobile */
-@media (hover: hover) and (pointer: fine) {
-    .glass-fab-toolbar:hover .fab-actions,
-    .glass-fab-toolbar:focus-within .fab-actions {
-        max-height: 300px;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        padding-bottom: 6px;
-    }
-}
-
-.glass-fab-toolbar.is-active .fab-actions {
-    max-height: 300px;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    padding-bottom: 6px;
-}
-
-.glass-fab-toolbar:hover {
-    border-color: rgba(0, 170, 254, 0.45);
-    box-shadow:
-        0 16px 48px rgba(0, 0, 0, 0.6),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 0 0 1px rgba(0, 170, 254, 0.1),
-        0 0 24px rgba(0, 170, 254, 0.1);
-}
-
-.fab-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: transparent;
-    border: none;
-    color: var(--brand-color);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fab-btn svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.fab-btn:hover {
-    background: rgba(0, 170, 254, 0.15);
-    color: #fff;
-    transform: scale(1.08);
-}
-
-.fab-btn:hover svg {
-    transform: scale(1.05);
-}
-
-.fab-btn:active {
-    transform: scale(0.92);
-    background: rgba(0, 170, 254, 0.25);
-}
-
-.glass-separator {
-    width: 32px;
-    height: 1px;
-    background: rgba(0, 170, 254, 0.15);
-}
-
-@media (max-width: 600px) {
-    .glass-fab-toolbar.is-active {
-        border-radius: 20px;
-        padding: 8px;
-        width: 104px; /* Matches 2 * 48px buttons + 8px gap */
-    }
-
-    .glass-fab-toolbar.is-active .fab-actions {
-        display: grid;
-        grid-template-columns: repeat(2, 48px);
-        gap: 8px;
-        max-height: 104px; /* 2 rows of 48px + 8px gap */
-        padding-bottom: 8px;
-        width: 104px;
-    }
-
-    .glass-fab-toolbar.is-active .fab-actions .glass-separator {
-        display: none;
-    }
-
-    .glass-fab-toolbar.is-active #fab-main-toggle {
-        align-self: stretch;
-        width: auto;
-        height: 40px;
-        border-radius: 12px;
-        margin-top: 4px;
-        background: rgba(0, 170, 254, 0.1);
-        border: 1px solid rgba(0, 170, 254, 0.15);
-    }
-
-    .glass-fab-toolbar.is-active #fab-main-toggle:hover {
-        background: rgba(0, 170, 254, 0.2);
-        border-color: rgba(0, 170, 254, 0.3);
-    }
-}
 
 dialog {
     background: rgba(10, 20, 40, 0.6);
@@ -951,56 +726,7 @@ dialog::backdrop {
     }
 }
 
-#close-track-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) perspective(1000px)
-        rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-    border: 1px solid rgba(0, 170, 254, 0.3);
-    background:
-        radial-gradient(
-            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-            rgba(0, 170, 254, 0.12) 0%,
-            transparent 60%
-        ),
-        rgba(0, 12, 35, 0.75);
-    backdrop-filter: blur(32px) saturate(190%);
-    -webkit-backdrop-filter: blur(32px) saturate(190%);
-    color: #f1f5f9;
-    border-radius: 20px;
-    padding: 2.25rem;
-    width: calc(100% - 40px);
-    max-width: 520px;
-    box-sizing: border-box;
-    box-shadow:
-        0 28px 72px rgba(0, 0, 0, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 0 0 1px rgba(0, 170, 254, 0.05);
-    margin: 0;
-    text-align: center;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-#close-track-modal[open] {
-    animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-#close-track-modal .modal-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-#help-modal button,
-#close-track-modal button {
+#help-modal button {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
@@ -1013,32 +739,122 @@ dialog::backdrop {
     backdrop-filter: blur(8px);
 }
 
-#help-modal button:hover,
-#close-track-modal button:hover {
+#help-modal button:hover {
     background: rgba(0, 170, 254, 0.2);
     border-color: rgba(0, 170, 254, 0.4);
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-#btn-close-all {
-    background: rgba(255, 59, 48, 0.12) !important;
-    border-color: rgba(255, 59, 48, 0.3) !important;
+/* Header padding for standard site page content and active link styles */
+/* Floating pill: 34px logo + 1.4rem vert padding ≈ 56px + 1rem top + 1rem gap */
+.site-header ~ .site-main {
+    padding-top: calc(56px + 1rem + 1rem);
 }
 
-#btn-close-all:hover {
-    background: rgba(255, 59, 48, 0.25) !important;
-    border-color: rgba(255, 59, 48, 0.5) !important;
-    box-shadow: 0 8px 20px rgba(255, 59, 48, 0.15);
+/* Active nav item — bright text + persistent underline accent */
+.site-nav .navitem.active {
+    color: #ffffff !important;
 }
 
-.btn-cancel {
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    color: #a1a1aa !important;
+.site-nav .navitem.active::after {
+    width: calc(100% - 1.4rem) !important;
+    background: var(--brand-color) !important;
+    opacity: 1;
 }
 
-.btn-cancel:hover {
-    border-color: rgba(255, 255, 255, 0.4) !important;
-    color: #fff !important;
-    background: rgba(255, 255, 255, 0.1) !important;
+/* Mobile active: left accent bar instead of underline */
+@media (max-width: 900px) {
+    .site-nav .navitem.active {
+        color: #ffffff !important;
+        background: rgba(0, 170, 254, 0.1) !important;
+    }
+
+    .site-nav .navitem.active::after {
+        display: none !important;
+    }
+}
+
+/* Back button styling for collection detail pages */
+.back-link-container {
+    margin-bottom: 2rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #a3c4ec;
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 170, 254, 0.15);
+    background: rgba(0, 12, 35, 0.4);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    color: #ffffff;
+    background: rgba(0, 170, 254, 0.12);
+    border-color: rgba(0, 170, 254, 0.45);
+    box-shadow: 0 4px 12px rgba(0, 170, 254, 0.12);
+    transform: translateX(-4px);
+}
+
+.back-icon {
+    transition: transform 0.3s ease;
+}
+
+.back-btn:hover .back-icon {
+    transform: translateX(-2px);
+}
+
+/* Navigation separator between nav items */
+.nav-separator {
+    width: 1px;
+    height: 16px;
+    background: rgba(0, 170, 254, 0.18);
+    align-self: center;
+    margin: 0 0.1rem;
+    flex-shrink: 0;
+}
+
+/* Hide last separator in desktop header nav */
+.site-header .site-nav .nav-separator:last-of-type {
+    display: none;
+}
+
+/* Hide separators on mobile (stacked layout) */
+@media (max-width: 900px) {
+    .nav-separator {
+        display: none !important;
+    }
+}
+
+/* Wide layout container for grid elements */
+.container-grid {
+    max-width: 900px !important;
+    width: 100% !important;
+}
+
+/* Event and Blog Card title link styles */
+.event-title-link,
+.blog-title-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.event-title-link:hover,
+.blog-title-link:hover {
+    color: var(--brand-color) !important;
+}
+
+/* Ensure pointer cursor on non-anchor card triggers */
+.event-card,
+.blog-card {
+    cursor: pointer;
 }

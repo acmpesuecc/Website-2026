@@ -1,35 +1,30 @@
 {{ define "tag-subpage"}}
 {{$PageData := index .DeepDataMerge.Tags .PageURL}}
 {{ template "head" .}}
-{{template "niri-logic" .}}
-    <main class="niri-vertical-track" id="niri-track-v">
-        <div class="niri-horizontal-track" id="niri-track-h-root">
-            <section class="niri-window" id="root-window" role="main" tabindex="-1">
-                <div class="container site-main">
-                    <header class="collection-hero">
-                        <div class="hero-content">
-                            <h1>{{ $PageData.Frontmatter.Title }}</h1>
-                            <p class="collection-desc">Posts tagged with #{{ $PageData.Frontmatter.Title }}</p>
+<body class="site-body">
+    {{template "header" .}}
+    <main class="container site-main" role="main">
+        <header class="collection-hero">
+            <div class="hero-content">
+                <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                <p class="collection-desc">Posts tagged with #{{ $PageData.Frontmatter.Title }}</p>
+            </div>
+        </header>
+        <article class="content">
+            <section class="tagged-posts">
+                {{$TagSet := index .DeepDataMerge.TagsMap .PageURL}}
+                {{range $TagSet }}
+                <a class="blog-card" href="/{{.CompleteURL}}">
+                    <div class="blog-card-inner">
+                        <div class="blog-info">
+                            <h3>{{.Frontmatter.Title}}</h3>
+                            <p class="page-date">{{.Frontmatter.Description}}</p>
                         </div>
-                    </header>
-                    <article class="content">
-                        <section class="tagged-posts">
-                            {{$TagSet := index .DeepDataMerge.TagsMap .PageURL}}
-                            {{range $TagSet }}
-                            <a class="blog-card" href="/{{.CompleteURL}}" fx-action="/{{.CompleteURL}}">
-                                <div class="blog-card-inner">
-                                    <div class="blog-info">
-                                        <h3>{{.Frontmatter.Title}}</h3>
-                                        <p class="page-date">{{.Frontmatter.Description}}</p>
-                                    </div>
-                                </div>
-                            </a>
-                            {{end}}
-                        </section>
-                    </article>
-                </div>
+                    </div>
+                </a>
+                {{end}}
             </section>
-        </div>
+        </article>
     </main>
     {{template "footer" .}}
 </body>

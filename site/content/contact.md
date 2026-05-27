@@ -3,18 +3,18 @@ title: ""
 layout: page
 ---
 
-<div class="manifesto-wrapper">
-  <h1 class="manifesto-title">
+<div class="text-page-wrapper">
+  <h1 class="text-page-title">
     Let’s build <span class="accent">Together.</span>
   </h1>
 
-  <div class="manifesto-body">
+  <div class="text-page-body">
     <p>
       Want to work with us? Build cool things, meet amazing people and be part of a community that’s always learning, creating and growing.
     </p>
   </div>
 
-<div class="manifesto-footer">
+<div class="text-page-footer">
   <div class="cta-row">
     <span class="label">Mail us at</span>
     <div class="links">

@@ -30,114 +30,7 @@
       return '';
     }
 
-    function getParentCollectionURL(path) {
-      const basePath = getBasePath();
-      let relativePath = path;
-      if (basePath && path.startsWith(basePath)) {
-        relativePath = path.substring(basePath.length);
-      }
 
-      if (relativePath.startsWith('/blogs/') && relativePath !== '/blogs/index.html' && relativePath !== '/collections/blogs.html') {
-        return basePath + '/collections/blogs.html';
-      }
-      if (relativePath.startsWith('/events/') && relativePath !== '/events/index.html' && relativePath !== '/collections/events.html') {
-        return basePath + '/collections/events.html';
-      }
-      if (relativePath.startsWith('/members/') && relativePath !== '/members/index.html' && relativePath !== '/collections/members.html') {
-        return basePath + '/collections/members.html';
-      }
-      if (relativePath.startsWith('/announcements/') && relativePath !== '/announcements/index.html' && relativePath !== '/collections/announcements.html') {
-        return basePath + '/collections/announcements.html';
-      }
-      return null;
-    }
-
-    function clickLink(l) {
-      if (l.__fixi) {
-        l.click();
-      } else {
-        setTimeout(() => clickLink(l), 5);
-      }
-    }
-
-    function openPageFromSearch(targetPath) {
-      const parentURL = getParentCollectionURL(targetPath);
-      if (!parentURL) {
-        // Top-level page: open directly as a new window/track
-        const link = document.createElement('a');
-        link.setAttribute('fx-action', targetPath);
-        link.setAttribute('fx-main-page', '');
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.addEventListener('fx:end', () => {
-          link.remove();
-        });
-        clickLink(link);
-        return;
-      }
-
-      const parentWin = document.querySelector('.niri-window[data-url="' + parentURL + '"]');
-      if (parentWin) {
-        const track = parentWin.closest('.niri-horizontal-track');
-        if (track) {
-          const subWin = track.querySelector('.niri-window[data-url="' + targetPath + '"]');
-          if (subWin) {
-            document.body.classList.remove("overview-mode");
-            subWin.focus({ preventScroll: true });
-            setTimeout(() => {
-              subWin.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            }, 50);
-          } else {
-            const link = document.createElement('a');
-            link.setAttribute('fx-action', targetPath);
-            link.style.display = 'none';
-            track.appendChild(link);
-            link.addEventListener('fx:end', () => {
-              link.remove();
-            });
-            clickLink(link);
-          }
-        }
-      } else {
-        // Parent window not open. Listen for fx:end, then open subpage
-        const onEnd = function (e) {
-          if (e.detail.cfg.action === parentURL) {
-            document.removeEventListener('fx:end', onEnd);
-            const newParentWin = document.querySelector('.niri-window[data-url="' + parentURL + '"]');
-            if (newParentWin) {
-              const track = newParentWin.closest('.niri-horizontal-track');
-              if (track) {
-                const link = document.createElement('a');
-                link.setAttribute('fx-action', targetPath);
-                link.style.display = 'none';
-                track.appendChild(link);
-                link.addEventListener('fx:end', () => {
-                  link.remove();
-                });
-                clickLink(link);
-              }
-            }
-          }
-        };
-        document.addEventListener('fx:end', onEnd);
-
-        // Open parent track
-        const navLink = document.querySelector('.site-header a[fx-action="' + parentURL + '"]');
-        if (navLink) {
-          navLink.click();
-        } else {
-          const link = document.createElement('a');
-          link.setAttribute('fx-action', parentURL);
-          link.setAttribute('fx-main-page', '');
-          link.style.display = 'none';
-          document.body.appendChild(link);
-          link.addEventListener('fx:end', () => {
-            link.remove();
-          });
-          clickLink(link);
-        }
-      }
-    }
 
     function show() {
       overlay.classList.add('open');
@@ -209,9 +102,7 @@
               a.href = path;
               a.className = 'search-link';
               a.addEventListener('click', function (e) {
-                e.preventDefault();
                 hide();
-                openPageFromSearch(path);
               });
               results.appendChild(a);
               results.appendChild(document.createElement('br'));

@@ -1,18 +1,17 @@
 /* Landing Page / Root Window Styles */
 
 body:not(.overview-mode) #root-window {
-    flex: 0 0 var(--app-width);
-    max-width: var(--app-width);
-    width: var(--app-width);
-    height: var(--app-height);
-    min-height: var(--app-height);
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: 100vh;
     border: none;
     border-radius: 0;
     background: transparent;
     position: relative;
     box-shadow: none;
-    padding: 0;
+    padding: 70px 0 0 0 !important; /* Top padding is header height */
     margin: 0;
+    box-sizing: border-box;
 }
 
 /* Root window: Remove hardware notch and clipping and borders */
@@ -73,14 +72,23 @@ body.overview-mode #root-dots {
 }
 
 /* Center everything in normal view */
-#root-window .site-main {
+#root-window {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    padding: 0;
+    box-sizing: border-box;
+}
+
+#root-window .content,
+#root-window .body,
+#root-window .page-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
+    flex: 1;
 }
 
 .niri-landing {

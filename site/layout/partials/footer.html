@@ -14,8 +14,8 @@
         <div class="footer-split-pill">
             <button
                 class="split-pill-btn split-pill-left"
-                aria-label="Hide Footer"
-                title="Hide Footer"
+                aria-label="Scroll to Top"
+                title="Scroll to Top"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@
                 >
                     <polyline points="18 15 12 9 6 15"></polyline>
                 </svg>
-                <span>Hide Footer</span>
+                <span>Scroll to Top</span>
             </button>
             <div class="split-pill-divider"></div>
             <button
@@ -281,107 +281,6 @@
     </div>
 </dialog>
 
-<dialog id="close-track-modal">
-    <div class="help-content">
-        <h2>Close Track?</h2>
-        <p>
-            You are closing the main window of this track. Do you want to close
-            the entire track or just this window?
-        </p>
-        <div class="modal-actions">
-            <button id="btn-close-all">Close all</button>
-            <button id="btn-close-window">Close this window only</button>
-            <form method="dialog">
-                <button class="btn-cancel">Cancel</button>
-            </form>
-        </div>
-    </div>
-</dialog>
-
-<div class="glass-fab-toolbar" id="glass-fab-toolbar">
-    <div class="fab-actions" id="fab-actions" aria-hidden="true">
-        <button class="fab-btn fab-scroll-top" id="fab-scroll-top" aria-label="Jump to Landing Page">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <line x1="12" y1="19" x2="12" y2="5"></line>
-                <polyline points="5 12 12 5 19 12"></polyline>
-            </svg>
-        </button>
-        <div class="glass-separator"></div>
-        <button class="fab-btn fab-search" aria-label="Search (Shift+K)">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-        </button>
-        <div class="glass-separator"></div>
-        <button
-            class="fab-btn fab-help"
-            id="openHelp"
-            aria-label="Toggle Help Menu"
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-        </button>
-        <div class="glass-separator"></div>
-        <button class="fab-btn fab-overview" aria-label="Toggle Overview Mode">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-        </button>
-        <div class="glass-separator"></div>
-    </div>
-    <button
-        class="fab-btn fab-main-toggle"
-        id="fab-main-toggle"
-        aria-label="Menu"
-        aria-expanded="false"
-        aria-controls="fab-actions"
-    >
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
-</div>
 
 <script>
     (function () {
@@ -487,31 +386,7 @@
             });
         }
 
-        const closeTrackModal = document.getElementById("close-track-modal");
-        if (closeTrackModal) {
-            // Liquid Glass Spotlight & 3D Tilt Effect
-            closeTrackModal.addEventListener("mousemove", (e) => {
-                const rect = closeTrackModal.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
 
-                closeTrackModal.style.setProperty("--mouse-x", `${x}px`);
-                closeTrackModal.style.setProperty("--mouse-y", `${y}px`);
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const tiltX = (-(y - centerY) / centerY) * 3.5;
-                const tiltY = ((x - centerX) / centerX) * 3.5;
-
-                closeTrackModal.style.setProperty("--tilt-x", `${tiltX}deg`);
-                closeTrackModal.style.setProperty("--tilt-y", `${tiltY}deg`);
-            });
-
-            closeTrackModal.addEventListener("mouseleave", () => {
-                closeTrackModal.style.setProperty("--tilt-x", "0deg");
-                closeTrackModal.style.setProperty("--tilt-y", "0deg");
-            });
-        }
 
         // Global Card 3D Tilt and Spotlight Delegation
         document.addEventListener("mousemove", (e) => {
@@ -554,158 +429,17 @@
 
         if (closeFooterBtn) {
             closeFooterBtn.addEventListener("click", function () {
-                const inner = closeFooterBtn.closest(".niri-window-inner");
-                if (inner) {
-                    inner.scrollTo({ top: 0, behavior: "smooth" });
-                } else {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
             });
         }
 
         if (homeBtn) {
             homeBtn.addEventListener("click", function () {
-                const rootWin = document.getElementById("root-window");
-                if (rootWin) {
-                    document.body.classList.remove("overview-mode");
-                    rootWin.focus({ preventScroll: true });
-                    setTimeout(() => {
-                        rootWin.scrollIntoView({
-                            behavior: "smooth",
-                            block: "center",
-                            inline: "center",
-                        });
-                    }, 50);
-                }
+                window.location.href = "/";
             });
         }
 
-        // --- Glass FAB Toolbar Logic ---
-        const fabToolbar = document.getElementById("glass-fab-toolbar");
-        const fabMainToggle = document.getElementById("fab-main-toggle");
-        const fabActions = document.getElementById("fab-actions");
-        const siteFooter = document.querySelector(".site-footer");
 
-        if (fabToolbar && fabMainToggle && fabActions) {
-            const toggleMenu = (active) => {
-                fabToolbar.classList.toggle("is-active", active);
-                fabMainToggle.setAttribute("aria-expanded", active);
-                fabActions.setAttribute("aria-hidden", !active);
-            };
-
-            // Handle Scroll to Top button click
-            const scrollTopBtn = document.getElementById("fab-scroll-top");
-            if (scrollTopBtn) {
-                scrollTopBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    const rootWin = document.getElementById("root-window");
-                    if (rootWin) {
-                        document.body.classList.remove("overview-mode");
-                        rootWin.focus({ preventScroll: true });
-                        setTimeout(() => {
-                            rootWin.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center",
-                                inline: "center",
-                            });
-                        }, 50);
-                    }
-                    toggleMenu(false); // Close menu
-                });
-            }
-
-            // Toggle expanded state on mobile & handle double-tap shortcut
-            let lastClick = 0;
-            fabMainToggle.addEventListener("click", (e) => {
-                const now = Date.now();
-                if (now - lastClick < 300) {
-                    // Double tap/click detected!
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const rootWin = document.getElementById("root-window");
-                    if (rootWin) {
-                        document.body.classList.remove("overview-mode");
-                        rootWin.focus({ preventScroll: true });
-                        setTimeout(() => {
-                            rootWin.scrollIntoView({
-                                behavior: "smooth",
-                                block: "center",
-                                inline: "center",
-                            });
-                        }, 50);
-                    }
-                    toggleMenu(false); // Close menu
-                    return;
-                }
-                lastClick = now;
-
-                e.stopPropagation();
-                const isExpanded = fabToolbar.classList.contains("is-active");
-                toggleMenu(!isExpanded);
-            });
-
-            // Close when clicking outside
-            document.addEventListener("click", (e) => {
-                if (!fabToolbar.contains(e.target)) {
-                    toggleMenu(false);
-                }
-            });
-
-            // Sync ARIA state on hover/focus (desktop)
-            const syncDesktopState = () => {
-                if (window.matchMedia && !window.matchMedia("(hover: hover)").matches) {
-                    return;
-                }
-                const isHovered = fabToolbar.matches(":hover");
-                const hasFocus = fabToolbar.matches(":focus-within");
-                const shouldBeOpen = isHovered || hasFocus;
-
-                // Only sync if not manually toggled via click (is-active class)
-                if (!fabToolbar.classList.contains("is-active")) {
-                    fabMainToggle.setAttribute("aria-expanded", shouldBeOpen);
-                    fabActions.setAttribute("aria-hidden", !shouldBeOpen);
-                }
-            };
-
-            fabToolbar.addEventListener("mouseenter", syncDesktopState);
-            fabToolbar.addEventListener("mouseleave", syncDesktopState);
-            fabToolbar.addEventListener("focusin", syncDesktopState);
-            fabToolbar.addEventListener("focusout", syncDesktopState);
-        }
-
-        // Shift FAB Toolbar when footer is visible
-        if (fabToolbar && siteFooter) {
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            const footerHeight = siteFooter.offsetHeight;
-                            fabToolbar.style.setProperty(
-                                "--footer-offset",
-                                `${footerHeight}px`,
-                            );
-                            fabToolbar.classList.add("footer-visible");
-                        } else {
-                            fabToolbar.style.removeProperty("--footer-offset");
-                            fabToolbar.classList.remove("footer-visible");
-                        }
-                    });
-                },
-                { threshold: 0.01 }, // Trigger as soon as footer is visible
-            );
-            observer.observe(siteFooter);
-
-            // Also update on resize if visible
-            window.addEventListener("resize", () => {
-                if (fabToolbar.classList.contains("footer-visible")) {
-                    const footerHeight = siteFooter.offsetHeight;
-                    fabToolbar.style.setProperty(
-                        "--footer-offset",
-                        `${footerHeight}px`,
-                    );
-                }
-            });
-        }
     })();
 </script>
 {{template "search" .}} {{end}}

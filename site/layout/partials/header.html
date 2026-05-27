@@ -12,7 +12,7 @@
         <nav id="mobile-nav" class="site-nav" aria-label="Main navigation">
             {{range $index_no, $map := .DeepDataMerge.LayoutConfig.Navbar}}
             {{range $key, $value := $map}}
-            <a class="navitem" href="/{{ $value }}" fx-action="/{{ $value }}" fx-target="#niri-track" fx-swap="beforeend">{{ $key }}</a>
+            <a class="navitem" href="/{{ $value }}">{{ $key }}</a>
             {{end}}
             {{end}}
         </nav>
@@ -26,4 +26,58 @@
     </div>
 </header>
 
+<script>
+    (function() {
+        const hamburger = document.getElementById('hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.body.classList.toggle('nav-open');
+                const isOpen = document.body.classList.contains('nav-open');
+                hamburger.setAttribute('aria-expanded', isOpen);
+            });
+        }
+        
+        document.addEventListener('click', (e) => {
+            if (document.body.classList.contains('nav-open')) {
+                const nav = document.getElementById('mobile-nav');
+                if (nav && !nav.contains(e.target) && e.target !== hamburger) {
+                    document.body.classList.remove('nav-open');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        const header = document.querySelector('.site-header');
+        if (header) {
+            header.addEventListener('mousemove', (e) => {
+                const rect = header.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                header.style.setProperty('--header-mouse-x', `${x}px`);
+                header.style.setProperty('--header-mouse-y', `${y}px`);
+            });
+        }
+
+        const currentPath = window.location.pathname;
+        const navItems = document.querySelectorAll('.site-nav .navitem');
+        navItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href) {
+                const cleanPath = currentPath.replace(/\/$/, "");
+                const cleanHref = href.replace(/\/$/, "");
+                let isMatch = cleanPath === cleanHref || cleanPath.endsWith(cleanHref);
+                if (!isMatch) {
+                    if (cleanHref.endsWith("/collections/blogs.html") && cleanPath.includes("/blogs/")) isMatch = true;
+                    else if (cleanHref.endsWith("/collections/members.html") && cleanPath.includes("/members/")) isMatch = true;
+                    else if (cleanHref.endsWith("/collections/events.html") && cleanPath.includes("/events/")) isMatch = true;
+                    else if (cleanHref.endsWith("/collections/announcements.html") && cleanPath.includes("/announcements/")) isMatch = true;
+                }
+                if (isMatch) {
+                    item.classList.add('active');
+                }
+            }
+        });
+    })();
+</script>
 {{end}}

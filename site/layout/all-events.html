@@ -9,62 +9,55 @@
     {{ end }}
 {{ end }}
 {{ template "head" .}}
-{{template "niri-logic" .}}
-    <main class="niri-vertical-track" id="niri-track-v">
-        <div class="niri-horizontal-track" id="niri-track-h-root">
-            <section class="niri-window" id="root-window" role="main" tabindex="-1">
-                <div class="container site-main">
-                    <header class="collection-hero">
-                        <div class="hero-content">
-                            <h1>{{ $PageData.Frontmatter.Title }}</h1>
-                            {{ if $PageData.Frontmatter.Description }}
-                            <p class="collection-desc">{{ $PageData.Frontmatter.Description }}</p>
+<body class="site-body">
+    {{template "header" .}}
+    <main class="container site-main" role="main">
+        <header class="collection-hero">
+            <div class="hero-content">
+                <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                {{ if $PageData.Frontmatter.Description }}
+                <p class="collection-desc">{{ $PageData.Frontmatter.Description }}</p>
+                {{ end }}
+            </div>
+        </header>
+
+        <article class="content">
+            <section class="events-grid">
+    {{range $key, $events := .DeepDataMerge.CollectionsMap}}
+        {{if eq $key "collections/events.html"}}
+            {{range $Post := $events}}
+                {{if ne $Post.Frontmatter.Title "anna"}}
+                <a class="event-card" href="/{{$Post.CompleteURL}}">
+                    <div class="event-card-inner">
+                        <div class="event-thumb">
+                            {{ if $Post.Frontmatter.PreviewImage }}
+                                <img src="{{$Post.Frontmatter.PreviewImage}}" alt="pixel art"/>
+                            {{ else }}
+                                <img src="/static/images/placeholder.png" alt="placeholder"/>
                             {{ end }}
                         </div>
-                    </header>
-
-
-                    <article class="content">
-                        <section class="events-grid">
-                {{range $key, $events := .DeepDataMerge.CollectionsMap}}
-                    {{if eq $key "collections/events.html"}}
-                        {{range $Post := $events}}
-                            {{if ne $Post.Frontmatter.Title "anna"}}
-                            <a class="event-card" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                                <div class="event-card-inner">
-                                    <div class="event-thumb">
-                                        {{ if $Post.Frontmatter.PreviewImage }}
-                                            <img src="{{$Post.Frontmatter.PreviewImage}}" alt="pixel art"/>
-                                        {{ else }}
-                                            <img src="/static/images/placeholder.png" alt="pls tell me what to put here"/>
-                                        {{ end }}
-                                    </div>
-                                    <div class="event-info">
-                                        <h3>{{$Post.Frontmatter.Title}}</h3>
-                                        <p>{{$Post.Frontmatter.Description}}</p>
-                                        <div class="card-meta">
-                                            <span class="event-date">{{$Post.Frontmatter.Date}}</span>
-                                            {{ if $Post.Frontmatter.Tags }}
-                                            <div class="card-tags">
-                                                {{ range $Post.Frontmatter.Tags }}
-                                                <span class="tag-label" fx-action="/tags/{{ . }}.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend" onclick="event.preventDefault(); event.stopPropagation();">{{ . }}</span>
-                                                {{ end }}
-                                            </div>
-                                            {{ end }}
-                                        </div>
-                                    </div>
+                        <div class="event-info">
+                            <h3>{{$Post.Frontmatter.Title}}</h3>
+                            <p>{{$Post.Frontmatter.Description}}</p>
+                            <div class="card-meta">
+                                <span class="event-date">{{$Post.Frontmatter.Date}}</span>
+                                {{ if $Post.Frontmatter.Tags }}
+                                <div class="card-tags">
+                                    {{ range $Post.Frontmatter.Tags }}
+                                    <a class="tag-label" href="/tags/{{ . }}.html">{{ . }}</a>
+                                    {{ end }}
                                 </div>
-                            </a>
-                            {{end}}
-                        {{end}}
-                    {{end}}
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
                 {{end}}
-                        </section>
-                    </article>
-                </div>
+            {{end}}
+        {{end}}
+    {{end}}
             </section>
-        </div>
-
+        </article>
     </main>
     {{template "footer" .}}
 </body>

@@ -9,68 +9,61 @@
     {{ end }}
 {{ end }}
 {{ template "head" .}}
-{{template "niri-logic" .}}
+<body class="site-body">
+    {{template "header" .}}
+    <main class="container site-main" role="main">
+        <header class="collection-hero">
+            <div class="hero-content">
+                <h1>{{ $PageData.Frontmatter.Title }}</h1>
+                {{ if $PageData.Frontmatter.Description }}
+                <p class="collection-desc">{{ $PageData.Frontmatter.Description }}</p>
+                {{ end }}
+            </div>
+        </header>
 
-    <main class="niri-vertical-track" id="niri-track-v">
-        <div class="niri-horizontal-track" id="niri-track-h-root">
-            <section class="niri-window" id="root-window" role="main" tabindex="-1">
-                <div class="container site-main">
-                    <header class="collection-hero">
-                        <div class="hero-content">
-                            <h1>{{ $PageData.Frontmatter.Title }}</h1>
-                            {{ if $PageData.Frontmatter.Description }}
-                            <p class="collection-desc">{{ $PageData.Frontmatter.Description }}</p>
+        <article class="content">
+        <section class="blogs-list">
+            {{range $key, $posts := .DeepDataMerge.CollectionsMap}}
+                {{if eq $key "collections/blogs.html"}}
+                    {{range $Post := $posts}}
+                        {{if ne $Post.Frontmatter.Title "anna"}}
+            <a class="blog-card" href="/{{$Post.CompleteURL}}">
+                <div class="blog-card-inner">
+                    <div class="blog-thumb">
+                        {{ if $Post.Frontmatter.PreviewImage }}
+                            <img src="{{$Post.Frontmatter.PreviewImage}}" alt="pixel art"/>
+                        {{ else }}
+                            <img src="/static/images/placeholder.png" alt="placeholder"/>
+                        {{ end }}
+                    </div>
+                    <div class="blog-info">
+                        <h3>{{$Post.Frontmatter.Title}}</h3>
+                        <p>{{$Post.Frontmatter.Description}}</p>
+                        <div class="card-meta">
+                            <div class="blog-meta-left">
+                                {{ if $Post.Frontmatter.Authors }}
+                                <span class="blog-author">by {{ range $i, $a := $Post.Frontmatter.Authors }}{{ if $i }}, {{ end }}{{ $a }}{{ end }}</span>
+                                <span class="meta-dot">•</span>
+                                {{ end }}
+                                <span class="blog-date">{{$Post.Frontmatter.Date}}</span>
+                            </div>
+                            {{ if $Post.Frontmatter.Tags }}
+                            <div class="card-tags">
+                                {{ range $Post.Frontmatter.Tags }}
+                                <a class="tag-label" href="/tags/{{ . }}.html">{{ . }}</a>
+                                {{ end }}
+                            </div>
                             {{ end }}
                         </div>
-                    </header>
-
-                    <article class="content">
-                    <section class="blogs-list">
-                        {{range $key, $posts := .DeepDataMerge.CollectionsMap}}
-                            {{if eq $key "collections/blogs.html"}}
-                                {{range $Post := $posts}}
-                                    {{if ne $Post.Frontmatter.Title "anna"}}
-                        <a class="blog-card" href="/{{$Post.CompleteURL}}" fx-action="/{{$Post.CompleteURL}}">
-                            <div class="blog-card-inner">
-                                <div class="blog-thumb">
-                                    {{ if $Post.Frontmatter.PreviewImage }}
-                                        <img src="{{$Post.Frontmatter.PreviewImage}}" alt="pixel art"/>
-                                    {{ else }}
-                                        <img src="/static/images/placeholder.png" alt="pls tell me what to put here"/>
-                                    {{ end }}
-                                </div>
-                                <div class="blog-info">
-                                    <h3>{{$Post.Frontmatter.Title}}</h3>
-                                    <p>{{$Post.Frontmatter.Description}}</p>
-                                    <div class="card-meta">
-                                        <div class="blog-meta-left">
-                                            {{ if $Post.Frontmatter.Authors }}
-                                            <span class="blog-author">by {{ range $i, $a := $Post.Frontmatter.Authors }}{{ if $i }}, {{ end }}{{ $a }}{{ end }}</span>
-                                            <span class="meta-dot">•</span>
-                                            {{ end }}
-                                            <span class="blog-date">{{$Post.Frontmatter.Date}}</span>
-                                        </div>
-                                        {{ if $Post.Frontmatter.Tags }}
-                                        <div class="card-tags">
-                                            {{ range $Post.Frontmatter.Tags }}
-                                            <span class="tag-label" fx-action="/tags/{{ . }}.html" fx-main-page fx-target="#niri-track-v" fx-swap="beforeend" onclick="event.preventDefault(); event.stopPropagation();">{{ . }}</span>
-                                            {{ end }}
-                                        </div>
-                                        {{ end }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                                    {{end}}
-                                {{end}}
-                            {{end}}
-                        {{end}}
-                    </section>
-                    </article>
+                    </div>
                 </div>
-            </section>
-        </div>
-
+            </a>
+                        {{end}}
+                    {{end}}
+                {{end}}
+            {{end}}
+        </section>
+        </article>
     </main>
     {{template "footer" .}}
 </body>

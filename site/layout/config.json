@@ -9,7 +9,7 @@
   ],
   "baseURL": "https://acmpesuecc.github.io/Website-2026/",
   "siteTitle": "PES University EC Campus ACM Student Chapter",
-  "siteScripts": ["niri-engine.js"],
+  "siteScripts": [],
   "author": "PES University EC Campus ACM Student Chapter",
   "copyright": "This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.",
   "customFields": {

@@ -30,9 +30,9 @@
                     </div>
                     {{ end }}
                     <button type="button" class="copy-link-btn" aria-label="Copy link to this page"
-                        on-click="
-                        evt.stopPropagation();
-                       let btn = evt.currentTarget;
+                        onclick="
+                        event.stopPropagation();
+                       let btn = event.currentTarget;
                        let url = window.location.href;
                        let label = btn.querySelector('.copy-link-label');
                        let done = ()=>{

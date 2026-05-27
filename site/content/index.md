@@ -11,17 +11,7 @@ layout: page
     <p class="root-tagline">A student led tech community at PES University centered around technology, creativity and collaboration</p>
   </div>
 
-  <nav class="root-nav glass-pill">
-    <a href="/about.html" class="m-link">About</a>
-    <div class="nav-separator"></div>
-    <a href="/collections/members.html" class="m-link">Members</a>
-    <div class="nav-separator"></div>
-    <a href="/collections/blogs.html" class="m-link">Blogs</a>
-    <div class="nav-separator"></div>
-    <a href="/collections/events.html" class="m-link">Events</a>
-    <div class="nav-separator"></div>
-    <a href="/contact.html" class="m-link">Contact</a>
-  </nav>
+
 </div>
 
 <script>

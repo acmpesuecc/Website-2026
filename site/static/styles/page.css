@@ -1085,3 +1085,24 @@ dialog::backdrop {
 .back-btn:hover .back-icon {
     transform: translateX(-2px);
 }
+
+/* Navigation separator styling inside header */
+.site-header .nav-separator {
+    width: 1px;
+    height: 18px;
+    background: rgba(0, 170, 254, 0.2);
+    align-self: center;
+    margin: 0 0.4rem;
+}
+
+/* Hide last separator in desktop header nav */
+.site-header .site-nav .nav-separator:last-of-type {
+    display: none;
+}
+
+/* Hide separator on mobile viewports */
+@media (max-width: 900px) {
+    .site-header .nav-separator {
+        display: none !important;
+    }
+}
